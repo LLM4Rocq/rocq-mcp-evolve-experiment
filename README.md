@@ -1,8 +1,22 @@
-# rocq-mcp-evolve
+# rocq-mcp-evolve-experiment
 
-We propose an evolutionary method where a frontier model incrementally proposes new features and only keeps the ones that improve the overall performance of smaller models.
+We propose an evolutionary method building an MCP server for the Rocq proof assistant.
+
+We start with a basic MCP server exposing only the Rocq compiler.
+At each step, a frontier model *mutate* the existing MCP server by adding a new feature, *evaluate* this new server with smaller models, and only keeps mutations that improve overall performance.
+A detailed diagram representing a step of the evolutionary method is given:
+
+![diagram](assets/evol_diag.png)
+
 We demonstrate the effectiveness of our method by growing, on a curated set of mathematical problems, rocq-mcp-evolve, a new MCP server for the Rocq prover.
-On the held-out `test` split of miniF2F-Rocq, an agent equipped with rocq-mcp-evolve outperforms both the baseline that only exposes the Rocq compiler and an established MCP server, across four models from two families, in success rate, cost per solve, and time per solve.
+The metrics on which we measure the performance of an MCP server are: the *accuracy* (the success rate), the *cost* per solve, and the *wall time* per solve.
+Here is the evolution of metrics along the growing of rocq-mcp-server:
+
+![evolution](assets/evolution.png)
+
+On the held-out `test` split of miniF2F-Rocq, an agent equipped with rocq-mcp-evolve outperforms both the baseline that only exposes the Rocq compiler (control) and an established MCP server (rocq-mcp), across four models from two families (Claude Haiku 4.5, Claude Sonnet 5, Claude Opus 4.8, and GPT-5.6 Terra). Here are the results for all three metrics:
+
+![results](assets/models_results.png)
 
 This repository contains the server, the harness that ran the evolution and the evaluation, and the scripts that regenerate every reported number from the campaign logs.
 
