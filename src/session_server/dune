@@ -1,0 +1,22 @@
+(executable
+ (name rocq_agent_session)
+ (public_name rocq-mcp-evolve)
+ (package rocq-mcp-evolve)
+ (libraries
+  mcp_core
+  yojson
+  unix
+  str
+  rocq-runtime.boot
+  rocq-runtime.clib
+  rocq-runtime.lib
+  rocq-runtime.kernel
+  rocq-runtime.library
+  rocq-runtime.engine
+  rocq-runtime.proofs
+  rocq-runtime.printing
+  rocq-runtime.parsing
+  rocq-runtime.gramlib
+  rocq-runtime.coqargs
+  rocq-runtime.sysinit memprof-limits threads.posix
+  rocq-runtime.vernac))

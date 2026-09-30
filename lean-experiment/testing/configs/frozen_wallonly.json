@@ -1,0 +1,42 @@
+{
+ "config_id": "frozen_wallonly",
+ "description": "Ported from rocq-mcp-evolve config 'frozen_wallonly' (PORT_SPEC.md sections 4-5). FROZEN winning configuration (2026-07-03): persistent in-process session + try (batched speculative tactics) + hints (Lean-ism rewrites) + auto_close (finisher portfolio) + did-you-mean (near-miss lemma names) + environment v2 (Lia/Lra/Psatz preloaded, Require refused). Policy: claude-haiku-4-5, <=30 turns, <=300s. Selected by 6 kept / 3+1 reverted measured changes on dev sets only. | A100: identical to frozen except the 30-turn cap is lifted to a 200 safety rail (A63 wall-only convention) — the phase-1 cap was measured binding on 289/330 held-out failures (A62b tax)",
+ "server": {
+  "command": "/usr/bin/python3",
+  "args": [
+   "-S",
+   "{repo}/testing/harness/mcp_prewarm_proxy.py",
+   "--cache",
+   "{repo}/testing/harness/handshake_cache_evolve5.json",
+   "{repo}/.lake/build/bin/lean-mcp-evolve"
+  ],
+  "env": {
+   "LEAN_ENABLE_TOOLS": "step,rollback,state,try,auto_close",
+   "LEAN_HINTS": "1",
+   "LEAN_SUGGEST": "1",
+   "LEAN_ENV_V2": "1",
+   "LEAN_AUTO2": "0",
+   "LEAN_AUTO_SEARCH": "0",
+   "LEAN_PRELOAD": "0",
+   "LEAN_IMPORT_ECHO": "0",
+   "LEAN_STEP_TIMEOUT": "30",
+   "LEAN_TRY_TIMEOUT": "15",
+   "LEAN_AUTO_TIMEOUT": "6",
+   "LEAN_OPEN_TIMEOUT": "600",
+   "LEAN_MAX_HEARTBEATS": "200000"
+  }
+ },
+ "mcp_server_name": "lean",
+ "allowed_tools": [
+  "mcp__lean__step",
+  "mcp__lean__rollback",
+  "mcp__lean__state",
+  "mcp__lean__try",
+  "mcp__lean__auto_close"
+ ],
+ "model": "claude-haiku-4-5",
+ "max_turns": 200,
+ "attempt_timeout_s": 300,
+ "system_prompt": "You are an expert Lean 4 prover (Lean 4 with Mathlib; the file's imports are loaded, and all of Mathlib is ALWAYS available — simp, omega, norm_num, linarith, nlinarith, positivity, ring, field_simp work everywhere. Never use import). You drive a LIVE prover session where the theorem statement has already been executed: the goal is open and shown to you.\n\nTools:\n- auto_close{}: runs the whole standard finisher portfolio (simp, omega, norm_num, linarith, nlinarith, positivity, ring, field_simp variants, aesop...) against the current goal in ONE call and commits a success. Call it FIRST on every new goal, and again after each structural step.\n- try{candidates:[...]}: test up to 8 alternative tactic scripts against the current goal IN ONE CALL. The first one that fully succeeds is committed automatically; you see what every other candidate would do (error, or how many goals would remain). This is your main tool: propose several plausible attacks at once (e.g. [\"nlinarith\", \"positivity\", \"field_simp; ring\", \"nlinarith [sq_nonneg (a-b)]\"]).\n- step{text}: execute tactics directly, one per line (each success commits permanently; on failure you get the error and the state after the last success). Also for queries: `#check mul_le_mul` `exact?`\n- rollback{count}: undo the last count committed tactics.\n- state{}: show current goals and the proof so far.\n\nStrict rules:\n- Never use sorry, admit, axiom, native_decide, set_option, run_tac, #eval, or import — an external checker rejects them.\n- When a tool reports PROOF COMPLETE, reply with exactly DONE. If you conclude you cannot finish, reply with exactly GIVEUP.",
+ "task_prompt_template": "Prove this theorem (already loaded in the session; its goal is open):\n\n```lean\n{prefix}```\n\nUse try with several candidate tactics in one call; refine from what the results tell you."
+}

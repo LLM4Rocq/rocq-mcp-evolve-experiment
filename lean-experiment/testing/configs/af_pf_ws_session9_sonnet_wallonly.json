@@ -1,0 +1,46 @@
+{
+ "config_id": "af_pf_ws_session9_sonnet_wallonly",
+ "description": "Ported from rocq-mcp-evolve config 'af_pf_session2' (PORT_SPEC.md sections 4-5). A80 prompt-free held-out pair: audited frozen arm minus system prompt; wall-bound | A108: the tool-strategy tail sentence removed — template now byte-equal to the control arm (round-3 review finding) | PF_WS_SPEC.md (2026-09-09, user request): lean-mcp-evolve with ALL NINE prover tools (LEAN_ENABLE_TOOLS unset -- the server's own default), behind the prewarm proxy with handshake_cache_evolve9.json, NO extra_servers, rerun in the per-problem Lake workspace setting (LEAN_TASK_FILE is set to the workspace task file automatically by run_eval.py's workspace branch -- eager open). system_prompt/task_prompt_template kept BYTE-IDENTICAL to af_pf_session2's (no strategy tail, per A108); only server/allowed_tools/max_turns/workspace are overridden. Delivery: candidate.lean on PROOF COMPLETE, unchanged.",
+ "server": {
+  "command": "/usr/bin/python3",
+  "args": [
+   "-S",
+   "{repo}/testing/harness/mcp_prewarm_proxy.py",
+   "--cache",
+   "{repo}/testing/harness/handshake_cache_evolve9.json",
+   "{repo}/.lake/build/bin/lean-mcp-evolve"
+  ],
+  "env": {
+   "LEAN_HINTS": "1",
+   "LEAN_SUGGEST": "1",
+   "LEAN_ENV_V2": "1",
+   "LEAN_AUTO2": "0",
+   "LEAN_AUTO_SEARCH": "0",
+   "LEAN_PRELOAD": "0",
+   "LEAN_IMPORT_ECHO": "0",
+   "LEAN_STEP_TIMEOUT": "30",
+   "LEAN_TRY_TIMEOUT": "15",
+   "LEAN_AUTO_TIMEOUT": "6",
+   "LEAN_OPEN_TIMEOUT": "600",
+   "LEAN_MAX_HEARTBEATS": "200000"
+  }
+ },
+ "mcp_server_name": "lean",
+ "allowed_tools": [
+  "mcp__lean__open",
+  "mcp__lean__build",
+  "mcp__lean__check",
+  "mcp__lean__step",
+  "mcp__lean__try",
+  "mcp__lean__auto_close",
+  "mcp__lean__state",
+  "mcp__lean__rollback",
+  "mcp__lean__verify"
+ ],
+ "model": "claude-sonnet-5",
+ "max_turns": 200,
+ "attempt_timeout_s": 300,
+ "system_prompt": "",
+ "task_prompt_template": "Prove this theorem (already loaded in the session; its goal is open):\n\nRules, enforced by an external checker on the delivered file: the given prefix (imports, definitions, theorem statement) must stay EXACTLY as provided, character for character; never use sorry, admit, axiom, native_decide, set_option, run_tac, #eval, or extra import — submissions containing them are rejected. When you believe the proof is complete and verified, reply DONE.\n\n```lean\n{prefix}```",
+ "workspace": "lake_putnam"
+}

@@ -1,0 +1,74 @@
+{
+ "initialize": {
+  "capabilities": {
+   "tools": {}
+  },
+  "protocolVersion": "2025-11-25",
+  "serverInfo": {
+   "name": "lean-mcp-evolve",
+   "version": "0.1.0"
+  }
+ },
+ "tools": {
+  "tools": [
+   {
+    "description": "Create or overwrite a file in the project workspace. Path is relative to the workspace root (e.g. Putnam/Helper.lean). Parent directories are created automatically.",
+    "inputSchema": {
+     "properties": {
+      "content": {
+       "type": "string"
+      },
+      "path": {
+       "type": "string"
+      }
+     },
+     "required": [
+      "path",
+      "content"
+     ],
+     "type": "object"
+    },
+    "name": "write_file"
+   },
+   {
+    "description": "Read a file from the workspace (relative path).",
+    "inputSchema": {
+     "properties": {
+      "path": {
+       "type": "string"
+      }
+     },
+     "required": [
+      "path"
+     ],
+     "type": "object"
+    },
+    "name": "read_file"
+   },
+   {
+    "description": "List the workspace tree (paths relative to the root).",
+    "inputSchema": {
+     "properties": {},
+     "type": "object"
+    },
+    "name": "list_dir"
+   },
+   {
+    "description": "Run `lake build` at the workspace root and return its full output (all errors across all files).",
+    "inputSchema": {
+     "properties": {},
+     "type": "object"
+    },
+    "name": "lake_build"
+   },
+   {
+    "description": "Check the workspace AGAINST THE ACCEPTANCE GATE'S rules before you declare the project done: (1) scans every .lean file for forbidden tokens (sorry, admit, axiom, native_decide, set_option, run_tac, run_cmd, #eval, #exit, unsafe, implemented_by, extern, ofReduceBool, ofReduceNat, sorryAx, addDecl, addDeclWithoutChecking, +native \u2014 these REJECT the submission even if the build passes); (2) runs a clean `lake build`. Call this before replying DONE and fix everything it reports.",
+    "inputSchema": {
+     "properties": {},
+     "type": "object"
+    },
+    "name": "verify"
+   }
+  ]
+ }
+}

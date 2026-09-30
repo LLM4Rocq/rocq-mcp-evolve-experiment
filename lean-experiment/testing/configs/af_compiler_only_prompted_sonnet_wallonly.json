@@ -1,0 +1,30 @@
+{
+ "config_id": "af_compiler_only_prompted_sonnet_wallonly",
+ "description": "Ported from rocq-mcp-evolve config 'session_try_hints_auto_sonnet' (PORT_SPEC.md sections 4-5). A74/A76: the FROZEN interface (session_try_hints_auto_sugg + env v2) with only the model swapped -> claude-sonnet-5 | wall-only variant (2026-09-06, user decision): identical except the 30-turn cap is lifted to the 200 safety rail (A63/A100 wall-only convention, as frozen_wallonly is to frozen); the turn cap was measured to be a covert tool-call tax (A62b). | AF_TOOLS_SPEC.md (2026-09-07, user decision): the tool surface of the Rocq autoformalization arm 'af3_evolve' (rocq-mcp-evolve-private configs/af3_evolve.json) ported rocq->lean, dune_build->lake_build -- the files sidecar (write_file, read_file, list_dir, lake_build, verify) plus all nine prover tools (open, build, check, step, try, auto_close, state, rollback, verify; LEAN_ENABLE_TOOLS unset) against a per-problem Lake project workspace (\"workspace\": \"lake_putnam\") the model can create and manage files in. model/max_turns/attempt_timeout_s/system_prompt/task_prompt_template are kept BYTE-IDENTICAL to session_try_hints_auto_sonnet_wallonly (user instruction: keep the other configuration). Caveat: the system prompt still describes only the five frozen tools (kept verbatim); the other nine tools are documented to the model only by their own shipped MCP tool descriptions -- the Rocq af3 arms were prompt-free with the server README injected instead, an alternative protocol not used here. | prompted variant (2026-09-07, user request): same tool surface, workspace, budget and env as session_af_tools_sonnet_wallonly, but the system and task prompts describe ALL fourteen tools and the workspace, in the shape of the Rocq autoformalization prompts (af_tools2 system prompt, af3 task-prompt grading clause). {task_file} = the theorem's workspace-relative path. | TWO_ARMS_SPEC.md (2026-09-08, user request): mirrors the Rocq autoformalization arm 'af3_base' -- the files sidecar ONLY (write_file, read_file, list_dir, lake_build, verify), no live prover / no 'lean' MCP server at all. Same workspace/budget/env as session_af_tools_prompted_sonnet_wallonly. Prompted (not prompt-free like af3_base): system_prompt keeps the role sentence, the workspace-tools paragraph, the scratch-files sentence and the strict rules byte-identical to the base arm's, with the Prover-tools paragraph removed and the workflow paragraph rewritten for the compiler-only edit/build/fix loop.",
+ "server": {
+  "command": "/usr/bin/python3",
+  "args": [
+   "-S",
+   "{repo}/testing/harness/mcp_prewarm_proxy.py",
+   "--cache",
+   "{repo}/testing/harness/handshake_cache_files.json",
+   "{repo}/.lake/build/bin/lean-mcp-files"
+  ],
+  "env": {}
+ },
+ "mcp_server_name": "files",
+ "allowed_tools": [
+  "mcp__files__write_file",
+  "mcp__files__read_file",
+  "mcp__files__list_dir",
+  "mcp__files__lake_build",
+  "mcp__files__verify"
+ ],
+ "model": "claude-sonnet-5",
+ "max_turns": 200,
+ "attempt_timeout_s": 300,
+ "system_prompt": "You are an expert Lean 4 prover (Lean 4 with Mathlib; all of Mathlib is available — simp, omega, norm_num, linarith, nlinarith, positivity, ring, field_simp work everywhere). You must PROVE a Putnam theorem that is given as a file in your workspace: a Lake project already built against Mathlib, on which all your tools operate (paths are relative to its root).\n\nWorkspace tools (files): write_file{path, content} creates or overwrites a file (parent directories are created); read_file{path} reads one; list_dir{} lists the tree; lake_build{} runs `lake build` at the workspace root and returns ALL errors across all files; verify{} checks the workspace against the grader's rules (a forbidden-token scan of every .lean file plus a clean lake build) — call it before replying DONE and fix everything it reports.\n\nRecommended workflow: read the file, write your proof in place of `sorry` with write_file, lake_build, read the errors, fix, repeat; call verify before replying DONE. Scratch files for experiments are welcome (e.g. Putnam/Scratch.lean), but the delivered proof must be self-contained inside the target theorem: its imports, its statement and everything outside its proof must stay EXACTLY as given.\n\nStrict rules:\n- Never use sorry, admit, axiom, native_decide, set_option, run_tac, #eval, or unsafe in the delivered file — an external checker rejects them.\n- Reply with exactly DONE when the proof is written to the file and verify passes. If you conclude you cannot finish, reply with exactly GIVEUP.",
+ "task_prompt_template": "Prove the theorem below. It is the file `{task_file}` of the Lake project in your workspace (already built against Mathlib).\n\nGrading is machine-checked on your delivered file only: (1) `{task_file}` must compile with your proof written in place of `sorry`; (2) everything outside the theorem's proof — imports, definitions, the statement — must stay EXACTLY as provided, character for character; (3) the proof must be free of sorry, admit, axiom, native_decide, set_option, run_tac, #eval and unsafe, and must not introduce axioms. Other files you create in the workspace are not graded (use them as scratch space).\n\n```lean\n{prefix}```\n\nUse the tools; call verify{{}} before replying DONE. When the proof is complete and verified, reply DONE.",
+ "extra_servers": {},
+ "workspace": "lake_putnam"
+}

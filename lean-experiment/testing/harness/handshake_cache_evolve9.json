@@ -1,0 +1,146 @@
+{
+ "initialize": {
+  "capabilities": {
+   "tools": {}
+  },
+  "protocolVersion": "2025-11-25",
+  "serverInfo": {
+   "name": "lean-mcp-evolve",
+   "version": "0.1.0"
+  }
+ },
+ "tools": {
+  "tools": [
+   {
+    "description": "Open a Lean 4 .lean file and start (or restart) a proof session on it. Give `file` (absolute path, or relative to the project root). To prove a specific theorem inside the file (e.g. one currently `sorry`), also give `theorem` (its name) \u2014 the file is loaded UP TO that statement, its existing proof is ignored, and any EARLIER broken proof is admitted automatically so every theorem is reachable (fix holes in any order). Without `theorem`, the first declaration that errors or uses `sorry` becomes the goal. The project (lakefile) is discovered automatically from the file's location \u2014 build it first so imports resolve.",
+    "inputSchema": {
+     "properties": {
+      "file": {
+       "type": "string"
+      },
+      "theorem": {
+       "type": "string"
+      }
+     },
+     "required": [
+      "file"
+     ],
+     "type": "object"
+    },
+    "name": "open"
+   },
+   {
+    "description": "Diagnose a whole .lean file in ONE call: every declaration is elaborated; a broken proof is admitted so later declarations that depend on it are still checked \u2014 you get EVERY broken proof (errors and `sorry`s) at once instead of stopping at the first. Purely diagnostic: does not change the current proof session. Fix holes afterwards with open{file, theorem:<name>}.",
+    "inputSchema": {
+     "properties": {
+      "file": {
+       "type": "string"
+      }
+     },
+     "required": [
+      "file"
+     ],
+     "type": "object"
+    },
+    "name": "build"
+   },
+   {
+    "description": "Verify the whole project BEFORE declaring it done: runs a clean `lake build` at the project root and scans every .lean file for tokens that reviewers/graders reject even when the build passes (sorry, admit, axiom, native_decide). Use `sorry` freely as temporary scaffolding while working \u2014 then call verify and fix everything it reports before finishing. Root: LEAN_PROJECT_ROOT, else the opened file's project, else the current directory.",
+    "inputSchema": {
+     "properties": {},
+     "type": "object"
+    },
+    "name": "verify"
+   },
+   {
+    "description": "Execute one or more Lean 4 tactics in the live proof session (one tactic per line: `intro x`, `nlinarith [sq_nonneg (x - 1)]`, `\u00b7 simp` bullets, multi-line `induction n with | zero => .. | succ n ih => ..`), or query commands like `#check Nat.add_comm` / `#print axioms foo`. Tactics run in order; each success is committed permanently. On the first failure execution stops: earlier tactics of this call STAY committed, the error is reported, and the goal state shown is the one after the last success. Search tactics (`exact?`, `apply?`, `rw?`, `simp?`) are committed as the tactic they find. The proof is complete when no goals remain.",
+    "inputSchema": {
+     "properties": {
+      "text": {
+       "description": "Lean tactics to execute, one per line (or `#` query commands)",
+       "type": "string"
+      }
+     },
+     "required": [
+      "text"
+     ],
+     "type": "object"
+    },
+    "name": "step"
+   },
+   {
+    "description": "Undo the last N committed tactics and show the goal state you are back to.",
+    "inputSchema": {
+     "properties": {
+      "count": {
+       "description": "How many tactics to undo (default 1)",
+       "type": "integer"
+      }
+     },
+     "required": [],
+     "type": "object"
+    },
+    "name": "rollback"
+   },
+   {
+    "description": "Show the current proof state (all open goals) and the committed proof so far.",
+    "inputSchema": {
+     "properties": {},
+     "type": "object"
+    },
+    "name": "state"
+   },
+   {
+    "description": "Try up to 8 candidate tactic scripts SPECULATIVELY against the current state, in order. Each candidate is evaluated independently from the same state. The first candidate that fully succeeds is COMMITTED (like step); all others are just reported with what they would do. Use this to test several ideas in one call instead of one step per idea.",
+    "inputSchema": {
+     "properties": {
+      "candidates": {
+       "description": "Candidate scripts (each one or more tactics, e.g. \"nlinarith [sq_nonneg (x - 1)]\" or \"intro x\\nfield_simp\\nring\")",
+       "items": {
+        "type": "string"
+       },
+       "type": "array"
+      },
+      "commit": {
+       "description": "Whether to commit the first fully-successful candidate (default first_success)",
+       "enum": [
+        "first_success",
+        "none"
+       ],
+       "type": "string"
+      }
+     },
+     "required": [
+      "candidates"
+     ],
+     "type": "object"
+    },
+    "name": "try"
+   },
+   {
+    "description": "Run the standard finishing portfolio against the CURRENT goal in one call: rfl, trivial, simp, omega, decide, norm_num, linarith, nlinarith, positivity, ring, field_simp+ring, aesop, tauto, bound, gcongr \u2014 plus mechanically synthesized square-nonnegativity / product hints for nlinarith, and a library search (`exact?`) last. If one fully succeeds it is committed automatically. Call this first on every new goal before hand-crafting tactics; if it fails, do structural work (intro/rcases/have) and call it again on the simplified goal.",
+    "inputSchema": {
+     "properties": {},
+     "type": "object"
+    },
+    "name": "auto_close"
+   },
+   {
+    "description": "Check a COMPLETE proof attempt in one call: pass the entire tactic script (everything after `:= by`; do NOT repeat the file/statement \u2014 the session already contains them). On success the proof is done. On failure, everything up to the first bad tactic stays committed and you see the error plus the live goal there, so you can repair with step/try/auto_close or resubmit a fixed script after rollback.",
+    "inputSchema": {
+     "properties": {
+      "script": {
+       "description": "Complete tactic script (the body of the `by` block)",
+       "type": "string"
+      }
+     },
+     "required": [
+      "script"
+     ],
+     "type": "object"
+    },
+    "name": "check"
+   }
+  ]
+ }
+}

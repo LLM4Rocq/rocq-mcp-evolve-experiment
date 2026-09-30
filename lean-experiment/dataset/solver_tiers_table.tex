@@ -1,0 +1,36 @@
+% Approaches used to build the PutnamBench 60-problem subset (dataset/README.md, "Approach tiers").
+% Requires \usepackage{booktabs,multirow}. Solved counts are out of 672 (lean-wsolution).
+\begin{table}[t]
+  \centering
+  \small
+  \begin{tabular}{@{}lll@{}}
+    \toprule
+    \multicolumn{3}{@{}c@{}}{$\star$ \; Weak approaches (19; $\leq 90$ solved)} \\
+    \midrule
+    GPT-4o                     & o4-mini-high                & Goedel-Prover-V2 \\
+    COPRA (GPT-4o)             & DeepSeek-Prover-V2          & Ax-Prover (Axiomatic AI) \\
+    Deepseek R1                & DSP+                        & GPT-5 (ReAct, 10 turns) \\
+    Goedel-Prover-SFT          & Bourbaki                    & TIR Conjecturor \\
+    ABEL                       & Kimina-Prover-7B-Distill    & Enumerate-Conjecture-Prove \\
+    InternLM2.5-StepProver     & gemini-2.0-flash-thinking   & \\
+    Self-play Theorem Prover   & gemini-2.5-pro-exp-0325     & \\
+    \midrule
+    \multicolumn{3}{@{}c@{}}{$\star\star$ \; Mid approaches (4; 329--500 solved)} \\
+    \midrule
+    Seed-Prover (ByteDance)    & AxProverBase (Axiomatic AI) & \\
+    Hilbert                    & Aleph Prover (Logical Intelligence) & \\
+    \midrule
+    \multicolumn{3}{@{}c@{}}{$\star\star\star$ \; Strong approaches (5; 581--666 solved)} \\
+    \midrule
+    Seed-Prover 1.5 (ByteDance) & Aleph Prover \#2 (Logical Intelligence) & Aleph Prover \#3 (Logical Intelligence)$^{\dagger}$ \\
+    Goedel-Architect            & Goedel-Architect \#2 & \\
+    \bottomrule
+  \end{tabular}
+  \caption{Approaches from the PutnamBench leaderboard used to rank the difficulty of the
+    60 selected problems. \emph{Easy}: the 20 problems most often solved by $\star$ approaches
+    (rarity-weighted). \emph{Medium}: solved by no $\star$ approach and by all four $\star\star$
+    approaches. \emph{Hard}: solved by no $\star$ or $\star\star$ approach and by at most two of
+    the four discriminative $\star\star\star$ systems. $^{\dagger}$Near-ceiling (666/672), not
+    used to define the hard tier.}
+  \label{tab:putnam-solver-tiers}
+\end{table}

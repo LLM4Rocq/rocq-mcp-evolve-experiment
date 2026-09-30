@@ -1,0 +1,47 @@
+name = "lean-mcp-evolve"
+defaultTargets = ["lean-mcp-evolve"]
+
+[[require]]
+name = "repl"
+git = "https://github.com/leanprover-community/repl"
+rev = "v4.27.0-rc1"
+
+[[lean_lib]]
+name = "LeanMcpEvolve"
+
+[[lean_exe]]
+name = "lean-mcp-evolve"
+root = "LeanMcpEvolve.Main"
+supportInterpreter = true
+
+[[lean_exe]]
+name = "gate"
+root = "LeanMcpEvolve.GateMain"
+supportInterpreter = true
+
+
+[[lean_lib]]
+name = "Tests"
+
+[[lean_exe]]
+name = "tests"
+root = "Tests.Main"
+supportInterpreter = true
+
+[[lean_exe]]
+name = "lean-mcp-baseline"
+root = "Baseline"
+srcDir = "testing/servers"
+supportInterpreter = true
+
+[[lean_exe]]
+name = "lean-mcp-files"
+root = "Files"
+srcDir = "testing/servers"
+supportInterpreter = true
+
+[[lean_exe]]
+name = "lean-mcp-submit"
+root = "Submit"
+srcDir = "testing/servers"
+supportInterpreter = true

@@ -1,0 +1,62 @@
+{
+ "config_id": "lean_lsp_mcp_fair_sonnet",
+ "description": "Ported from rocq-mcp-evolve config 'rocq_mcp_fair_sonnet' (PORT_SPEC.md sections 4-5). A16 SOTA comparison: github.com/LLM4Rocq/rocq-mcp (v0.3.1, coq-lsp/pet-backed, 11 tools) run through the SAME harness — same policy, manifests, budgets, and correctness gate. A minimal `submit` sidecar writes the final artifact for the gate (verified from scratch; submission is not trusted). First contact with this tool was after the design freeze (docs/ASSUMPTIONS.md A16).",
+ "server": {
+  "command": "/usr/bin/python3",
+  "args": [
+   "-S",
+   "{repo}/testing/harness/mcp_prewarm_proxy.py",
+   "uvx",
+   "lean-lsp-mcp"
+  ],
+  "env": {
+   "LEAN_PROJECT_PATH": "/Users/jviennot/Documents/Cours/LEAN_2026"
+  }
+ },
+ "mcp_server_name": "leanlsp",
+ "extra_servers": {
+  "final": {
+   "command": "/usr/bin/python3",
+   "args": [
+    "-S",
+    "{repo}/testing/harness/mcp_prewarm_proxy.py",
+    "--cache",
+    "{repo}/testing/harness/handshake_cache_submit.json",
+    "{repo}/.lake/build/bin/lean-mcp-submit"
+   ]
+  }
+ },
+ "allowed_tools": [
+  "mcp__leanlsp__lean_build",
+  "mcp__leanlsp__lean_file_outline",
+  "mcp__leanlsp__lean_diagnostic_messages",
+  "mcp__leanlsp__lean_code_actions",
+  "mcp__leanlsp__lean_goal",
+  "mcp__leanlsp__lean_term_goal",
+  "mcp__leanlsp__lean_hover_info",
+  "mcp__leanlsp__lean_completions",
+  "mcp__leanlsp__lean_declaration_file",
+  "mcp__leanlsp__lean_references",
+  "mcp__leanlsp__lean_local_search",
+  "mcp__leanlsp__lean_leansearch",
+  "mcp__leanlsp__lean_loogle",
+  "mcp__leanlsp__lean_leanfinder",
+  "mcp__leanlsp__lean_state_search",
+  "mcp__leanlsp__lean_hammer_premise",
+  "mcp__leanlsp__lean_multi_attempt",
+  "mcp__leanlsp__lean_run_code",
+  "mcp__leanlsp__lean_verify",
+  "mcp__leanlsp__lean_minimal_hypotheses",
+  "mcp__leanlsp__lean_profile_proof",
+  "mcp__leanlsp__lean_get_widgets",
+  "mcp__leanlsp__lean_get_widget_source",
+  "mcp__final__submit"
+ ],
+ "project_task_copy": "PutnamEval/{aid}.lean",
+ "prefix_prepend": "-- task file: {task_rel}\n",
+ "model": "claude-sonnet-5",
+ "max_turns": 30,
+ "attempt_timeout_s": 300,
+ "system_prompt": "You are an expert Lean 4 prover (Lean 4 with Mathlib). Your job: complete the formal proof of the theorem the user gives you.\n\nYou have the lean-lsp-mcp toolset: interactive proving (lean_goal to see proof goals at a position in the task file, lean_diagnostic_messages to check compiler diagnostics, lean_multi_attempt to test several tactics at once), compilation (lean_run_code for full source), search (lean_loogle, lean_leansearch, lean_state_search), and verification (lean_verify). Use whichever workflow suits you.\n\nStrict rules:\n- NEVER modify the given file prefix: imports and the theorem statement must stay EXACTLY as provided. Only your proof is added after the statement.\n- No sorry, admit, axiom, native_decide, set_option, run_tac, #eval, or extra import — an external checker rejects them. The proof must leave no goals open.\n- When your proof is complete, you MUST call submit with the ENTIRE final .lean file (given prefix + your proof) — this is the only way it counts. Then reply DONE. If you cannot finish, reply GIVEUP.",
+ "task_prompt_template": "Prove the theorem below. Work with the tools, then submit the complete final file.\n\n```lean\n{prefix}```"
+}

@@ -1,0 +1,12 @@
+.lake/
+*.olean
+.lean_mcp_build_lock
+.lean_mcp_build_*.lean
+.lean_mcp_probe.lean
+candidate.lean
+logs/
+
+# testing/ harness (PORT_SPEC.md) — logs/runs are per-run and reproducible;
+# FINAL_UNLOCK is the deliberate held-out-eval guard file, never committed.
+testing/logs/
+testing/FINAL_UNLOCK

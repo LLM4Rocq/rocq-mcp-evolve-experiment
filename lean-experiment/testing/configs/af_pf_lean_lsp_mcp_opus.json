@@ -1,0 +1,62 @@
+{
+ "config_id": "af_pf_lean_lsp_mcp_opus",
+ "description": "Ported from rocq-mcp-evolve config 'af_pf_rocqmcp_opus' (PORT_SPEC.md sections 4-5). A99 prompt-free sibling arm: rocq-mcp fair integration, no system prompt, rules in task prompt (A80 wording, submit-mechanism sentence adapted), ambient micromega via task-file prefix | A104 checkpoint: frontier-tier sibling arm, appended per the registered projection rule",
+ "server": {
+  "command": "/usr/bin/python3",
+  "args": [
+   "-S",
+   "{repo}/testing/harness/mcp_prewarm_proxy.py",
+   "uvx",
+   "lean-lsp-mcp"
+  ],
+  "env": {
+   "LEAN_PROJECT_PATH": "/Users/jviennot/Documents/Cours/LEAN_2026"
+  }
+ },
+ "mcp_server_name": "leanlsp",
+ "extra_servers": {
+  "final": {
+   "command": "/usr/bin/python3",
+   "args": [
+    "-S",
+    "{repo}/testing/harness/mcp_prewarm_proxy.py",
+    "--cache",
+    "{repo}/testing/harness/handshake_cache_submit.json",
+    "{repo}/.lake/build/bin/lean-mcp-submit"
+   ]
+  }
+ },
+ "allowed_tools": [
+  "mcp__leanlsp__lean_build",
+  "mcp__leanlsp__lean_file_outline",
+  "mcp__leanlsp__lean_diagnostic_messages",
+  "mcp__leanlsp__lean_code_actions",
+  "mcp__leanlsp__lean_goal",
+  "mcp__leanlsp__lean_term_goal",
+  "mcp__leanlsp__lean_hover_info",
+  "mcp__leanlsp__lean_completions",
+  "mcp__leanlsp__lean_declaration_file",
+  "mcp__leanlsp__lean_references",
+  "mcp__leanlsp__lean_local_search",
+  "mcp__leanlsp__lean_leansearch",
+  "mcp__leanlsp__lean_loogle",
+  "mcp__leanlsp__lean_leanfinder",
+  "mcp__leanlsp__lean_state_search",
+  "mcp__leanlsp__lean_hammer_premise",
+  "mcp__leanlsp__lean_multi_attempt",
+  "mcp__leanlsp__lean_run_code",
+  "mcp__leanlsp__lean_verify",
+  "mcp__leanlsp__lean_minimal_hypotheses",
+  "mcp__leanlsp__lean_profile_proof",
+  "mcp__leanlsp__lean_get_widgets",
+  "mcp__leanlsp__lean_get_widget_source",
+  "mcp__final__submit"
+ ],
+ "project_task_copy": "PutnamEval/{aid}.lean",
+ "prefix_prepend": "-- task file: {task_rel}\n",
+ "model": "claude-opus-4-8",
+ "max_turns": 100,
+ "attempt_timeout_s": 300,
+ "system_prompt": "",
+ "task_prompt_template": "Prove the theorem below. Work with the tools, then submit the complete final file (given prefix + your proof) with the submit tool.\n\nRules, enforced by an external checker on the delivered file: the given prefix (imports, definitions, theorem statement) must stay EXACTLY as provided, character for character; never use sorry, admit, axiom, native_decide, set_option, run_tac, #eval, or extra import — submissions containing them are rejected. When you believe the proof is complete and submitted, reply DONE.\n\n```lean\n{prefix}```"
+}

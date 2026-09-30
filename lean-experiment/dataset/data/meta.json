@@ -1,0 +1,378 @@
+{
+ "GPT-4o": {
+  "link": "https://openai.com/index/hello-gpt-4o/",
+  "num": {
+   "isabelle-wsolution": 1,
+   "lean-wsolution": 1,
+   "coq-wsolution": 1
+  },
+  "budget": "pass@10",
+  "listed": 1,
+  "unknown": []
+ },
+ "COPRA (GPT-4o)": {
+  "link": "https://arxiv.org/abs/2310.04353",
+  "num": {
+   "lean-wsolution": 1,
+   "coq-wsolution": 1
+  },
+  "budget": "pass@1",
+  "listed": 1,
+  "unknown": []
+ },
+ "Deepseek R1": {
+  "link": "https://huggingface.co/deepseek-ai/DeepSeek-R1",
+  "num": {
+   "lean-wsolution": 1
+  },
+  "budget": "pass@1",
+  "listed": 1,
+  "unknown": []
+ },
+ "ReProver w/ retrieval": {
+  "link": "https://arxiv.org/abs/2306.15626",
+  "num": {
+   "lean-wsolution": 0
+  },
+  "budget": "pass@1",
+  "listed": 0,
+  "unknown": []
+ },
+ "ReProver w/o retrieval": {
+  "link": "https://arxiv.org/abs/2306.15626",
+  "num": {
+   "lean-wsolution": 0
+  },
+  "budget": "pass@1",
+  "listed": 0,
+  "unknown": []
+ },
+ "InternLM 7B": {
+  "link": "https://github.com/InternLM/InternLM-Math",
+  "num": {
+   "lean-wsolution": 4
+  },
+  "budget": "pass@4096",
+  "listed": 0,
+  "unknown": []
+ },
+ "Goedel-Prover-SFT": {
+  "link": "https://goedel-lm.github.io/",
+  "num": {
+   "lean-wsolution": 7
+  },
+  "budget": "pass@512",
+  "listed": 6,
+  "unknown": []
+ },
+ "ABEL": {
+  "link": "https://openreview.net/forum?id=kk3mSjVCUO",
+  "num": {
+   "lean-wsolution": 7
+  },
+  "budget": "pass@596",
+  "listed": 7,
+  "unknown": []
+ },
+ "InternLM2.5-StepProver": {
+  "link": "https://arxiv.org/pdf/2410.15700",
+  "num": {
+   "lean-wsolution": 6
+  },
+  "budget": "pass@2x32x600",
+  "listed": 6,
+  "unknown": []
+ },
+ "Self-play Theorem Prover": {
+  "link": "https://github.com/kfdong/STP",
+  "num": {
+   "lean-wsolution": 8
+  },
+  "budget": "pass@3200",
+  "listed": 8,
+  "unknown": []
+ },
+ "o3-mini": {
+  "link": "https://openai.com/index/openai-o3-mini/",
+  "num": {
+   "lean-wsolution": 0
+  },
+  "budget": "pass@1",
+  "listed": 0,
+  "unknown": []
+ },
+ "claude-3.7-sonnet": {
+  "link": "https://www.anthropic.com/claude/sonnet",
+  "num": {
+   "lean-wsolution": 0
+  },
+  "budget": "pass@1",
+  "listed": 0,
+  "unknown": []
+ },
+ "gemini-2.0-flash-thinking-121": {
+  "link": "https://deepmind.google/technologies/gemini/flash-thinking/",
+  "num": {
+   "lean-wsolution": 1
+  },
+  "budget": "pass@1",
+  "listed": 1,
+  "unknown": []
+ },
+ "gemini-2.5-pro-exp-0325": {
+  "link": "https://blog.google/technology/google-deepmind/gemini-model-thinking-updates-march-2025/",
+  "num": {
+   "lean-wsolution": 3
+  },
+  "budget": "pass@1",
+  "listed": 3,
+  "unknown": []
+ },
+ "GPT-4o-mini": {
+  "link": "https://openai.com/index/hello-gpt-4o/",
+  "num": {
+   "lean-wsolution": 0
+  },
+  "budget": "pass@1",
+  "listed": 0,
+  "unknown": []
+ },
+ "DeepSeek-V3-0324": {
+  "link": "https://api-docs.deepseek.com/news/news250325",
+  "num": {
+   "lean-wsolution": 0
+  },
+  "budget": "pass@1",
+  "listed": 0,
+  "unknown": []
+ },
+ "Grok-3-mini": {
+  "link": "https://www.x.ai/grok",
+  "num": {
+   "lean-wsolution": 0
+  },
+  "budget": "pass@1",
+  "listed": 0,
+  "unknown": []
+ },
+ "Kimina-Prover-7B-Distill": {
+  "link": "https://huggingface.co/AI-MO/Kimina-Prover-Preview-Distill-7B",
+  "num": {
+   "lean-wsolution": 10
+  },
+  "budget": "pass@192",
+  "listed": 10,
+  "unknown": []
+ },
+ "o4-mini-high": {
+  "link": "https://openai.com/index/introducing-o3-and-o4-mini/",
+  "num": {
+   "lean-wsolution": 2
+  },
+  "budget": "pass@1",
+  "listed": 2,
+  "unknown": []
+ },
+ "DeepSeek-Prover-V2": {
+  "link": "https://arxiv.org/abs/2504.21801",
+  "num": {
+   "lean-wsolution": 47
+  },
+  "budget": "pass@1024",
+  "listed": 45,
+  "unknown": []
+ },
+ "DSP+": {
+  "link": "https://arxiv.org/abs/2506.11487",
+  "num": {
+   "lean-wsolution": 23
+  },
+  "budget": "pass@128",
+  "listed": 23,
+  "unknown": []
+ },
+ "Bourbaki": {
+  "link": "bourbaki-prover.github.io",
+  "num": {
+   "lean-wsolution": 14
+  },
+  "budget": "pass@512",
+  "listed": 14,
+  "unknown": []
+ },
+ "Goedel-Prover-V2": {
+  "link": "https://blog.goedel-prover.com/",
+  "num": {
+   "lean-wsolution": 86
+  },
+  "budget": "pass@184",
+  "listed": 85,
+  "unknown": []
+ },
+ "Seed-Prover (ByteDance)": {
+  "link": "https://github.com/ByteDance-Seed/Seed-Prover",
+  "num": {
+   "lean-wsolution": 329
+  },
+  "budget": "MEDIUM",
+  "listed": 329,
+  "unknown": []
+ },
+ "Hilbert": {
+  "link": "https://arxiv.org/pdf/2509.22819",
+  "num": {
+   "lean-wsolution": 462
+  },
+  "budget": "avg pass@1840",
+  "listed": 462,
+  "unknown": []
+ },
+ "Ax-Prover (Axiomatic AI)": {
+  "link": "https://arxiv.org/pdf/2510.12787",
+  "num": {
+   "lean-wsolution": 91
+  },
+  "budget": "pass@1, avg. 100 tool calls",
+  "listed": 90,
+  "unknown": []
+ },
+ "GPT-5 (ReAct, 10 turns)": {
+  "link": "https://arxiv.org/abs/2512.00997",
+  "num": {
+   "lean-wsolution": 28
+  },
+  "budget": "pass@1, 10 tool calls",
+  "listed": 28,
+  "unknown": []
+ },
+ "Aleph Prover (Logical Intelligence)": {
+  "link": "https://www.logicalintelligence.com/aleph-prover.html",
+  "num": {
+   "lean-wsolution": 500
+  },
+  "budget": "Avg $23, Limit $100 per problem",
+  "listed": 500,
+  "unknown": []
+ },
+ "Aleph Prover (Logical Intelligence) #2": {
+  "link": "https://www.logicalintelligence.com/aleph-prover_300.html",
+  "num": {
+   "lean-wsolution": 637
+  },
+  "budget": "Avg $54, Limit $400 per problem",
+  "listed": 635,
+  "unknown": [
+   "putnam_1961_a1"
+  ]
+ },
+ "Seed-Prover 1.5 (ByteDance)": {
+  "link": "https://arxiv.org/abs/2512.17260",
+  "num": {
+   "lean-wsolution": 581
+  },
+  "budget": "10 H20 days per problem",
+  "listed": 581,
+  "unknown": []
+ },
+ "Aleph Prover (Logical Intelligence) #3": {
+  "link": "https://www.logicalintelligence.com/aleph-prover_1000.html",
+  "num": {
+   "lean-wsolution": 668
+  },
+  "budget": "Avg $68, Limit $1400 per problem",
+  "listed": 666,
+  "unknown": [
+   "putnam_1961_a1"
+  ]
+ },
+ "AxProverBase (Axiomatic AI)": {
+  "link": "https://prover.axiomatic-ai.com",
+  "num": {
+   "lean-wsolution": 365
+  },
+  "budget": "Avg $12.60, Opus 4.5 w/ 50 iterations",
+  "listed": 365,
+  "unknown": []
+ },
+ "TIR Conjecturor": {
+  "link": "https://github.com/mykhailynab/formal-conjecturer",
+  "num": {
+   "lean-nosolution": 15
+  },
+  "budget": "pass@4",
+  "listed": 14,
+  "unknown": []
+ },
+ "Goedel-Architect": {
+  "link": "https://arxiv.org/abs/2606.06468",
+  "num": {
+   "lean-wsolution": 597
+  },
+  "budget": "pass@4, Avg. $1.47 total cost / problem",
+  "listed": 597,
+  "unknown": []
+ },
+ "Enumerate-Conjecture-Prove": {
+  "link": "https://arxiv.org/abs/2505.18492",
+  "num": {
+   "lean-nosolution": 17
+  },
+  "budget": "pass@32",
+  "listed": 17,
+  "unknown": []
+ },
+ "Goedel-Architect #2": {
+  "link": "https://arxiv.org/abs/2606.06468",
+  "num": {
+   "lean-wsolution": 642
+  },
+  "budget": "Avg $5.8 total cost/problem",
+  "listed": 640,
+  "unknown": []
+ },
+ "Humanfia": {
+  "link": "https://github.com/humanfia/putnambench",
+  "num": {
+   "lean-wsolution": 672
+  },
+  "budget": "Avg $44.5 total cost/problem",
+  "listed": 672,
+  "unknown": []
+ },
+ "Leanstral 1.5": {
+  "link": "https://mistral.ai/news/leanstral-1-5/",
+  "num": {
+   "lean-wsolution": 588
+  },
+  "budget": "4m tokens per problem",
+  "listed": 672,
+  "unknown": []
+ },
+ "C2C-Goedel": {
+  "link": "https://arxiv.org/pdf/2604.18587",
+  "num": {
+   "lean-wsolution": 110
+  },
+  "budget": "pass@256",
+  "listed": 0,
+  "unknown": []
+ },
+ "C2C-Kimina": {
+  "link": "https://arxiv.org/pdf/2604.18587",
+  "num": {
+   "lean-wsolution": 25
+  },
+  "budget": "pass@256",
+  "listed": 0,
+  "unknown": []
+ },
+ "Aleph Prover (Logical Intelligence) #4": {
+  "link": "https://logicalintelligence.com/aleph-prover-final.html",
+  "num": {
+   "lean-wsolution": 672
+  },
+  "budget": "Avg $74, Max $1468 per problem",
+  "listed": 672,
+  "unknown": []
+ }
+}

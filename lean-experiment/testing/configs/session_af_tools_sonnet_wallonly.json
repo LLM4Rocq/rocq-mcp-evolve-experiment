@@ -1,0 +1,64 @@
+{
+ "config_id": "session_af_tools_sonnet_wallonly",
+ "description": "Ported from rocq-mcp-evolve config 'session_try_hints_auto_sonnet' (PORT_SPEC.md sections 4-5). A74/A76: the FROZEN interface (session_try_hints_auto_sugg + env v2) with only the model swapped -> claude-sonnet-5 | wall-only variant (2026-09-06, user decision): identical except the 30-turn cap is lifted to the 200 safety rail (A63/A100 wall-only convention, as frozen_wallonly is to frozen); the turn cap was measured to be a covert tool-call tax (A62b). | AF_TOOLS_SPEC.md (2026-09-07, user decision): the tool surface of the Rocq autoformalization arm 'af3_evolve' (rocq-mcp-evolve-private configs/af3_evolve.json) ported rocq->lean, dune_build->lake_build -- the files sidecar (write_file, read_file, list_dir, lake_build, verify) plus all nine prover tools (open, build, check, step, try, auto_close, state, rollback, verify; LEAN_ENABLE_TOOLS unset) against a per-problem Lake project workspace (\"workspace\": \"lake_putnam\") the model can create and manage files in. model/max_turns/attempt_timeout_s/system_prompt/task_prompt_template are kept BYTE-IDENTICAL to session_try_hints_auto_sonnet_wallonly (user instruction: keep the other configuration). Caveat: the system prompt still describes only the five frozen tools (kept verbatim); the other nine tools are documented to the model only by their own shipped MCP tool descriptions -- the Rocq af3 arms were prompt-free with the server README injected instead, an alternative protocol not used here.",
+ "server": {
+  "command": "/usr/bin/python3",
+  "args": [
+   "-S",
+   "{repo}/testing/harness/mcp_prewarm_proxy.py",
+   "--cache",
+   "{repo}/testing/harness/handshake_cache_evolve9.json",
+   "{repo}/.lake/build/bin/lean-mcp-evolve"
+  ],
+  "env": {
+   "LEAN_HINTS": "1",
+   "LEAN_SUGGEST": "1",
+   "LEAN_ENV_V2": "1",
+   "LEAN_AUTO2": "0",
+   "LEAN_AUTO_SEARCH": "0",
+   "LEAN_PRELOAD": "0",
+   "LEAN_IMPORT_ECHO": "0",
+   "LEAN_STEP_TIMEOUT": "30",
+   "LEAN_TRY_TIMEOUT": "15",
+   "LEAN_AUTO_TIMEOUT": "6",
+   "LEAN_OPEN_TIMEOUT": "600",
+   "LEAN_MAX_HEARTBEATS": "200000"
+  }
+ },
+ "mcp_server_name": "lean",
+ "allowed_tools": [
+  "mcp__files__write_file",
+  "mcp__files__read_file",
+  "mcp__files__list_dir",
+  "mcp__files__lake_build",
+  "mcp__files__verify",
+  "mcp__lean__open",
+  "mcp__lean__build",
+  "mcp__lean__check",
+  "mcp__lean__step",
+  "mcp__lean__try",
+  "mcp__lean__auto_close",
+  "mcp__lean__state",
+  "mcp__lean__rollback",
+  "mcp__lean__verify"
+ ],
+ "model": "claude-sonnet-5",
+ "max_turns": 200,
+ "attempt_timeout_s": 300,
+ "system_prompt": "You are an expert Lean 4 prover (Lean 4 with Mathlib; the file's imports are loaded, and all of Mathlib is ALWAYS available — simp, omega, norm_num, linarith, nlinarith, positivity, ring, field_simp work everywhere. Never use import). You drive a LIVE prover session where the theorem statement has already been executed: the goal is open and shown to you.\n\nTools:\n- auto_close{}: runs the whole standard finisher portfolio (simp, omega, norm_num, linarith, nlinarith, positivity, ring, field_simp variants, aesop...) against the current goal in ONE call and commits a success. Call it FIRST on every new goal, and again after each structural step.\n- try{candidates:[...]}: test up to 8 alternative tactic scripts against the current goal IN ONE CALL. The first one that fully succeeds is committed automatically; you see what every other candidate would do (error, or how many goals would remain). This is your main tool: propose several plausible attacks at once (e.g. [\"nlinarith\", \"positivity\", \"field_simp; ring\", \"nlinarith [sq_nonneg (a-b)]\"]).\n- step{text}: execute tactics directly, one per line (each success commits permanently; on failure you get the error and the state after the last success). Also for queries: `#check mul_le_mul` `exact?`\n- rollback{count}: undo the last count committed tactics.\n- state{}: show current goals and the proof so far.\n\nStrict rules:\n- Never use sorry, admit, axiom, native_decide, set_option, run_tac, #eval, or import — an external checker rejects them.\n- When a tool reports PROOF COMPLETE, reply with exactly DONE. If you conclude you cannot finish, reply with exactly GIVEUP.",
+ "task_prompt_template": "Prove this theorem (already loaded in the session; its goal is open):\n\n```lean\n{prefix}```\n\nUse try with several candidate tactics in one call; refine from what the results tell you.",
+ "extra_servers": {
+  "files": {
+   "command": "/usr/bin/python3",
+   "args": [
+    "-S",
+    "{repo}/testing/harness/mcp_prewarm_proxy.py",
+    "--cache",
+    "{repo}/testing/harness/handshake_cache_files.json",
+    "{repo}/.lake/build/bin/lean-mcp-files"
+   ],
+   "env": {}
+  }
+ },
+ "workspace": "lake_putnam"
+}

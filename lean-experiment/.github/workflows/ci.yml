@@ -1,0 +1,31 @@
+name: CI
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install elan (Lean toolchain manager)
+        run: |
+          curl -sSfL https://github.com/leanprover/elan/releases/latest/download/elan-x86_64-unknown-linux-gnu.tar.gz | tar xz
+          # Match the toolchain pinned in this repo's lean-toolchain file
+          # (leanprover/lean4:v4.27.0-rc1); `lake build` will also honour it
+          # directly via the lean-toolchain file, this just seeds elan.
+          ./elan-init -y --default-toolchain leanprover/lean4:v4.27.0-rc1
+          echo "$HOME/.elan/bin" >> "$GITHUB_PATH"
+      - name: lake build
+        run: lake build
+      - name: Suite T (pure text-layer unit checks)
+        run: lake exe tests T
+      - name: Suite A (session core, core-only project, real server over MCP stdio)
+        run: lake exe tests A
+      # Suite M (Mathlib-backed, Tests/Mathlib.lean) needs a built project
+      # depending on Mathlib (LEAN_MCP_TEST_MATHLIB_PROJECT) — building
+      # Mathlib from scratch would dominate CI time, so it is not run here.
+      # Run it locally against an existing Mathlib checkout instead:
+      #   LEAN_MCP_TEST_MATHLIB_PROJECT=/path/to/mathlib/project lake exe tests M

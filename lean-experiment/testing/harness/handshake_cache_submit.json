@@ -1,0 +1,32 @@
+{
+ "initialize": {
+  "capabilities": {
+   "tools": {}
+  },
+  "protocolVersion": "2025-11-25",
+  "serverInfo": {
+   "name": "lean-mcp-evolve",
+   "version": "0.1.0"
+  }
+ },
+ "tools": {
+  "tools": [
+   {
+    "description": "Submit your FINAL complete .lean file (imports + statement exactly as given + your proof). Call this exactly once, when you believe the proof is finished \u2014 an external checker verifies it from scratch; submissions that don't compile or violate the rules are rejected. This is the only way your proof gets counted.",
+    "inputSchema": {
+     "properties": {
+      "content": {
+       "description": "Complete contents of the final .lean file",
+       "type": "string"
+      }
+     },
+     "required": [
+      "content"
+     ],
+     "type": "object"
+    },
+    "name": "submit"
+   }
+  ]
+ }
+}

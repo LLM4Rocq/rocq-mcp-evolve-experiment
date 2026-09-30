@@ -1,0 +1,32 @@
+{
+ "initialize": {
+  "capabilities": {
+   "tools": {}
+  },
+  "protocolVersion": "2025-11-25",
+  "serverInfo": {
+   "name": "lean-mcp-evolve",
+   "version": "0.1.0"
+  }
+ },
+ "tools": {
+  "tools": [
+   {
+    "description": "Compile a complete Lean 4 (.lean) file from scratch. Pass the ENTIRE file contents: imports, the theorem statement exactly as given, and your proof. Returns the compiler exit code and its full output. Exit code 0 means the whole file was accepted.",
+    "inputSchema": {
+     "properties": {
+      "content": {
+       "description": "Complete contents of the .lean file",
+       "type": "string"
+      }
+     },
+     "required": [
+      "content"
+     ],
+     "type": "object"
+    },
+    "name": "check"
+   }
+  ]
+ }
+}

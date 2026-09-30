@@ -1,0 +1,2565 @@
+{
+ "initialize": {
+  "capabilities": {
+   "experimental": {},
+   "prompts": {
+    "listChanged": false
+   },
+   "resources": {
+    "listChanged": false,
+    "subscribe": false
+   },
+   "tools": {
+    "listChanged": false
+   }
+  },
+  "instructions": "## General Rules\n- All line and column numbers are 1-indexed. Columns count characters (codepoints).\n- This MCP does NOT edit files. Use other tools for editing.\n\n## Key Tools\n- **lean_goal**: Proof state at position. Omit `column` for before/after. `status` field: 'goals', 'complete' (proof done here), or 'no_goal_at_position' (not inside a proof).\n- **lean_diagnostic_messages**: Compiler errors/warnings. \"no goals to be solved\" = remove tactics.\n- **lean_term_goal**: Expected type at a position.\n- **lean_hover_info**: Type signature + docs. Column at START of identifier.\n- **lean_completions**: IDE autocomplete on incomplete code.\n- **lean_local_search**: Fast local declaration search. Use BEFORE trying a lemma name.\n- **lean_file_outline**: Token-efficient file skeleton (slow-ish).\n- **lean_multi_attempt**: Test tactics without editing at a proof position. Use `column` for an exact source position; omit it for fast line-based attempts: `[\"simp\", \"ring\", \"omega\"]`\n- **lean_code_actions**: Quick fixes and `TryThis` suggestions (simp?, exact?) with resolved edits.\n- **lean_declaration_file**: Declaration source slice with context; `full_file=true` for the whole file (large).\n- **lean_references**: All usages of a symbol (capped by `max_results`, `total` reports the full count).\n- **lean_run_code**: Run standalone snippet. Must include imports.\n- **lean_verify**: Axiom check + source scan. Use fully qualified name (e.g. `Ns.thm`).\n- **lean_minimal_hypotheses**: Which explicit hypotheses of a theorem are actually needed.\n- **lean_build**: Run `lake build` + restart LSP. Only if needed (new imports). Use `fetch_cache=true` only for missing dependency caches. SLOW!\n- **lean_profile_proof**: Profile a theorem for performance. Shows tactic hotspots. SLOW!\n\n## Search Tools (rate limited)\n- **lean_leansearch** (90/30s): Natural language -> mathlib\n- **lean_loogle** (3/30s): Type pattern -> mathlib\n- **lean_leanfinder** (10/30s): Semantic/conceptual search\n- **lean_state_search** (6/30s): Goal -> closing lemmas\n- **lean_hammer_premise** (6/30s): Goal -> premises for simp/aesop\n\n## Search Decision Tree\n1. \"Does X exist locally?\" -> lean_local_search\n2. \"I need a lemma that says X\" -> lean_leansearch\n3. \"Find lemma with type pattern\" -> lean_loogle\n4. \"What's the Lean name for concept X?\" -> lean_leanfinder\n5. \"What closes this goal?\" -> lean_state_search\n6. \"What to feed simp?\" -> lean_hammer_premise\n\nAfter finding a name: lean_local_search to verify, lean_hover_info for signature.\n\n## Return Formats\nList-returning tools return an object with an `items` array. Empty = `{\"items\": []}`.\n\n## Slow Files\nOn large files, pass `timeout_s` to lean_diagnostic_messages / lean_goal. A\nresponse with `partial: true` + `still_elaborating_lines` (or goal `status:\n'still_elaborating'`) means Lean is still working - poll again; it is NOT an\nerror or a dead server.\n\n## Error Handling\nCheck `isError` in responses: `true` means failure (timeout/LSP error/rate limit), while an empty `items` with `isError: false` means no results found.\n",
+  "protocolVersion": "2025-11-25",
+  "serverInfo": {
+   "name": "Lean LSP",
+   "version": "0.30.0"
+  }
+ },
+ "tools": {
+  "tools": [
+   {
+    "annotations": {
+     "destructiveHint": true,
+     "idempotentHint": true,
+     "openWorldHint": false,
+     "readOnlyHint": false,
+     "title": "Build Project"
+    },
+    "description": "Build the Lean project and restart LSP. Use only if needed (e.g. new imports).",
+    "inputSchema": {
+     "properties": {
+      "lean_project_path": {
+       "anyOf": [
+        {
+         "type": "string"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "default": null,
+       "description": "Path to Lean project",
+       "title": "Lean Project Path"
+      },
+      "clean": {
+       "default": false,
+       "description": "Run lake clean first (slow)",
+       "title": "Clean",
+       "type": "boolean"
+      },
+      "fetch_cache": {
+       "default": false,
+       "description": "Run lake exe cache get before building (slow)",
+       "title": "Fetch Cache",
+       "type": "boolean"
+      },
+      "output_lines": {
+       "default": 20,
+       "description": "Return last N lines of build log (0=none)",
+       "title": "Output Lines",
+       "type": "integer"
+      }
+     },
+     "type": "object",
+     "title": "lsp_buildArguments"
+    },
+    "name": "lean_build",
+    "outputSchema": {
+     "properties": {
+      "success": {
+       "description": "Whether build succeeded",
+       "title": "Success",
+       "type": "boolean"
+      },
+      "output": {
+       "description": "Build output",
+       "title": "Output",
+       "type": "string"
+      },
+      "errors": {
+       "description": "Build errors if any",
+       "items": {
+        "type": "string"
+       },
+       "title": "Errors",
+       "type": "array"
+      }
+     },
+     "required": [
+      "success",
+      "output"
+     ],
+     "type": "object",
+     "title": "BuildResult"
+    }
+   },
+   {
+    "annotations": {
+     "idempotentHint": true,
+     "openWorldHint": false,
+     "readOnlyHint": true,
+     "title": "File Outline"
+    },
+    "description": "Get imports and declarations with type signatures. Token-efficient.",
+    "inputSchema": {
+     "properties": {
+      "file_path": {
+       "description": "Absolute or project-root-relative path to Lean file",
+       "title": "File Path",
+       "type": "string"
+      },
+      "max_declarations": {
+       "anyOf": [
+        {
+         "minimum": 1,
+         "type": "integer"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "default": null,
+       "description": "Max declarations to return",
+       "title": "Max Declarations"
+      }
+     },
+     "required": [
+      "file_path"
+     ],
+     "type": "object",
+     "title": "file_outlineArguments"
+    },
+    "name": "lean_file_outline",
+    "outputSchema": {
+     "properties": {
+      "imports": {
+       "description": "Import statements",
+       "items": {
+        "type": "string"
+       },
+       "title": "Imports",
+       "type": "array"
+      },
+      "declarations": {
+       "description": "Top-level declarations",
+       "items": {
+        "$ref": "#/$defs/OutlineEntry"
+       },
+       "title": "Declarations",
+       "type": "array"
+      },
+      "total_declarations": {
+       "anyOf": [
+        {
+         "type": "integer"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "default": null,
+       "description": "Total count (set when truncated)",
+       "title": "Total Declarations"
+      }
+     },
+     "type": "object",
+     "$defs": {
+      "OutlineEntry": {
+       "properties": {
+        "name": {
+         "description": "Declaration name",
+         "title": "Name",
+         "type": "string"
+        },
+        "kind": {
+         "description": "Declaration kind (Thm, Def, Class, Struct, Ns, Ex)",
+         "title": "Kind",
+         "type": "string"
+        },
+        "start_line": {
+         "description": "Start line (1-indexed)",
+         "title": "Start Line",
+         "type": "integer"
+        },
+        "end_line": {
+         "description": "End line (1-indexed)",
+         "title": "End Line",
+         "type": "integer"
+        },
+        "type_signature": {
+         "anyOf": [
+          {
+           "type": "string"
+          },
+          {
+           "type": "null"
+          }
+         ],
+         "default": null,
+         "description": "Type signature if available",
+         "title": "Type Signature"
+        },
+        "children": {
+         "description": "Nested declarations",
+         "items": {
+          "$ref": "#/$defs/OutlineEntry"
+         },
+         "title": "Children",
+         "type": "array"
+        }
+       },
+       "required": [
+        "name",
+        "kind",
+        "start_line",
+        "end_line"
+       ],
+       "title": "OutlineEntry",
+       "type": "object"
+      }
+     },
+     "title": "FileOutline"
+    }
+   },
+   {
+    "annotations": {
+     "idempotentHint": true,
+     "openWorldHint": false,
+     "readOnlyHint": true,
+     "title": "Diagnostics"
+    },
+    "description": "Get compiler diagnostics (errors, warnings, infos) for a Lean file.",
+    "inputSchema": {
+     "properties": {
+      "file_path": {
+       "description": "Absolute or project-root-relative path to Lean file",
+       "title": "File Path",
+       "type": "string"
+      },
+      "start_line": {
+       "anyOf": [
+        {
+         "minimum": 1,
+         "type": "integer"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "default": null,
+       "description": "Filter from line",
+       "title": "Start Line"
+      },
+      "end_line": {
+       "anyOf": [
+        {
+         "minimum": 1,
+         "type": "integer"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "default": null,
+       "description": "Filter to line",
+       "title": "End Line"
+      },
+      "declaration_name": {
+       "anyOf": [
+        {
+         "type": "string"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "default": null,
+       "description": "Filter to declaration (slow)",
+       "title": "Declaration Name"
+      },
+      "interactive": {
+       "default": false,
+       "description": "Returns verbose nested TaggedText with embedded widgets. Only use when plain text is insufficient. For 'Try This' suggestions, prefer lean_code_actions.",
+       "title": "Interactive",
+       "type": "boolean"
+      },
+      "timeout_s": {
+       "anyOf": [
+        {
+         "minimum": 1,
+         "type": "number"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "default": null,
+       "description": "Max seconds to wait for elaboration. On timeout returns partial=true with still_elaborating_lines - poll again. Omit to wait for full elaboration.",
+       "title": "Timeout S"
+      },
+      "severity": {
+       "default": null,
+       "description": "Filter by severity level. Returns all levels when omitted.",
+       "enum": [
+        "error",
+        "warning",
+        "info",
+        "hint"
+       ],
+       "title": "Severity",
+       "type": "string"
+      }
+     },
+     "required": [
+      "file_path"
+     ],
+     "type": "object",
+     "title": "diagnostic_messagesArguments"
+    },
+    "name": "lean_diagnostic_messages",
+    "outputSchema": {
+     "properties": {
+      "result": {
+       "anyOf": [
+        {
+         "$ref": "#/$defs/DiagnosticsResult"
+        },
+        {
+         "$ref": "#/$defs/InteractiveDiagnosticsResult"
+        }
+       ],
+       "title": "Result"
+      }
+     },
+     "required": [
+      "result"
+     ],
+     "type": "object",
+     "$defs": {
+      "DiagnosticMessage": {
+       "properties": {
+        "severity": {
+         "description": "error, warning, info, or hint",
+         "title": "Severity",
+         "type": "string"
+        },
+        "message": {
+         "description": "Diagnostic message text",
+         "title": "Message",
+         "type": "string"
+        },
+        "line": {
+         "description": "Line (1-indexed)",
+         "title": "Line",
+         "type": "integer"
+        },
+        "column": {
+         "description": "Column (1-indexed)",
+         "title": "Column",
+         "type": "integer"
+        },
+        "lean_tags": {
+         "anyOf": [
+          {
+           "items": {
+            "type": "string"
+           },
+           "type": "array"
+          },
+          {
+           "type": "null"
+          }
+         ],
+         "default": null,
+         "description": "Lean-specific tags: 'unsolvedGoals' (proof incomplete here) or 'goalsAccomplished' (proof finished). Machine-readable proof status - prefer over string-matching the message.",
+         "title": "Lean Tags"
+        }
+       },
+       "required": [
+        "severity",
+        "message",
+        "line",
+        "column"
+       ],
+       "title": "DiagnosticMessage",
+       "type": "object"
+      },
+      "DiagnosticsResult": {
+       "description": "Wrapper for diagnostic messages list with build status.",
+       "properties": {
+        "partial": {
+         "default": false,
+         "description": "True when elaboration was still running at timeout: items may be incomplete and still_elaborating_lines shows the pending region. Poll again instead of treating this as failure.",
+         "title": "Partial",
+         "type": "boolean"
+        },
+        "still_elaborating_lines": {
+         "anyOf": [
+          {
+           "items": {
+            "items": {
+             "type": "integer"
+            },
+            "type": "array"
+           },
+           "type": "array"
+          },
+          {
+           "type": "null"
+          }
+         ],
+         "default": null,
+         "description": "Line ranges [start, end] (1-indexed) still being elaborated",
+         "title": "Still Elaborating Lines"
+        },
+        "success": {
+         "default": true,
+         "description": "True if the queried file/range has no errors",
+         "title": "Success",
+         "type": "boolean"
+        },
+        "timed_out": {
+         "default": false,
+         "description": "True if elaboration timed out (results are partial, not a real build failure)",
+         "title": "Timed Out",
+         "type": "boolean"
+        },
+        "items": {
+         "description": "List of diagnostic messages",
+         "items": {
+          "$ref": "#/$defs/DiagnosticMessage"
+         },
+         "title": "Items",
+         "type": "array"
+        },
+        "failed_dependencies": {
+         "description": "File paths of dependencies that failed to build",
+         "items": {
+          "type": "string"
+         },
+         "title": "Failed Dependencies",
+         "type": "array"
+        }
+       },
+       "title": "DiagnosticsResult",
+       "type": "object"
+      },
+      "InteractiveDiagnosticsResult": {
+       "description": "Wrapper for interactive diagnostics with embedded widgets.",
+       "properties": {
+        "diagnostics": {
+         "description": "Interactive diagnostic objects with TaggedText messages",
+         "items": {
+          "additionalProperties": true,
+          "type": "object"
+         },
+         "title": "Diagnostics",
+         "type": "array"
+        }
+       },
+       "title": "InteractiveDiagnosticsResult",
+       "type": "object"
+      }
+     },
+     "title": "diagnostic_messagesOutput"
+    }
+   },
+   {
+    "annotations": {
+     "idempotentHint": true,
+     "openWorldHint": false,
+     "readOnlyHint": true,
+     "title": "Code Actions"
+    },
+    "description": "Get LSP code actions for a line. Returns resolved edits for TryThis suggestions (simp?, exact?, apply?) and other quick fixes.",
+    "inputSchema": {
+     "properties": {
+      "file_path": {
+       "description": "Absolute path to Lean file",
+       "title": "File Path",
+       "type": "string"
+      },
+      "line": {
+       "description": "Line number (1-indexed)",
+       "minimum": 1,
+       "title": "Line",
+       "type": "integer"
+      }
+     },
+     "required": [
+      "file_path",
+      "line"
+     ],
+     "type": "object",
+     "title": "code_actionsArguments"
+    },
+    "name": "lean_code_actions",
+    "outputSchema": {
+     "properties": {
+      "actions": {
+       "description": "List of available code actions",
+       "items": {
+        "$ref": "#/$defs/CodeAction"
+       },
+       "title": "Actions",
+       "type": "array"
+      }
+     },
+     "type": "object",
+     "$defs": {
+      "CodeAction": {
+       "properties": {
+        "title": {
+         "description": "Code action title (e.g. 'Try this: simp only [...])",
+         "title": "Title",
+         "type": "string"
+        },
+        "is_preferred": {
+         "description": "Whether this is the preferred action",
+         "title": "Is Preferred",
+         "type": "boolean"
+        },
+        "edits": {
+         "description": "Text edits to apply",
+         "items": {
+          "$ref": "#/$defs/CodeActionEdit"
+         },
+         "title": "Edits",
+         "type": "array"
+        }
+       },
+       "required": [
+        "title",
+        "is_preferred"
+       ],
+       "title": "CodeAction",
+       "type": "object"
+      },
+      "CodeActionEdit": {
+       "properties": {
+        "new_text": {
+         "description": "Replacement text",
+         "title": "New Text",
+         "type": "string"
+        },
+        "start_line": {
+         "description": "Start line (1-indexed)",
+         "title": "Start Line",
+         "type": "integer"
+        },
+        "start_column": {
+         "description": "Start column (1-indexed)",
+         "title": "Start Column",
+         "type": "integer"
+        },
+        "end_line": {
+         "description": "End line (1-indexed)",
+         "title": "End Line",
+         "type": "integer"
+        },
+        "end_column": {
+         "description": "End column (1-indexed)",
+         "title": "End Column",
+         "type": "integer"
+        }
+       },
+       "required": [
+        "new_text",
+        "start_line",
+        "start_column",
+        "end_line",
+        "end_column"
+       ],
+       "title": "CodeActionEdit",
+       "type": "object"
+      }
+     },
+     "description": "Wrapper for code actions at a position.",
+     "title": "CodeActionsResult"
+    }
+   },
+   {
+    "annotations": {
+     "idempotentHint": true,
+     "openWorldHint": false,
+     "readOnlyHint": true,
+     "title": "Proof Goals"
+    },
+    "description": "Get proof goals at a position. MOST IMPORTANT tool - use often!\n\n    Omit column to see goals_before (line start) and goals_after (line end),\n    showing how the tactic transforms the state. status='complete' means the\n    proof is finished at this point; status='no_goal_at_position' means the\n    position carries no proof state (e.g. outside a proof).\n    ",
+    "inputSchema": {
+     "properties": {
+      "file_path": {
+       "description": "Absolute or project-root-relative path to Lean file",
+       "title": "File Path",
+       "type": "string"
+      },
+      "line": {
+       "description": "Line number (1-indexed)",
+       "minimum": 1,
+       "title": "Line",
+       "type": "integer"
+      },
+      "column": {
+       "anyOf": [
+        {
+         "minimum": 1,
+         "type": "integer"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "default": null,
+       "description": "Column (1-indexed). Omit for before/after",
+       "title": "Column"
+      },
+      "format": {
+       "default": "text",
+       "description": "Output format: 'text' (default) or 'structured'",
+       "enum": [
+        "text",
+        "structured"
+       ],
+       "title": "Format",
+       "type": "string"
+      },
+      "timeout_s": {
+       "anyOf": [
+        {
+         "minimum": 1,
+         "type": "number"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "default": null,
+       "description": "Max seconds to wait for elaboration. On timeout returns status='still_elaborating' - poll again.",
+       "title": "Timeout S"
+      }
+     },
+     "required": [
+      "file_path",
+      "line"
+     ],
+     "type": "object",
+     "title": "goalArguments"
+    },
+    "name": "lean_goal",
+    "outputSchema": {
+     "properties": {
+      "line_context": {
+       "description": "Source line where goals were queried",
+       "title": "Line Context",
+       "type": "string"
+      },
+      "goals": {
+       "anyOf": [
+        {
+         "items": {
+          "anyOf": [
+           {
+            "type": "string"
+           },
+           {
+            "$ref": "#/$defs/StructuredGoal"
+           }
+          ]
+         },
+         "type": "array"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "default": null,
+       "description": "Goal list at specified column position",
+       "title": "Goals"
+      },
+      "goals_before": {
+       "anyOf": [
+        {
+         "items": {
+          "anyOf": [
+           {
+            "type": "string"
+           },
+           {
+            "$ref": "#/$defs/StructuredGoal"
+           }
+          ]
+         },
+         "type": "array"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "default": null,
+       "description": "Goals at line start (when column omitted)",
+       "title": "Goals Before"
+      },
+      "goals_after": {
+       "anyOf": [
+        {
+         "items": {
+          "anyOf": [
+           {
+            "type": "string"
+           },
+           {
+            "$ref": "#/$defs/StructuredGoal"
+           }
+          ]
+         },
+         "type": "array"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "default": null,
+       "description": "Goals at line end (when column omitted)",
+       "title": "Goals After"
+      },
+      "status": {
+       "anyOf": [
+        {
+         "type": "string"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "default": null,
+       "description": "Goal status: 'goals' (open goals), 'complete' (no goals left - proof finished here), 'no_goal_at_position' (position carries no proof state), or 'still_elaborating' (timeout_s hit - poll again)",
+       "title": "Status"
+      }
+     },
+     "required": [
+      "line_context"
+     ],
+     "type": "object",
+     "$defs": {
+      "GoalContextEntry": {
+       "properties": {
+        "name": {
+         "description": "Local hypothesis or variable name",
+         "title": "Name",
+         "type": "string"
+        },
+        "type": {
+         "description": "Lean type",
+         "title": "Type",
+         "type": "string"
+        }
+       },
+       "required": [
+        "name",
+        "type"
+       ],
+       "title": "GoalContextEntry",
+       "type": "object"
+      },
+      "StructuredGoal": {
+       "properties": {
+        "context": {
+         "description": "Local context entries",
+         "items": {
+          "$ref": "#/$defs/GoalContextEntry"
+         },
+         "title": "Context",
+         "type": "array"
+        },
+        "goal": {
+         "anyOf": [
+          {
+           "type": "string"
+          },
+          {
+           "type": "null"
+          }
+         ],
+         "default": null,
+         "description": "Target goal",
+         "title": "Goal"
+        },
+        "status": {
+         "description": "Goal status: open, complete, or unknown",
+         "title": "Status",
+         "type": "string"
+        },
+        "pretty": {
+         "description": "Original pretty-printed goal",
+         "title": "Pretty",
+         "type": "string"
+        }
+       },
+       "required": [
+        "status",
+        "pretty"
+       ],
+       "title": "StructuredGoal",
+       "type": "object"
+      }
+     },
+     "title": "GoalState"
+    }
+   },
+   {
+    "annotations": {
+     "idempotentHint": true,
+     "openWorldHint": false,
+     "readOnlyHint": true,
+     "title": "Term Goal"
+    },
+    "description": "Get the expected type at a position.",
+    "inputSchema": {
+     "properties": {
+      "file_path": {
+       "description": "Absolute or project-root-relative path to Lean file",
+       "title": "File Path",
+       "type": "string"
+      },
+      "line": {
+       "description": "Line number (1-indexed)",
+       "minimum": 1,
+       "title": "Line",
+       "type": "integer"
+      },
+      "column": {
+       "anyOf": [
+        {
+         "minimum": 1,
+         "type": "integer"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "default": null,
+       "description": "Column (defaults to end of line)",
+       "title": "Column"
+      }
+     },
+     "required": [
+      "file_path",
+      "line"
+     ],
+     "type": "object",
+     "title": "term_goalArguments"
+    },
+    "name": "lean_term_goal",
+    "outputSchema": {
+     "properties": {
+      "line_context": {
+       "description": "Source line where term goal was queried",
+       "title": "Line Context",
+       "type": "string"
+      },
+      "expected_type": {
+       "anyOf": [
+        {
+         "type": "string"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "default": null,
+       "description": "Expected type at this position",
+       "title": "Expected Type"
+      }
+     },
+     "required": [
+      "line_context"
+     ],
+     "type": "object",
+     "title": "TermGoalState"
+    }
+   },
+   {
+    "annotations": {
+     "idempotentHint": true,
+     "openWorldHint": false,
+     "readOnlyHint": true,
+     "title": "Hover Info"
+    },
+    "description": "Get type signature and docs for a symbol. Essential for understanding APIs.",
+    "inputSchema": {
+     "properties": {
+      "file_path": {
+       "description": "Absolute or project-root-relative path to Lean file",
+       "title": "File Path",
+       "type": "string"
+      },
+      "line": {
+       "description": "Line number (1-indexed)",
+       "minimum": 1,
+       "title": "Line",
+       "type": "integer"
+      },
+      "column": {
+       "description": "Column at START of identifier (1-indexed characters)",
+       "minimum": 1,
+       "title": "Column",
+       "type": "integer"
+      }
+     },
+     "required": [
+      "file_path",
+      "line",
+      "column"
+     ],
+     "type": "object",
+     "title": "hoverArguments"
+    },
+    "name": "lean_hover_info",
+    "outputSchema": {
+     "properties": {
+      "symbol": {
+       "description": "The symbol being hovered",
+       "title": "Symbol",
+       "type": "string"
+      },
+      "info": {
+       "description": "Type signature and documentation",
+       "title": "Info",
+       "type": "string"
+      },
+      "diagnostics": {
+       "description": "Diagnostics at this position",
+       "items": {
+        "$ref": "#/$defs/DiagnosticMessage"
+       },
+       "title": "Diagnostics",
+       "type": "array"
+      }
+     },
+     "required": [
+      "symbol",
+      "info"
+     ],
+     "type": "object",
+     "$defs": {
+      "DiagnosticMessage": {
+       "properties": {
+        "severity": {
+         "description": "error, warning, info, or hint",
+         "title": "Severity",
+         "type": "string"
+        },
+        "message": {
+         "description": "Diagnostic message text",
+         "title": "Message",
+         "type": "string"
+        },
+        "line": {
+         "description": "Line (1-indexed)",
+         "title": "Line",
+         "type": "integer"
+        },
+        "column": {
+         "description": "Column (1-indexed)",
+         "title": "Column",
+         "type": "integer"
+        },
+        "lean_tags": {
+         "anyOf": [
+          {
+           "items": {
+            "type": "string"
+           },
+           "type": "array"
+          },
+          {
+           "type": "null"
+          }
+         ],
+         "default": null,
+         "description": "Lean-specific tags: 'unsolvedGoals' (proof incomplete here) or 'goalsAccomplished' (proof finished). Machine-readable proof status - prefer over string-matching the message.",
+         "title": "Lean Tags"
+        }
+       },
+       "required": [
+        "severity",
+        "message",
+        "line",
+        "column"
+       ],
+       "title": "DiagnosticMessage",
+       "type": "object"
+      }
+     },
+     "title": "HoverInfo"
+    }
+   },
+   {
+    "annotations": {
+     "idempotentHint": true,
+     "openWorldHint": false,
+     "readOnlyHint": true,
+     "title": "Completions"
+    },
+    "description": "Get IDE autocompletions. Use on INCOMPLETE code (after `.` or partial name).",
+    "inputSchema": {
+     "properties": {
+      "file_path": {
+       "description": "Absolute or project-root-relative path to Lean file",
+       "title": "File Path",
+       "type": "string"
+      },
+      "line": {
+       "description": "Line number (1-indexed)",
+       "minimum": 1,
+       "title": "Line",
+       "type": "integer"
+      },
+      "column": {
+       "description": "Column number (1-indexed characters)",
+       "minimum": 1,
+       "title": "Column",
+       "type": "integer"
+      },
+      "max_completions": {
+       "default": 32,
+       "description": "Max completions",
+       "minimum": 1,
+       "title": "Max Completions",
+       "type": "integer"
+      },
+      "resolve_details": {
+       "default": 8,
+       "description": "Fetch type signatures for the top N results",
+       "minimum": 0,
+       "title": "Resolve Details",
+       "type": "integer"
+      }
+     },
+     "required": [
+      "file_path",
+      "line",
+      "column"
+     ],
+     "type": "object",
+     "title": "completionsArguments"
+    },
+    "name": "lean_completions",
+    "outputSchema": {
+     "properties": {
+      "items": {
+       "description": "List of completion items",
+       "items": {
+        "$ref": "#/$defs/CompletionItem"
+       },
+       "title": "Items",
+       "type": "array"
+      }
+     },
+     "type": "object",
+     "$defs": {
+      "CompletionItem": {
+       "properties": {
+        "label": {
+         "description": "Completion text to insert",
+         "title": "Label",
+         "type": "string"
+        },
+        "kind": {
+         "anyOf": [
+          {
+           "type": "string"
+          },
+          {
+           "type": "null"
+          }
+         ],
+         "default": null,
+         "description": "Completion kind (function, variable, etc.)",
+         "title": "Kind"
+        },
+        "detail": {
+         "anyOf": [
+          {
+           "type": "string"
+          },
+          {
+           "type": "null"
+          }
+         ],
+         "default": null,
+         "description": "Additional detail",
+         "title": "Detail"
+        }
+       },
+       "required": [
+        "label"
+       ],
+       "title": "CompletionItem",
+       "type": "object"
+      }
+     },
+     "description": "Wrapper for completions list.",
+     "title": "CompletionsResult"
+    }
+   },
+   {
+    "annotations": {
+     "idempotentHint": true,
+     "openWorldHint": false,
+     "readOnlyHint": true,
+     "title": "Declaration Source"
+    },
+    "description": "Get the source of a symbol's declaration (declaration slice + context).\n\n    Set full_file=True for the whole file (can be very large).",
+    "inputSchema": {
+     "properties": {
+      "file_path": {
+       "description": "Absolute or project-root-relative path to Lean file",
+       "title": "File Path",
+       "type": "string"
+      },
+      "symbol": {
+       "description": "Symbol (case sensitive, must be in file)",
+       "title": "Symbol",
+       "type": "string"
+      },
+      "context_lines": {
+       "default": 20,
+       "description": "Lines of context around the declaration",
+       "minimum": 0,
+       "title": "Context Lines",
+       "type": "integer"
+      },
+      "full_file": {
+       "default": false,
+       "description": "Return the entire declaration file (large!)",
+       "title": "Full File",
+       "type": "boolean"
+      }
+     },
+     "required": [
+      "file_path",
+      "symbol"
+     ],
+     "type": "object",
+     "title": "declaration_fileArguments"
+    },
+    "name": "lean_declaration_file",
+    "outputSchema": {
+     "properties": {
+      "file_path": {
+       "description": "Path to declaration file",
+       "title": "File Path",
+       "type": "string"
+      },
+      "content": {
+       "description": "Declaration source (sliced unless full_file=True)",
+       "title": "Content",
+       "type": "string"
+      },
+      "start_line": {
+       "anyOf": [
+        {
+         "type": "integer"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "default": null,
+       "description": "First line of the returned slice (1-indexed)",
+       "title": "Start Line"
+      },
+      "end_line": {
+       "anyOf": [
+        {
+         "type": "integer"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "default": null,
+       "description": "Last line of the returned slice (1-indexed)",
+       "title": "End Line"
+      },
+      "total_lines": {
+       "anyOf": [
+        {
+         "type": "integer"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "default": null,
+       "description": "Total lines in the declaration file",
+       "title": "Total Lines"
+      }
+     },
+     "required": [
+      "file_path",
+      "content"
+     ],
+     "type": "object",
+     "title": "DeclarationInfo"
+    }
+   },
+   {
+    "annotations": {
+     "idempotentHint": true,
+     "openWorldHint": false,
+     "readOnlyHint": true,
+     "title": "Find References"
+    },
+    "description": "Find all references to a symbol (including the declaration). Position cursor at the symbol.",
+    "inputSchema": {
+     "properties": {
+      "file_path": {
+       "description": "Absolute path to Lean file",
+       "title": "File Path",
+       "type": "string"
+      },
+      "line": {
+       "description": "Line number (1-indexed)",
+       "minimum": 1,
+       "title": "Line",
+       "type": "integer"
+      },
+      "column": {
+       "description": "Column at START of identifier (1-indexed)",
+       "minimum": 1,
+       "title": "Column",
+       "type": "integer"
+      },
+      "max_results": {
+       "anyOf": [
+        {
+         "minimum": 1,
+         "type": "integer"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "default": 50,
+       "description": "Max locations to return (default 50)",
+       "title": "Max Results"
+      }
+     },
+     "required": [
+      "file_path",
+      "line",
+      "column"
+     ],
+     "type": "object",
+     "title": "referencesArguments"
+    },
+    "name": "lean_references",
+    "outputSchema": {
+     "properties": {
+      "items": {
+       "description": "List of reference locations",
+       "items": {
+        "$ref": "#/$defs/ReferenceLocation"
+       },
+       "title": "Items",
+       "type": "array"
+      },
+      "total": {
+       "anyOf": [
+        {
+         "type": "integer"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "default": null,
+       "description": "Total matches (> len(items) when truncated by max_results)",
+       "title": "Total"
+      }
+     },
+     "type": "object",
+     "$defs": {
+      "ReferenceLocation": {
+       "description": "A single reference location.",
+       "properties": {
+        "file_path": {
+         "description": "Absolute file path",
+         "title": "File Path",
+         "type": "string"
+        },
+        "line": {
+         "description": "Line (1-indexed)",
+         "title": "Line",
+         "type": "integer"
+        },
+        "column": {
+         "description": "Column (1-indexed)",
+         "title": "Column",
+         "type": "integer"
+        },
+        "end_line": {
+         "description": "End line (1-indexed)",
+         "title": "End Line",
+         "type": "integer"
+        },
+        "end_column": {
+         "description": "End column (1-indexed)",
+         "title": "End Column",
+         "type": "integer"
+        }
+       },
+       "required": [
+        "file_path",
+        "line",
+        "column",
+        "end_line",
+        "end_column"
+       ],
+       "title": "ReferenceLocation",
+       "type": "object"
+      }
+     },
+     "description": "Wrapper for find references results.",
+     "title": "ReferencesResult"
+    }
+   },
+   {
+    "annotations": {
+     "idempotentHint": true,
+     "openWorldHint": false,
+     "readOnlyHint": true,
+     "title": "Local Search"
+    },
+    "description": "Fast local search to verify declarations exist. Use BEFORE trying a lemma name.",
+    "inputSchema": {
+     "properties": {
+      "query": {
+       "description": "Declaration name or prefix",
+       "title": "Query",
+       "type": "string"
+      },
+      "limit": {
+       "default": 10,
+       "description": "Max matches",
+       "minimum": 1,
+       "title": "Limit",
+       "type": "integer"
+      },
+      "project_root": {
+       "anyOf": [
+        {
+         "type": "string"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "default": null,
+       "description": "Project root (inferred if omitted)",
+       "title": "Project Root"
+      }
+     },
+     "required": [
+      "query"
+     ],
+     "type": "object",
+     "title": "local_searchArguments"
+    },
+    "name": "lean_local_search",
+    "outputSchema": {
+     "properties": {
+      "items": {
+       "description": "List of local search results",
+       "items": {
+        "$ref": "#/$defs/LocalSearchResult"
+       },
+       "title": "Items",
+       "type": "array"
+      }
+     },
+     "type": "object",
+     "$defs": {
+      "LocalSearchResult": {
+       "properties": {
+        "name": {
+         "description": "Declaration name",
+         "title": "Name",
+         "type": "string"
+        },
+        "kind": {
+         "description": "Declaration kind (theorem, def, class, etc.)",
+         "title": "Kind",
+         "type": "string"
+        },
+        "file": {
+         "description": "Relative file path",
+         "title": "File",
+         "type": "string"
+        }
+       },
+       "required": [
+        "name",
+        "kind",
+        "file"
+       ],
+       "title": "LocalSearchResult",
+       "type": "object"
+      }
+     },
+     "description": "Wrapper for local search results list.",
+     "title": "LocalSearchResults"
+    }
+   },
+   {
+    "annotations": {
+     "idempotentHint": true,
+     "openWorldHint": true,
+     "readOnlyHint": true,
+     "title": "LeanSearch"
+    },
+    "description": "Limit: 90req/30s. Search Mathlib via leansearch.net using natural language.\n\n    Examples: \"sum of two even numbers is even\", \"Cauchy-Schwarz inequality\",\n    \"{f : A \u2192 B} (hf : Injective f) : \u2203 g, LeftInverse g f\"\n    ",
+    "inputSchema": {
+     "properties": {
+      "query": {
+       "description": "Natural language or Lean term query",
+       "title": "Query",
+       "type": "string"
+      },
+      "num_results": {
+       "default": 5,
+       "description": "Max results",
+       "minimum": 1,
+       "title": "Num Results",
+       "type": "integer"
+      }
+     },
+     "required": [
+      "query"
+     ],
+     "type": "object",
+     "title": "leansearchArguments"
+    },
+    "name": "lean_leansearch",
+    "outputSchema": {
+     "properties": {
+      "items": {
+       "description": "List of LeanSearch results",
+       "items": {
+        "$ref": "#/$defs/LeanSearchResult"
+       },
+       "title": "Items",
+       "type": "array"
+      }
+     },
+     "type": "object",
+     "$defs": {
+      "LeanSearchResult": {
+       "properties": {
+        "name": {
+         "description": "Full qualified name",
+         "title": "Name",
+         "type": "string"
+        },
+        "module_name": {
+         "description": "Module where declared",
+         "title": "Module Name",
+         "type": "string"
+        },
+        "kind": {
+         "anyOf": [
+          {
+           "type": "string"
+          },
+          {
+           "type": "null"
+          }
+         ],
+         "default": null,
+         "description": "Declaration kind",
+         "title": "Kind"
+        },
+        "type": {
+         "anyOf": [
+          {
+           "type": "string"
+          },
+          {
+           "type": "null"
+          }
+         ],
+         "default": null,
+         "description": "Type signature",
+         "title": "Type"
+        }
+       },
+       "required": [
+        "name",
+        "module_name"
+       ],
+       "title": "LeanSearchResult",
+       "type": "object"
+      }
+     },
+     "description": "Wrapper for LeanSearch results list.",
+     "title": "LeanSearchResults"
+    }
+   },
+   {
+    "annotations": {
+     "idempotentHint": true,
+     "openWorldHint": true,
+     "readOnlyHint": true,
+     "title": "Loogle"
+    },
+    "description": "Search Mathlib by type signature via loogle.lean-lang.org.\n\n    Examples: `Real.sin`, `\"comm\"`, `(?a \u2192 ?b) \u2192 List ?a \u2192 List ?b`,\n    `_ * (_ ^ _)`, `|- _ < _ \u2192 _ + 1 < _ + 1`\n    ",
+    "inputSchema": {
+     "properties": {
+      "query": {
+       "description": "Type pattern, constant, or name substring",
+       "title": "Query",
+       "type": "string"
+      },
+      "num_results": {
+       "default": 8,
+       "description": "Max results",
+       "minimum": 1,
+       "title": "Num Results",
+       "type": "integer"
+      }
+     },
+     "required": [
+      "query"
+     ],
+     "type": "object",
+     "title": "loogleArguments"
+    },
+    "name": "lean_loogle",
+    "outputSchema": {
+     "properties": {
+      "items": {
+       "description": "List of Loogle results",
+       "items": {
+        "$ref": "#/$defs/LoogleResult"
+       },
+       "title": "Items",
+       "type": "array"
+      }
+     },
+     "type": "object",
+     "$defs": {
+      "LoogleResult": {
+       "properties": {
+        "name": {
+         "description": "Declaration name",
+         "title": "Name",
+         "type": "string"
+        },
+        "type": {
+         "description": "Type signature",
+         "title": "Type",
+         "type": "string"
+        },
+        "module": {
+         "description": "Module where declared",
+         "title": "Module",
+         "type": "string"
+        }
+       },
+       "required": [
+        "name",
+        "type",
+        "module"
+       ],
+       "title": "LoogleResult",
+       "type": "object"
+      }
+     },
+     "description": "Wrapper for Loogle results list.",
+     "title": "LoogleResults"
+    }
+   },
+   {
+    "annotations": {
+     "idempotentHint": true,
+     "openWorldHint": true,
+     "readOnlyHint": true,
+     "title": "Lean Finder"
+    },
+    "description": "Limit: 10req/30s. Semantic search by mathematical meaning via Lean Finder.\n\n    Examples: \"commutativity of addition on natural numbers\",\n    \"I have h : n < m and need n + 1 < m + 1\", proof state text.\n\n    The `version` argument selects which mathlib snapshot to query\n    (v4.19.0, v4.24.0, or v4.28.0). Default: v4.28.0.\n    ",
+    "inputSchema": {
+     "properties": {
+      "query": {
+       "description": "Mathematical concept or proof state",
+       "title": "Query",
+       "type": "string"
+      },
+      "num_results": {
+       "default": 5,
+       "description": "Max results",
+       "minimum": 1,
+       "title": "Num Results",
+       "type": "integer"
+      },
+      "version": {
+       "default": "v4.28.0",
+       "description": "Mathlib version index to search",
+       "enum": [
+        "v4.19.0",
+        "v4.24.0",
+        "v4.28.0"
+       ],
+       "title": "Version",
+       "type": "string"
+      }
+     },
+     "required": [
+      "query"
+     ],
+     "type": "object",
+     "title": "leanfinderArguments"
+    },
+    "name": "lean_leanfinder",
+    "outputSchema": {
+     "properties": {
+      "items": {
+       "description": "List of Lean Finder results",
+       "items": {
+        "$ref": "#/$defs/LeanFinderResult"
+       },
+       "title": "Items",
+       "type": "array"
+      }
+     },
+     "type": "object",
+     "$defs": {
+      "LeanFinderResult": {
+       "properties": {
+        "formal_name": {
+         "description": "Fully qualified Lean declaration name",
+         "title": "Formal Name",
+         "type": "string"
+        },
+        "informal_name": {
+         "description": "Short natural-language name for the statement",
+         "title": "Informal Name",
+         "type": "string"
+        },
+        "kind": {
+         "description": "Declaration kind (theorem, def, instance, etc.)",
+         "title": "Kind",
+         "type": "string"
+        },
+        "type": {
+         "description": "Lean type signature / formal statement",
+         "title": "Type",
+         "type": "string"
+        },
+        "informal_description": {
+         "description": "Natural-language description of the statement",
+         "title": "Informal Description",
+         "type": "string"
+        },
+        "path": {
+         "description": "Mathlib module path, dot-separated (e.g. Mathlib.Data.Nat.Basic)",
+         "title": "Path",
+         "type": "string"
+        }
+       },
+       "required": [
+        "formal_name",
+        "informal_name",
+        "kind",
+        "type",
+        "informal_description",
+        "path"
+       ],
+       "title": "LeanFinderResult",
+       "type": "object"
+      }
+     },
+     "description": "Wrapper for Lean Finder results list.",
+     "title": "LeanFinderResults"
+    }
+   },
+   {
+    "annotations": {
+     "idempotentHint": true,
+     "openWorldHint": true,
+     "readOnlyHint": true,
+     "title": "State Search"
+    },
+    "description": "Limit: 6req/30s. Find lemmas to close the goal at a position. Searches premise-search.com.",
+    "inputSchema": {
+     "properties": {
+      "file_path": {
+       "description": "Absolute or project-root-relative path to Lean file",
+       "title": "File Path",
+       "type": "string"
+      },
+      "line": {
+       "description": "Line number (1-indexed)",
+       "minimum": 1,
+       "title": "Line",
+       "type": "integer"
+      },
+      "column": {
+       "description": "Column number (1-indexed)",
+       "minimum": 1,
+       "title": "Column",
+       "type": "integer"
+      },
+      "num_results": {
+       "default": 5,
+       "description": "Max results",
+       "minimum": 1,
+       "title": "Num Results",
+       "type": "integer"
+      }
+     },
+     "required": [
+      "file_path",
+      "line",
+      "column"
+     ],
+     "type": "object",
+     "title": "state_searchArguments"
+    },
+    "name": "lean_state_search",
+    "outputSchema": {
+     "properties": {
+      "items": {
+       "description": "List of state search results",
+       "items": {
+        "$ref": "#/$defs/StateSearchResult"
+       },
+       "title": "Items",
+       "type": "array"
+      }
+     },
+     "type": "object",
+     "$defs": {
+      "StateSearchResult": {
+       "properties": {
+        "name": {
+         "description": "Theorem/lemma name",
+         "title": "Name",
+         "type": "string"
+        }
+       },
+       "required": [
+        "name"
+       ],
+       "title": "StateSearchResult",
+       "type": "object"
+      }
+     },
+     "description": "Wrapper for state search results list.",
+     "title": "StateSearchResults"
+    }
+   },
+   {
+    "annotations": {
+     "idempotentHint": true,
+     "openWorldHint": true,
+     "readOnlyHint": true,
+     "title": "Hammer Premises"
+    },
+    "description": "Limit: 6req/30s. Get premise suggestions for automation tactics at a goal position.\n\n    Returns lemma names to try with `simp only [...]`, `aesop`, or as hints.\n    ",
+    "inputSchema": {
+     "properties": {
+      "file_path": {
+       "description": "Absolute or project-root-relative path to Lean file",
+       "title": "File Path",
+       "type": "string"
+      },
+      "line": {
+       "description": "Line number (1-indexed)",
+       "minimum": 1,
+       "title": "Line",
+       "type": "integer"
+      },
+      "column": {
+       "description": "Column number (1-indexed)",
+       "minimum": 1,
+       "title": "Column",
+       "type": "integer"
+      },
+      "num_results": {
+       "default": 32,
+       "description": "Max results",
+       "minimum": 1,
+       "title": "Num Results",
+       "type": "integer"
+      }
+     },
+     "required": [
+      "file_path",
+      "line",
+      "column"
+     ],
+     "type": "object",
+     "title": "hammer_premiseArguments"
+    },
+    "name": "lean_hammer_premise",
+    "outputSchema": {
+     "properties": {
+      "items": {
+       "description": "List of premise results",
+       "items": {
+        "$ref": "#/$defs/PremiseResult"
+       },
+       "title": "Items",
+       "type": "array"
+      }
+     },
+     "type": "object",
+     "$defs": {
+      "PremiseResult": {
+       "properties": {
+        "name": {
+         "description": "Premise name for simp/omega/aesop",
+         "title": "Name",
+         "type": "string"
+        }
+       },
+       "required": [
+        "name"
+       ],
+       "title": "PremiseResult",
+       "type": "object"
+      }
+     },
+     "description": "Wrapper for premise results list.",
+     "title": "PremiseResults"
+    }
+   },
+   {
+    "annotations": {
+     "idempotentHint": true,
+     "openWorldHint": false,
+     "readOnlyHint": true,
+     "title": "Multi-Attempt"
+    },
+    "description": "Try multiple tactics without modifying file. Returns goal state for each.",
+    "inputSchema": {
+     "properties": {
+      "file_path": {
+       "description": "Absolute or project-root-relative path to Lean file",
+       "title": "File Path",
+       "type": "string"
+      },
+      "line": {
+       "description": "Line number (1-indexed)",
+       "minimum": 1,
+       "title": "Line",
+       "type": "integer"
+      },
+      "snippets": {
+       "description": "Tactics to try (3+ recommended)",
+       "items": {
+        "type": "string"
+       },
+       "title": "Snippets",
+       "type": "array"
+      },
+      "column": {
+       "anyOf": [
+        {
+         "minimum": 1,
+         "type": "integer"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "default": null,
+       "description": "Column (1-indexed). Omit to target the tactic line",
+       "title": "Column"
+      }
+     },
+     "required": [
+      "file_path",
+      "line",
+      "snippets"
+     ],
+     "type": "object",
+     "title": "multi_attemptArguments"
+    },
+    "name": "lean_multi_attempt",
+    "outputSchema": {
+     "properties": {
+      "items": {
+       "description": "List of attempt results",
+       "items": {
+        "$ref": "#/$defs/AttemptResult"
+       },
+       "title": "Items",
+       "type": "array"
+      }
+     },
+     "type": "object",
+     "$defs": {
+      "AttemptResult": {
+       "properties": {
+        "snippet": {
+         "description": "Code snippet that was tried",
+         "title": "Snippet",
+         "type": "string"
+        },
+        "goals": {
+         "description": "Goal list after applying snippet",
+         "items": {
+          "type": "string"
+         },
+         "title": "Goals",
+         "type": "array"
+        },
+        "diagnostics": {
+         "description": "Diagnostics for this attempt",
+         "items": {
+          "$ref": "#/$defs/DiagnosticMessage"
+         },
+         "title": "Diagnostics",
+         "type": "array"
+        },
+        "timed_out": {
+         "default": false,
+         "description": "True if elaboration timed out (results are partial)",
+         "title": "Timed Out",
+         "type": "boolean"
+        },
+        "proof_status": {
+         "anyOf": [
+          {
+           "type": "string"
+          },
+          {
+           "type": "null"
+          }
+         ],
+         "default": null,
+         "description": "REPL proof status when available (e.g. 'Completed', 'Incomplete: contains sorry')",
+         "title": "Proof Status"
+        }
+       },
+       "required": [
+        "snippet"
+       ],
+       "title": "AttemptResult",
+       "type": "object"
+      },
+      "DiagnosticMessage": {
+       "properties": {
+        "severity": {
+         "description": "error, warning, info, or hint",
+         "title": "Severity",
+         "type": "string"
+        },
+        "message": {
+         "description": "Diagnostic message text",
+         "title": "Message",
+         "type": "string"
+        },
+        "line": {
+         "description": "Line (1-indexed)",
+         "title": "Line",
+         "type": "integer"
+        },
+        "column": {
+         "description": "Column (1-indexed)",
+         "title": "Column",
+         "type": "integer"
+        },
+        "lean_tags": {
+         "anyOf": [
+          {
+           "items": {
+            "type": "string"
+           },
+           "type": "array"
+          },
+          {
+           "type": "null"
+          }
+         ],
+         "default": null,
+         "description": "Lean-specific tags: 'unsolvedGoals' (proof incomplete here) or 'goalsAccomplished' (proof finished). Machine-readable proof status - prefer over string-matching the message.",
+         "title": "Lean Tags"
+        }
+       },
+       "required": [
+        "severity",
+        "message",
+        "line",
+        "column"
+       ],
+       "title": "DiagnosticMessage",
+       "type": "object"
+      }
+     },
+     "description": "Wrapper for multi-attempt results list.",
+     "title": "MultiAttemptResult"
+    }
+   },
+   {
+    "annotations": {
+     "idempotentHint": true,
+     "openWorldHint": false,
+     "readOnlyHint": true,
+     "title": "Run Code"
+    },
+    "description": "Run a code snippet and return diagnostics. Must include all imports.",
+    "inputSchema": {
+     "properties": {
+      "code": {
+       "description": "Self-contained Lean code with imports",
+       "title": "Code",
+       "type": "string"
+      }
+     },
+     "required": [
+      "code"
+     ],
+     "type": "object",
+     "title": "run_codeArguments"
+    },
+    "name": "lean_run_code",
+    "outputSchema": {
+     "properties": {
+      "success": {
+       "description": "Whether code compiled successfully",
+       "title": "Success",
+       "type": "boolean"
+      },
+      "timed_out": {
+       "default": false,
+       "description": "True if elaboration timed out (results are partial)",
+       "title": "Timed Out",
+       "type": "boolean"
+      },
+      "diagnostics": {
+       "description": "Compiler diagnostics",
+       "items": {
+        "$ref": "#/$defs/DiagnosticMessage"
+       },
+       "title": "Diagnostics",
+       "type": "array"
+      }
+     },
+     "required": [
+      "success"
+     ],
+     "type": "object",
+     "$defs": {
+      "DiagnosticMessage": {
+       "properties": {
+        "severity": {
+         "description": "error, warning, info, or hint",
+         "title": "Severity",
+         "type": "string"
+        },
+        "message": {
+         "description": "Diagnostic message text",
+         "title": "Message",
+         "type": "string"
+        },
+        "line": {
+         "description": "Line (1-indexed)",
+         "title": "Line",
+         "type": "integer"
+        },
+        "column": {
+         "description": "Column (1-indexed)",
+         "title": "Column",
+         "type": "integer"
+        },
+        "lean_tags": {
+         "anyOf": [
+          {
+           "items": {
+            "type": "string"
+           },
+           "type": "array"
+          },
+          {
+           "type": "null"
+          }
+         ],
+         "default": null,
+         "description": "Lean-specific tags: 'unsolvedGoals' (proof incomplete here) or 'goalsAccomplished' (proof finished). Machine-readable proof status - prefer over string-matching the message.",
+         "title": "Lean Tags"
+        }
+       },
+       "required": [
+        "severity",
+        "message",
+        "line",
+        "column"
+       ],
+       "title": "DiagnosticMessage",
+       "type": "object"
+      }
+     },
+     "title": "RunResult"
+    }
+   },
+   {
+    "annotations": {
+     "idempotentHint": true,
+     "openWorldHint": false,
+     "readOnlyHint": true,
+     "title": "Verify Theorem"
+    },
+    "description": "Check theorem axioms + optional source scan. Only scans the given file, not imports.",
+    "inputSchema": {
+     "properties": {
+      "file_path": {
+       "description": "Absolute path to Lean file",
+       "title": "File Path",
+       "type": "string"
+      },
+      "theorem_name": {
+       "description": "Fully qualified name (e.g. `Namespace.theorem`)",
+       "title": "Theorem Name",
+       "type": "string"
+      },
+      "scan_source": {
+       "default": true,
+       "description": "Scan source file for suspicious patterns",
+       "title": "Scan Source",
+       "type": "boolean"
+      }
+     },
+     "required": [
+      "file_path",
+      "theorem_name"
+     ],
+     "type": "object",
+     "title": "verify_theoremArguments"
+    },
+    "name": "lean_verify",
+    "outputSchema": {
+     "properties": {
+      "axioms": {
+       "description": "Axioms used. Standard 3: propext, Classical.choice, Quot.sound",
+       "items": {
+        "type": "string"
+       },
+       "title": "Axioms",
+       "type": "array"
+      },
+      "warnings": {
+       "description": "Suspicious source patterns (if enabled)",
+       "items": {
+        "$ref": "#/$defs/SourceWarning"
+       },
+       "title": "Warnings",
+       "type": "array"
+      }
+     },
+     "type": "object",
+     "$defs": {
+      "SourceWarning": {
+       "properties": {
+        "line": {
+         "description": "Line number (1-indexed)",
+         "title": "Line",
+         "type": "integer"
+        },
+        "pattern": {
+         "description": "Matched pattern text",
+         "title": "Pattern",
+         "type": "string"
+        }
+       },
+       "required": [
+        "line",
+        "pattern"
+       ],
+       "title": "SourceWarning",
+       "type": "object"
+      }
+     },
+     "title": "VerifyResult"
+    }
+   },
+   {
+    "annotations": {
+     "idempotentHint": true,
+     "openWorldHint": false,
+     "readOnlyHint": true,
+     "title": "Minimal Hypotheses"
+    },
+    "description": "For each explicit `(h : T)` hypothesis of a theorem, drop it and re-elaborate\n    a scratch copy of the file. Reports which hypotheses are load-bearing and which\n    are actually unused. Skips implicit `{x : \u03b1}` and instance `[inst : C]` binders\n    (those are usually inferable / always load-bearing). Does not rewrite the proof\n    body \u2014 a body that names `h` will fail to elaborate without the binder, which\n    is the truthful answer (load-bearing).\n\n    Variants are checked in parallel on scratch documents; the file is never edited.",
+    "inputSchema": {
+     "properties": {
+      "file_path": {
+       "description": "Absolute path to Lean file",
+       "title": "File Path",
+       "type": "string"
+      },
+      "theorem_name": {
+       "description": "Theorem name. Either bare (e.g. `add_comm`) or fully qualified (e.g. `Namespace.add_comm`); only the trailing segment is used for source matching.",
+       "title": "Theorem Name",
+       "type": "string"
+      },
+      "inactivity_timeout": {
+       "default": 60.0,
+       "description": "Per-hypothesis elaboration timeout (seconds)",
+       "maximum": 300.0,
+       "minimum": 5.0,
+       "title": "Inactivity Timeout",
+       "type": "number"
+      }
+     },
+     "required": [
+      "file_path",
+      "theorem_name"
+     ],
+     "type": "object",
+     "title": "minimal_hypothesesArguments"
+    },
+    "name": "lean_minimal_hypotheses",
+    "outputSchema": {
+     "properties": {
+      "theorem_name": {
+       "description": "Theorem analyzed",
+       "title": "Theorem Name",
+       "type": "string"
+      },
+      "file": {
+       "description": "Relative file path",
+       "title": "File",
+       "type": "string"
+      },
+      "verdicts": {
+       "description": "One verdict per explicit (h : T) binder, in source order",
+       "items": {
+        "$ref": "#/$defs/HypothesisVerdict"
+       },
+       "title": "Verdicts",
+       "type": "array"
+      },
+      "skipped_implicit": {
+       "default": 0,
+       "description": "Count of implicit {x : \u03b1} / instance [inst] binders not probed",
+       "title": "Skipped Implicit",
+       "type": "integer"
+      }
+     },
+     "required": [
+      "theorem_name",
+      "file"
+     ],
+     "type": "object",
+     "$defs": {
+      "DiagnosticMessage": {
+       "properties": {
+        "severity": {
+         "description": "error, warning, info, or hint",
+         "title": "Severity",
+         "type": "string"
+        },
+        "message": {
+         "description": "Diagnostic message text",
+         "title": "Message",
+         "type": "string"
+        },
+        "line": {
+         "description": "Line (1-indexed)",
+         "title": "Line",
+         "type": "integer"
+        },
+        "column": {
+         "description": "Column (1-indexed)",
+         "title": "Column",
+         "type": "integer"
+        },
+        "lean_tags": {
+         "anyOf": [
+          {
+           "items": {
+            "type": "string"
+           },
+           "type": "array"
+          },
+          {
+           "type": "null"
+          }
+         ],
+         "default": null,
+         "description": "Lean-specific tags: 'unsolvedGoals' (proof incomplete here) or 'goalsAccomplished' (proof finished). Machine-readable proof status - prefer over string-matching the message.",
+         "title": "Lean Tags"
+        }
+       },
+       "required": [
+        "severity",
+        "message",
+        "line",
+        "column"
+       ],
+       "title": "DiagnosticMessage",
+       "type": "object"
+      },
+      "HypothesisStatus": {
+       "enum": [
+        "load-bearing",
+        "removable",
+        "error"
+       ],
+       "title": "HypothesisStatus",
+       "type": "string"
+      },
+      "HypothesisVerdict": {
+       "properties": {
+        "binder": {
+         "description": "Lean source of the binder, e.g. '(h : P)'",
+         "title": "Binder",
+         "type": "string"
+        },
+        "status": {
+         "$ref": "#/$defs/HypothesisStatus",
+         "description": "load-bearing: removing this binder caused new errors. removable: the file still elaborated cleanly without it. error: probing this binder failed (e.g. LSP timeout)."
+        },
+        "breaks": {
+         "description": "New errors caused by removing this binder (empty when removable). Each entry has line/column/message \u2014 useful for finding where in the proof body the dropped hypothesis was used.",
+         "items": {
+          "$ref": "#/$defs/DiagnosticMessage"
+         },
+         "title": "Breaks",
+         "type": "array"
+        },
+        "detail": {
+         "default": "",
+         "description": "Free-text status detail (e.g. timeout reason)",
+         "title": "Detail",
+         "type": "string"
+        }
+       },
+       "required": [
+        "binder",
+        "status"
+       ],
+       "title": "HypothesisVerdict",
+       "type": "object"
+      }
+     },
+     "title": "MinimalHypothesesResult"
+    }
+   },
+   {
+    "annotations": {
+     "idempotentHint": true,
+     "openWorldHint": false,
+     "readOnlyHint": true,
+     "title": "Profile Proof"
+    },
+    "description": "Run `lean --profile` on a theorem. Returns per-line timing and categories. SLOW - avoid on theorems that already hit heartbeat limits.",
+    "inputSchema": {
+     "properties": {
+      "file_path": {
+       "description": "Absolute or project-root-relative path to Lean file",
+       "title": "File Path",
+       "type": "string"
+      },
+      "line": {
+       "description": "Line where theorem starts (1-indexed)",
+       "minimum": 1,
+       "title": "Line",
+       "type": "integer"
+      },
+      "top_n": {
+       "default": 5,
+       "description": "Number of slowest lines to return",
+       "minimum": 1,
+       "title": "Top N",
+       "type": "integer"
+      },
+      "timeout": {
+       "default": 60.0,
+       "description": "Max seconds to wait",
+       "minimum": 1,
+       "title": "Timeout",
+       "type": "number"
+      }
+     },
+     "required": [
+      "file_path",
+      "line"
+     ],
+     "type": "object",
+     "title": "profile_proofArguments"
+    },
+    "name": "lean_profile_proof",
+    "outputSchema": {
+     "properties": {
+      "ms": {
+       "description": "Total elaboration time in ms",
+       "title": "Ms",
+       "type": "number"
+      },
+      "lines": {
+       "description": "Time per source line (>1% of total)",
+       "items": {
+        "$ref": "#/$defs/LineProfile"
+       },
+       "title": "Lines",
+       "type": "array"
+      },
+      "categories": {
+       "additionalProperties": {
+        "type": "number"
+       },
+       "description": "Cumulative time by category in ms",
+       "title": "Categories",
+       "type": "object"
+      }
+     },
+     "required": [
+      "ms"
+     ],
+     "type": "object",
+     "$defs": {
+      "LineProfile": {
+       "description": "Timing for a single source line.",
+       "properties": {
+        "line": {
+         "description": "Source line number (1-indexed)",
+         "title": "Line",
+         "type": "integer"
+        },
+        "ms": {
+         "description": "Time in milliseconds",
+         "title": "Ms",
+         "type": "number"
+        },
+        "text": {
+         "description": "Source line content (truncated)",
+         "title": "Text",
+         "type": "string"
+        }
+       },
+       "required": [
+        "line",
+        "ms",
+        "text"
+       ],
+       "title": "LineProfile",
+       "type": "object"
+      }
+     },
+     "description": "Profiling result for a theorem.",
+     "title": "ProofProfileResult"
+    }
+   },
+   {
+    "annotations": {
+     "idempotentHint": true,
+     "openWorldHint": false,
+     "readOnlyHint": true,
+     "title": "Get Widgets"
+    },
+    "description": "Get panel widgets at a position (proof visualizations, #html, custom widgets). Returns raw widget data - may be large.",
+    "inputSchema": {
+     "properties": {
+      "file_path": {
+       "description": "Absolute path to Lean file",
+       "title": "File Path",
+       "type": "string"
+      },
+      "line": {
+       "description": "Line number (1-indexed)",
+       "minimum": 1,
+       "title": "Line",
+       "type": "integer"
+      },
+      "column": {
+       "description": "Column number (1-indexed)",
+       "minimum": 1,
+       "title": "Column",
+       "type": "integer"
+      }
+     },
+     "required": [
+      "file_path",
+      "line",
+      "column"
+     ],
+     "type": "object",
+     "title": "get_widgetsArguments"
+    },
+    "name": "lean_get_widgets",
+    "outputSchema": {
+     "properties": {
+      "widgets": {
+       "description": "Widget instances (id, name, range, props)",
+       "items": {
+        "additionalProperties": true,
+        "type": "object"
+       },
+       "title": "Widgets",
+       "type": "array"
+      }
+     },
+     "type": "object",
+     "description": "Wrapper for widget instances at a position.",
+     "title": "WidgetsResult"
+    }
+   },
+   {
+    "annotations": {
+     "idempotentHint": true,
+     "openWorldHint": false,
+     "readOnlyHint": true,
+     "title": "Widget Source"
+    },
+    "description": "Get JavaScript source of a widget by hash. Useful for understanding custom widget rendering logic. Returns full JS module - may be large.",
+    "inputSchema": {
+     "properties": {
+      "file_path": {
+       "description": "Absolute path to Lean file",
+       "title": "File Path",
+       "type": "string"
+      },
+      "javascript_hash": {
+       "description": "javascriptHash from a widget instance",
+       "title": "Javascript Hash",
+       "type": "string"
+      }
+     },
+     "required": [
+      "file_path",
+      "javascript_hash"
+     ],
+     "type": "object",
+     "title": "get_widget_sourceArguments"
+    },
+    "name": "lean_get_widget_source",
+    "outputSchema": {
+     "properties": {
+      "source": {
+       "additionalProperties": true,
+       "description": "Widget source data including JavaScript module",
+       "title": "Source",
+       "type": "object"
+      }
+     },
+     "required": [
+      "source"
+     ],
+     "type": "object",
+     "description": "Widget JavaScript source for a given hash.",
+     "title": "WidgetSourceResult"
+    }
+   }
+  ]
+ }
+}

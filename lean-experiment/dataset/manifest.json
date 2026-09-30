@@ -1,0 +1,1950 @@
+[
+ {
+  "id": "putnam_1977_a3",
+  "tier": "easy",
+  "year": 1977,
+  "problem": "A3",
+  "tags": [
+   "algebra"
+  ],
+  "informal_statement": "Let $f, g, h$ be functions $\\mathbb{R} \\to \\mathbb{R}$. Find an expression for $h(x)$ in terms of $f$ and $g$ such that $f(x) = \\frac{h(x + 1) + h(x - 1)}{2}$ and $g(x) = \\frac{h(x + 4) + h(x - 4)}{2}$.",
+  "informal_solution": "Prove that $h(x) = g(x) - f(x - 3) + f(x - 1) + f(x + 1) - f(x + 3)$ suffices.",
+  "has_answer": true,
+  "file": "easy/putnam_1977_a3.lean",
+  "weak_solvers": [
+   "Deepseek R1",
+   "Goedel-Prover-SFT",
+   "ABEL",
+   "InternLM2.5-StepProver",
+   "Self-play Theorem Prover",
+   "gemini-2.0-flash-thinking-121",
+   "gemini-2.5-pro-exp-0325",
+   "Kimina-Prover-7B-Distill",
+   "DeepSeek-Prover-V2",
+   "DSP+",
+   "Bourbaki",
+   "Goedel-Prover-V2",
+   "Ax-Prover (Axiomatic AI)",
+   "GPT-5 (ReAct, 10 turns)",
+   "TIR Conjecturor",
+   "Enumerate-Conjecture-Prove"
+  ],
+  "mid_solvers": [
+   "Seed-Prover (ByteDance)",
+   "AxProverBase (Axiomatic AI)",
+   "Hilbert",
+   "Aleph Prover (Logical Intelligence)"
+  ],
+  "strong_solvers": [
+   "Seed-Prover 1.5 (ByteDance)",
+   "Goedel-Architect",
+   "Aleph Prover (Logical Intelligence) #2",
+   "Goedel-Architect #2",
+   "Aleph Prover (Logical Intelligence) #3"
+  ],
+  "n_weak": 16,
+  "n_mid": 4,
+  "n_strong": 5,
+  "easy_score": 8.3911,
+  "file_last_modified": "2024-10-21"
+ },
+ {
+  "id": "putnam_1988_b1",
+  "tier": "easy",
+  "year": 1988,
+  "problem": "B1",
+  "tags": [
+   "number_theory",
+   "algebra"
+  ],
+  "informal_statement": "A \\emph{composite} (positive integer) is a product $ab$ with $a$ and $b$ not necessarily distinct integers in $\\{2,3,4,\\dots\\}$. Show that every composite is expressible as $xy+xz+yz+1$, with $x,y,z$ positive integers.",
+  "informal_solution": "None.",
+  "has_answer": false,
+  "file": "easy/putnam_1988_b1.lean",
+  "weak_solvers": [
+   "GPT-4o",
+   "COPRA (GPT-4o)",
+   "Goedel-Prover-SFT",
+   "ABEL",
+   "InternLM2.5-StepProver",
+   "Self-play Theorem Prover",
+   "Kimina-Prover-7B-Distill",
+   "DeepSeek-Prover-V2",
+   "DSP+",
+   "Bourbaki",
+   "Goedel-Prover-V2",
+   "Ax-Prover (Axiomatic AI)",
+   "GPT-5 (ReAct, 10 turns)"
+  ],
+  "mid_solvers": [
+   "Seed-Prover (ByteDance)",
+   "AxProverBase (Axiomatic AI)",
+   "Hilbert",
+   "Aleph Prover (Logical Intelligence)"
+  ],
+  "strong_solvers": [
+   "Seed-Prover 1.5 (ByteDance)",
+   "Goedel-Architect",
+   "Aleph Prover (Logical Intelligence) #2",
+   "Goedel-Architect #2",
+   "Aleph Prover (Logical Intelligence) #3"
+  ],
+  "n_weak": 13,
+  "n_mid": 4,
+  "n_strong": 5,
+  "easy_score": 6.9545,
+  "file_last_modified": "2024-10-21"
+ },
+ {
+  "id": "putnam_2001_a1",
+  "tier": "easy",
+  "year": 2001,
+  "problem": "A1",
+  "tags": [
+   "abstract_algebra"
+  ],
+  "informal_statement": "Consider a set $S$ and a binary operation $*$, i.e., for each $a,b\\in S$, $a*b\\in S$.  Assume $(a*b)*a=b$ for all $a,b\\in S$.  Prove that $a*(b*a)=b$ for all $a,b\\in S$.",
+  "informal_solution": "None.",
+  "has_answer": false,
+  "file": "easy/putnam_2001_a1.lean",
+  "weak_solvers": [
+   "Goedel-Prover-SFT",
+   "ABEL",
+   "InternLM2.5-StepProver",
+   "Self-play Theorem Prover",
+   "gemini-2.5-pro-exp-0325",
+   "Kimina-Prover-7B-Distill",
+   "o4-mini-high",
+   "DeepSeek-Prover-V2",
+   "DSP+",
+   "Bourbaki",
+   "Goedel-Prover-V2",
+   "Ax-Prover (Axiomatic AI)",
+   "GPT-5 (ReAct, 10 turns)"
+  ],
+  "mid_solvers": [
+   "Seed-Prover (ByteDance)",
+   "AxProverBase (Axiomatic AI)",
+   "Hilbert",
+   "Aleph Prover (Logical Intelligence)"
+  ],
+  "strong_solvers": [
+   "Seed-Prover 1.5 (ByteDance)",
+   "Goedel-Architect",
+   "Aleph Prover (Logical Intelligence) #2",
+   "Goedel-Architect #2",
+   "Aleph Prover (Logical Intelligence) #3"
+  ],
+  "n_weak": 13,
+  "n_mid": 4,
+  "n_strong": 5,
+  "easy_score": 5.7007,
+  "file_last_modified": "2024-10-21"
+ },
+ {
+  "id": "putnam_1986_b1",
+  "tier": "easy",
+  "year": 1986,
+  "problem": "B1",
+  "tags": [
+   "geometry",
+   "algebra"
+  ],
+  "informal_statement": "Inscribe a rectangle of base $b$ and height $h$ and an isosceles triangle of base $b$ (against a corresponding side of the rectangle and pointed in the other direction) in a circle of radius one. For what value of $h$ do the rectangle and triangle have the same area?",
+  "informal_solution": "Show that the only such value of $h$ is $2/5$.",
+  "has_answer": true,
+  "file": "easy/putnam_1986_b1.lean",
+  "weak_solvers": [
+   "Goedel-Prover-SFT",
+   "ABEL",
+   "InternLM2.5-StepProver",
+   "Self-play Theorem Prover",
+   "Kimina-Prover-7B-Distill",
+   "DeepSeek-Prover-V2",
+   "DSP+",
+   "Bourbaki",
+   "Goedel-Prover-V2",
+   "Ax-Prover (Axiomatic AI)",
+   "GPT-5 (ReAct, 10 turns)",
+   "TIR Conjecturor",
+   "Enumerate-Conjecture-Prove"
+  ],
+  "mid_solvers": [
+   "Seed-Prover (ByteDance)",
+   "AxProverBase (Axiomatic AI)",
+   "Hilbert",
+   "Aleph Prover (Logical Intelligence)"
+  ],
+  "strong_solvers": [
+   "Seed-Prover 1.5 (ByteDance)",
+   "Goedel-Architect",
+   "Aleph Prover (Logical Intelligence) #2",
+   "Goedel-Architect #2",
+   "Aleph Prover (Logical Intelligence) #3"
+  ],
+  "n_weak": 13,
+  "n_mid": 4,
+  "n_strong": 5,
+  "easy_score": 4.7844,
+  "file_last_modified": "2024-10-21"
+ },
+ {
+  "id": "putnam_1986_a1",
+  "tier": "easy",
+  "year": 1986,
+  "problem": "A1",
+  "tags": [
+   "algebra",
+   "analysis"
+  ],
+  "informal_statement": "Find, with explanation, the maximum value of $f(x)=x^3-3x$ on the set of all real numbers $x$ satisfying $x^4+36 \\leq 13x^2$.",
+  "informal_solution": "Show that the maximum value is $18$.",
+  "has_answer": true,
+  "file": "easy/putnam_1986_a1.lean",
+  "weak_solvers": [
+   "Goedel-Prover-SFT",
+   "ABEL",
+   "InternLM2.5-StepProver",
+   "Self-play Theorem Prover",
+   "Kimina-Prover-7B-Distill",
+   "DSP+",
+   "Bourbaki",
+   "Goedel-Prover-V2",
+   "Ax-Prover (Axiomatic AI)",
+   "GPT-5 (ReAct, 10 turns)",
+   "TIR Conjecturor",
+   "Enumerate-Conjecture-Prove"
+  ],
+  "mid_solvers": [
+   "Seed-Prover (ByteDance)",
+   "AxProverBase (Axiomatic AI)",
+   "Hilbert",
+   "Aleph Prover (Logical Intelligence)"
+  ],
+  "strong_solvers": [
+   "Seed-Prover 1.5 (ByteDance)",
+   "Goedel-Architect",
+   "Aleph Prover (Logical Intelligence) #2",
+   "Goedel-Architect #2",
+   "Aleph Prover (Logical Intelligence) #3"
+  ],
+  "n_weak": 12,
+  "n_mid": 4,
+  "n_strong": 5,
+  "easy_score": 4.5232,
+  "file_last_modified": "2024-10-30"
+ },
+ {
+  "id": "putnam_1988_b2",
+  "tier": "easy",
+  "year": 1988,
+  "problem": "B2",
+  "tags": [
+   "algebra"
+  ],
+  "informal_statement": "Prove or disprove: If $x$ and $y$ are real numbers with $y \\geq 0$ and $y(y+1) \\leq (x+1)^2$, then $y(y-1) \\leq x^2$.",
+  "informal_solution": "Show that this is true.",
+  "has_answer": true,
+  "file": "easy/putnam_1988_b2.lean",
+  "weak_solvers": [
+   "ABEL",
+   "InternLM2.5-StepProver",
+   "Self-play Theorem Prover",
+   "Kimina-Prover-7B-Distill",
+   "DeepSeek-Prover-V2",
+   "DSP+",
+   "Bourbaki",
+   "Goedel-Prover-V2",
+   "Ax-Prover (Axiomatic AI)",
+   "GPT-5 (ReAct, 10 turns)",
+   "TIR Conjecturor",
+   "Enumerate-Conjecture-Prove"
+  ],
+  "mid_solvers": [
+   "Seed-Prover (ByteDance)",
+   "AxProverBase (Axiomatic AI)",
+   "Hilbert",
+   "Aleph Prover (Logical Intelligence)"
+  ],
+  "strong_solvers": [
+   "Seed-Prover 1.5 (ByteDance)",
+   "Goedel-Architect",
+   "Aleph Prover (Logical Intelligence) #2",
+   "Goedel-Architect #2",
+   "Aleph Prover (Logical Intelligence) #3"
+  ],
+  "n_weak": 12,
+  "n_mid": 4,
+  "n_strong": 5,
+  "easy_score": 4.2705,
+  "file_last_modified": "2024-10-21"
+ },
+ {
+  "id": "putnam_2008_a1",
+  "tier": "easy",
+  "year": 2008,
+  "problem": "A1",
+  "tags": [
+   "algebra"
+  ],
+  "informal_statement": "Let $f:\\mathbb{R}^2 \\to \\mathbb{R}$ be a function such that $f(x,y)+f(y,z)+f(z,x)=0$ for all real numbers $x$, $y$, and $z$. Prove that there exists a function $g:\\mathbb{R} \\to \\mathbb{R}$ such that $f(x,y)=g(x)-g(y)$ for all real numbers $x$ and $y$.",
+  "informal_solution": "None.",
+  "has_answer": false,
+  "file": "easy/putnam_2008_a1.lean",
+  "weak_solvers": [
+   "Goedel-Prover-SFT",
+   "Self-play Theorem Prover",
+   "Kimina-Prover-7B-Distill",
+   "DeepSeek-Prover-V2",
+   "DSP+",
+   "Bourbaki",
+   "Goedel-Prover-V2",
+   "Ax-Prover (Axiomatic AI)",
+   "GPT-5 (ReAct, 10 turns)"
+  ],
+  "mid_solvers": [
+   "Seed-Prover (ByteDance)",
+   "AxProverBase (Axiomatic AI)",
+   "Hilbert",
+   "Aleph Prover (Logical Intelligence)"
+  ],
+  "strong_solvers": [
+   "Seed-Prover 1.5 (ByteDance)",
+   "Goedel-Architect",
+   "Aleph Prover (Logical Intelligence) #2",
+   "Goedel-Architect #2",
+   "Aleph Prover (Logical Intelligence) #3"
+  ],
+  "n_weak": 9,
+  "n_mid": 4,
+  "n_strong": 5,
+  "easy_score": 3.0743,
+  "file_last_modified": "2024-10-21"
+ },
+ {
+  "id": "putnam_2012_a2",
+  "tier": "easy",
+  "year": 2012,
+  "problem": "A2",
+  "tags": [
+   "abstract_algebra"
+  ],
+  "informal_statement": "Let $*$ be a commutative and associative binary operation on a set $S$. Assume that for every $x$ and $y$ in $S$, there exists $z$ in $S$ such that $x*z=y$. (This $z$ may depend on $x$ and $y$.) Show that if $a,b,c$ are in $S$ and $a*c=b*c$, then $a=b$.",
+  "informal_solution": "None.",
+  "has_answer": false,
+  "file": "easy/putnam_2012_a2.lean",
+  "weak_solvers": [
+   "gemini-2.5-pro-exp-0325",
+   "o4-mini-high",
+   "DeepSeek-Prover-V2",
+   "DSP+",
+   "Goedel-Prover-V2",
+   "GPT-5 (ReAct, 10 turns)"
+  ],
+  "mid_solvers": [
+   "Seed-Prover (ByteDance)",
+   "AxProverBase (Axiomatic AI)",
+   "Hilbert",
+   "Aleph Prover (Logical Intelligence)"
+  ],
+  "strong_solvers": [
+   "Seed-Prover 1.5 (ByteDance)",
+   "Goedel-Architect",
+   "Aleph Prover (Logical Intelligence) #2",
+   "Goedel-Architect #2",
+   "Aleph Prover (Logical Intelligence) #3"
+  ],
+  "n_weak": 6,
+  "n_mid": 4,
+  "n_strong": 5,
+  "easy_score": 2.7289,
+  "file_last_modified": "2024-10-21"
+ },
+ {
+  "id": "putnam_1986_a2",
+  "tier": "easy",
+  "year": 1986,
+  "problem": "A2",
+  "tags": [
+   "algebra"
+  ],
+  "informal_statement": "What is the units (i.e., rightmost) digit of\n\\[\n\\left\\lfloor \\frac{10^{20000}}{10^{100}+3}\\right\\rfloor ?\n\\]",
+  "informal_solution": "Show that the answer is $3$.",
+  "has_answer": true,
+  "file": "easy/putnam_1986_a2.lean",
+  "weak_solvers": [
+   "ABEL",
+   "Kimina-Prover-7B-Distill",
+   "DeepSeek-Prover-V2",
+   "Bourbaki",
+   "Goedel-Prover-V2",
+   "Ax-Prover (Axiomatic AI)",
+   "TIR Conjecturor"
+  ],
+  "mid_solvers": [
+   "Seed-Prover (ByteDance)",
+   "AxProverBase (Axiomatic AI)",
+   "Hilbert",
+   "Aleph Prover (Logical Intelligence)"
+  ],
+  "strong_solvers": [
+   "Seed-Prover 1.5 (ByteDance)",
+   "Goedel-Architect",
+   "Aleph Prover (Logical Intelligence) #2",
+   "Goedel-Architect #2",
+   "Aleph Prover (Logical Intelligence) #3"
+  ],
+  "n_weak": 7,
+  "n_mid": 4,
+  "n_strong": 5,
+  "easy_score": 2.3438,
+  "file_last_modified": "2024-10-21"
+ },
+ {
+  "id": "putnam_1990_a1",
+  "tier": "easy",
+  "year": 1990,
+  "problem": "A1",
+  "tags": [
+   "algebra"
+  ],
+  "informal_statement": "Let $T_0=2,T_1=3,T_2=6$, and for $n \\geq 3$, $T_n=(n+4)T_{n-1}-4nT_{n-2}+(4n-8)T_{n-3}$. The first few terms are $2,3,6,14,40,152,784,5168,40576$. Find, with proof, a formula for $T_n$ of the form $T_n=A_n+B_n$, where $\\{A_n\\}$ and $\\{B_n\\}$ are well-known sequences.",
+  "informal_solution": "Show that we have $T_n=n!+2^n$.",
+  "has_answer": true,
+  "file": "easy/putnam_1990_a1.lean",
+  "weak_solvers": [
+   "Self-play Theorem Prover",
+   "DeepSeek-Prover-V2",
+   "DSP+",
+   "Bourbaki",
+   "Goedel-Prover-V2",
+   "Ax-Prover (Axiomatic AI)",
+   "Enumerate-Conjecture-Prove"
+  ],
+  "mid_solvers": [
+   "Seed-Prover (ByteDance)",
+   "AxProverBase (Axiomatic AI)",
+   "Hilbert",
+   "Aleph Prover (Logical Intelligence)"
+  ],
+  "strong_solvers": [
+   "Seed-Prover 1.5 (ByteDance)",
+   "Goedel-Architect",
+   "Aleph Prover (Logical Intelligence) #2",
+   "Goedel-Architect #2",
+   "Aleph Prover (Logical Intelligence) #3"
+  ],
+  "n_weak": 7,
+  "n_mid": 4,
+  "n_strong": 5,
+  "easy_score": 2.1924,
+  "file_last_modified": "2024-10-30"
+ },
+ {
+  "id": "putnam_1993_b1",
+  "tier": "easy",
+  "year": 1993,
+  "problem": "B1",
+  "tags": [
+   "algebra"
+  ],
+  "informal_statement": "Find the smallest positive integer $n$ such that for every integer $m$ with $0<m<1993$, there exists an integer $k$ for which $\\frac{m}{1993}<\\frac{k}{n}<\\frac{m+1}{1994}$.",
+  "informal_solution": "Show that the smallest positive integer $n$ satisfying the condition is $n=3987$.",
+  "has_answer": true,
+  "file": "easy/putnam_1993_b1.lean",
+  "weak_solvers": [
+   "DeepSeek-Prover-V2",
+   "DSP+",
+   "Bourbaki",
+   "Goedel-Prover-V2",
+   "Ax-Prover (Axiomatic AI)",
+   "GPT-5 (ReAct, 10 turns)",
+   "TIR Conjecturor"
+  ],
+  "mid_solvers": [
+   "Seed-Prover (ByteDance)",
+   "AxProverBase (Axiomatic AI)",
+   "Hilbert",
+   "Aleph Prover (Logical Intelligence)"
+  ],
+  "strong_solvers": [
+   "Seed-Prover 1.5 (ByteDance)",
+   "Goedel-Architect",
+   "Aleph Prover (Logical Intelligence) #2",
+   "Goedel-Architect #2",
+   "Aleph Prover (Logical Intelligence) #3"
+  ],
+  "n_weak": 7,
+  "n_mid": 4,
+  "n_strong": 5,
+  "easy_score": 2.0575,
+  "file_last_modified": "2025-08-28"
+ },
+ {
+  "id": "putnam_1998_b1",
+  "tier": "easy",
+  "year": 1998,
+  "problem": "B1",
+  "tags": [
+   "algebra"
+  ],
+  "informal_statement": "Find the minimum value of \\[\\frac{(x+1/x)^6-(x^6+1/x^6)-2}{(x+1/x)^3+(x^3+1/x^3)}\\] for $x>0$.",
+  "informal_solution": "Show that the minimum value is 6.",
+  "has_answer": true,
+  "file": "easy/putnam_1998_b1.lean",
+  "weak_solvers": [
+   "DeepSeek-Prover-V2",
+   "DSP+",
+   "Goedel-Prover-V2",
+   "Ax-Prover (Axiomatic AI)",
+   "TIR Conjecturor",
+   "Enumerate-Conjecture-Prove"
+  ],
+  "mid_solvers": [
+   "Seed-Prover (ByteDance)",
+   "AxProverBase (Axiomatic AI)",
+   "Hilbert",
+   "Aleph Prover (Logical Intelligence)"
+  ],
+  "strong_solvers": [
+   "Seed-Prover 1.5 (ByteDance)",
+   "Goedel-Architect",
+   "Aleph Prover (Logical Intelligence) #2",
+   "Goedel-Architect #2",
+   "Aleph Prover (Logical Intelligence) #3"
+  ],
+  "n_weak": 6,
+  "n_mid": 4,
+  "n_strong": 5,
+  "easy_score": 1.7373,
+  "file_last_modified": "2024-10-21"
+ },
+ {
+  "id": "putnam_1975_b1",
+  "tier": "easy",
+  "year": 1975,
+  "problem": "B1",
+  "tags": [
+   "abstract_algebra",
+   "number_theory"
+  ],
+  "informal_statement": "Let $H$ be a subgroup of the additive group of ordered pairs of integers under componentwise addition. If $H$ is generated by the elements $(3, 8)$, $(4, -1)$, and $(5, 4)$, then $H$ is also generated by two elements $(1, b)$ and $(0, a)$ for some integer $b$ and positive integer $a$. Find $a$.",
+  "informal_solution": "$a$ must equal $7$.",
+  "has_answer": true,
+  "file": "easy/putnam_1975_b1.lean",
+  "weak_solvers": [
+   "DeepSeek-Prover-V2",
+   "Goedel-Prover-V2",
+   "Ax-Prover (Axiomatic AI)",
+   "GPT-5 (ReAct, 10 turns)",
+   "TIR Conjecturor",
+   "Enumerate-Conjecture-Prove"
+  ],
+  "mid_solvers": [
+   "Seed-Prover (ByteDance)",
+   "AxProverBase (Axiomatic AI)",
+   "Hilbert",
+   "Aleph Prover (Logical Intelligence)"
+  ],
+  "strong_solvers": [
+   "Seed-Prover 1.5 (ByteDance)",
+   "Goedel-Architect",
+   "Aleph Prover (Logical Intelligence) #2",
+   "Goedel-Architect #2",
+   "Aleph Prover (Logical Intelligence) #3"
+  ],
+  "n_weak": 6,
+  "n_mid": 4,
+  "n_strong": 5,
+  "easy_score": 1.7196,
+  "file_last_modified": "2024-10-21"
+ },
+ {
+  "id": "putnam_1991_a2",
+  "tier": "easy",
+  "year": 1991,
+  "problem": "A2",
+  "tags": [
+   "linear_algebra"
+  ],
+  "informal_statement": "Let $\\mathbf{A}$ and $\\mathbf{B}$ be different $n \\times n$ matrices with real entries. If $\\mathbf{A}^3=\\mathbf{B}^3$ and $\\mathbf{A}^2\\mathbf{B}=\\mathbf{B}^2\\mathbf{A}$, can $\\mathbf{A}^2+\\mathbf{B}^2$ be invertible?",
+  "informal_solution": "Show that the answer is no.",
+  "has_answer": true,
+  "file": "easy/putnam_1991_a2.lean",
+  "weak_solvers": [
+   "DeepSeek-Prover-V2",
+   "Goedel-Prover-V2",
+   "Ax-Prover (Axiomatic AI)",
+   "GPT-5 (ReAct, 10 turns)",
+   "TIR Conjecturor",
+   "Enumerate-Conjecture-Prove"
+  ],
+  "mid_solvers": [
+   "Seed-Prover (ByteDance)",
+   "AxProverBase (Axiomatic AI)",
+   "Hilbert",
+   "Aleph Prover (Logical Intelligence)"
+  ],
+  "strong_solvers": [
+   "Seed-Prover 1.5 (ByteDance)",
+   "Goedel-Architect",
+   "Aleph Prover (Logical Intelligence) #2",
+   "Goedel-Architect #2",
+   "Aleph Prover (Logical Intelligence) #3"
+  ],
+  "n_weak": 6,
+  "n_mid": 4,
+  "n_strong": 5,
+  "easy_score": 1.7196,
+  "file_last_modified": "2024-10-30"
+ },
+ {
+  "id": "putnam_1971_b1",
+  "tier": "easy",
+  "year": 1971,
+  "problem": "B1",
+  "tags": [
+   "abstract_algebra"
+  ],
+  "informal_statement": "Let $S$ be a set and let $\\cdot$ be a binary operation on $S$ satisfying the two following laws: (1) for all $x$ in $S$, $x = x \\cdot x$, (2) for all $x,y,z$ in $S$, $(x \\cdot y) \\cdot z) = (y \\cdot z) \\cdot x$. Show that $\\cdot$ is associative and commutative. ",
+  "informal_solution": "None.",
+  "has_answer": false,
+  "file": "easy/putnam_1971_b1.lean",
+  "weak_solvers": [
+   "DeepSeek-Prover-V2",
+   "DSP+",
+   "Bourbaki",
+   "Goedel-Prover-V2",
+   "Ax-Prover (Axiomatic AI)",
+   "GPT-5 (ReAct, 10 turns)"
+  ],
+  "mid_solvers": [
+   "Seed-Prover (ByteDance)",
+   "AxProverBase (Axiomatic AI)",
+   "Hilbert",
+   "Aleph Prover (Logical Intelligence)"
+  ],
+  "strong_solvers": [
+   "Seed-Prover 1.5 (ByteDance)",
+   "Goedel-Architect",
+   "Aleph Prover (Logical Intelligence) #2",
+   "Goedel-Architect #2",
+   "Aleph Prover (Logical Intelligence) #3"
+  ],
+  "n_weak": 6,
+  "n_mid": 4,
+  "n_strong": 5,
+  "easy_score": 1.6883,
+  "file_last_modified": "2024-10-21"
+ },
+ {
+  "id": "putnam_1985_a4",
+  "tier": "easy",
+  "year": 1985,
+  "problem": "A4",
+  "tags": [
+   "number_theory"
+  ],
+  "informal_statement": "Define a sequence $\\{a_i\\}$ by $a_1=3$ and $a_{i+1}=3^{a_i}$ for $i \\geq 1$. Which integers between $00$ and $99$ inclusive occur as the last two digits in the decimal expansion of infinitely many $a_i$?",
+  "informal_solution": "Prove that the only number that occurs infinitely often is $87$.",
+  "has_answer": true,
+  "file": "easy/putnam_1985_a4.lean",
+  "weak_solvers": [
+   "DeepSeek-Prover-V2",
+   "DSP+",
+   "Goedel-Prover-V2",
+   "Ax-Prover (Axiomatic AI)",
+   "GPT-5 (ReAct, 10 turns)",
+   "Enumerate-Conjecture-Prove"
+  ],
+  "mid_solvers": [
+   "Seed-Prover (ByteDance)",
+   "AxProverBase (Axiomatic AI)",
+   "Hilbert",
+   "Aleph Prover (Logical Intelligence)"
+  ],
+  "strong_solvers": [
+   "Seed-Prover 1.5 (ByteDance)",
+   "Goedel-Architect",
+   "Aleph Prover (Logical Intelligence) #2",
+   "Goedel-Architect #2",
+   "Aleph Prover (Logical Intelligence) #3"
+  ],
+  "n_weak": 6,
+  "n_mid": 4,
+  "n_strong": 5,
+  "easy_score": 1.665,
+  "file_last_modified": "2024-10-30"
+ },
+ {
+  "id": "putnam_2005_b1",
+  "tier": "easy",
+  "year": 2005,
+  "problem": "B1",
+  "tags": [
+   "algebra"
+  ],
+  "informal_statement": "Find a nonzero polynomial $P(x,y)$ such that $P(\\lfloor a \\rfloor,\\lfloor 2a \\rfloor)=0$ for all real numbers $a$. (Note: $\\lfloor \\nu \\rfloor$ is the greatest integer less than or equal to $\\nu$.)",
+  "informal_solution": "Show that $P(x,y)=(y-2x)(y-2x-1)$ works.",
+  "has_answer": true,
+  "file": "easy/putnam_2005_b1.lean",
+  "weak_solvers": [
+   "DeepSeek-Prover-V2",
+   "DSP+",
+   "Goedel-Prover-V2",
+   "TIR Conjecturor",
+   "Enumerate-Conjecture-Prove"
+  ],
+  "mid_solvers": [
+   "Seed-Prover (ByteDance)",
+   "AxProverBase (Axiomatic AI)",
+   "Hilbert",
+   "Aleph Prover (Logical Intelligence)"
+  ],
+  "strong_solvers": [
+   "Seed-Prover 1.5 (ByteDance)",
+   "Goedel-Architect",
+   "Aleph Prover (Logical Intelligence) #2",
+   "Goedel-Architect #2",
+   "Aleph Prover (Logical Intelligence) #3"
+  ],
+  "n_weak": 5,
+  "n_mid": 4,
+  "n_strong": 5,
+  "easy_score": 1.5156,
+  "file_last_modified": "2024-10-21"
+ },
+ {
+  "id": "putnam_1999_a1",
+  "tier": "easy",
+  "year": 1999,
+  "problem": "A1",
+  "tags": [
+   "algebra"
+  ],
+  "informal_statement": "Find polynomials $f(x)$,$g(x)$, and $h(x)$, if they exist, such that for all $x$, \\[|f(x)|-|g(x)|+h(x) = \\begin{cases} -1 & \\mbox{if $x<-1$} \\\\3x+2 & \\mbox{if $-1 \\leq x \\leq 0$} \\\\-2x+2 & \\mbox{if $x>0$.}\\end{cases}\\]?",
+  "informal_solution": "Show that the answer is such functions do exist.",
+  "has_answer": true,
+  "file": "easy/putnam_1999_a1.lean",
+  "weak_solvers": [
+   "DeepSeek-Prover-V2",
+   "DSP+",
+   "Goedel-Prover-V2",
+   "GPT-5 (ReAct, 10 turns)",
+   "Enumerate-Conjecture-Prove"
+  ],
+  "mid_solvers": [
+   "Seed-Prover (ByteDance)",
+   "AxProverBase (Axiomatic AI)",
+   "Hilbert",
+   "Aleph Prover (Logical Intelligence)"
+  ],
+  "strong_solvers": [
+   "Seed-Prover 1.5 (ByteDance)",
+   "Goedel-Architect",
+   "Aleph Prover (Logical Intelligence) #2",
+   "Goedel-Architect #2",
+   "Aleph Prover (Logical Intelligence) #3"
+  ],
+  "n_weak": 5,
+  "n_mid": 4,
+  "n_strong": 5,
+  "easy_score": 1.4433,
+  "file_last_modified": "2024-10-21"
+ },
+ {
+  "id": "putnam_1975_a1",
+  "tier": "easy",
+  "year": 1975,
+  "problem": "A1",
+  "tags": [
+   "algebra",
+   "number_theory"
+  ],
+  "informal_statement": "If an integer $n$ can be written as the sum of two triangular numbers (that is, $n = \\frac{a^2 + a}{2} + \\frac{b^2 + b}{2}$ for some integers $a$ and $b$), express $4n + 1$ as the sum of the squares of two integers $x$ and $y$, giving $x$ and $y$ in terms of $a$ and $b$. Also, show that if $4n + 1 = x^2 + y^2$ for some integers $x$ and $y$, then $n$ can be written as the sum of two triangular numbers.",
+  "informal_solution": "$x = a + b + 1$ and $y = a - b$ (or vice versa).",
+  "has_answer": true,
+  "file": "easy/putnam_1975_a1.lean",
+  "weak_solvers": [
+   "DeepSeek-Prover-V2",
+   "Goedel-Prover-V2",
+   "Ax-Prover (Axiomatic AI)",
+   "TIR Conjecturor",
+   "Enumerate-Conjecture-Prove"
+  ],
+  "mid_solvers": [
+   "Seed-Prover (ByteDance)",
+   "AxProverBase (Axiomatic AI)",
+   "Hilbert",
+   "Aleph Prover (Logical Intelligence)"
+  ],
+  "strong_solvers": [
+   "Seed-Prover 1.5 (ByteDance)",
+   "Goedel-Architect",
+   "Aleph Prover (Logical Intelligence) #2",
+   "Goedel-Architect #2",
+   "Aleph Prover (Logical Intelligence) #3"
+  ],
+  "n_weak": 5,
+  "n_mid": 4,
+  "n_strong": 5,
+  "easy_score": 1.4226,
+  "file_last_modified": "2024-10-21"
+ },
+ {
+  "id": "putnam_1995_b4",
+  "tier": "easy",
+  "year": 1995,
+  "problem": "B4",
+  "tags": [
+   "algebra"
+  ],
+  "informal_statement": "Evaluate \\[ \\sqrt[8]{2207 - \\frac{1}{2207-\\frac{1}{2207-\\dots}}}. \\] Express your answer in the form $\\frac{a+b\\sqrt{c}}{d}$, where $a,b,c,d$ are integers.",
+  "informal_solution": "Show that the solution is $(3 + 1*\\sqrt{5})/2.",
+  "has_answer": true,
+  "file": "easy/putnam_1995_b4.lean",
+  "weak_solvers": [
+   "DeepSeek-Prover-V2",
+   "Goedel-Prover-V2",
+   "Ax-Prover (Axiomatic AI)",
+   "TIR Conjecturor",
+   "Enumerate-Conjecture-Prove"
+  ],
+  "mid_solvers": [
+   "Seed-Prover (ByteDance)",
+   "AxProverBase (Axiomatic AI)",
+   "Hilbert",
+   "Aleph Prover (Logical Intelligence)"
+  ],
+  "strong_solvers": [
+   "Seed-Prover 1.5 (ByteDance)",
+   "Goedel-Architect",
+   "Aleph Prover (Logical Intelligence) #2",
+   "Goedel-Architect #2",
+   "Aleph Prover (Logical Intelligence) #3"
+  ],
+  "n_weak": 5,
+  "n_mid": 4,
+  "n_strong": 5,
+  "easy_score": 1.4226,
+  "file_last_modified": "2024-10-21"
+ },
+ {
+  "id": "putnam_1965_a3",
+  "tier": "medium",
+  "year": 1965,
+  "problem": "A3",
+  "tags": [
+   "analysis"
+  ],
+  "informal_statement": "Prove that, for any sequence of real numbers $a_1, a_2, \\dots$, $$\\lim_{n \\to \\infty} \\frac{\\sum_{k = 1}^{n} e^{ia_k}}{n} = \\alpha$$ if and only if $$\\lim_{n \\to \\infty} \\frac{\\sum_{k = 1}^{n} e^{ia_{k^2}}}{n^2} = \\alpha.$$",
+  "informal_solution": "None.",
+  "has_answer": false,
+  "file": "medium/putnam_1965_a3.lean",
+  "weak_solvers": [],
+  "mid_solvers": [
+   "Seed-Prover (ByteDance)",
+   "AxProverBase (Axiomatic AI)",
+   "Hilbert",
+   "Aleph Prover (Logical Intelligence)"
+  ],
+  "strong_solvers": [
+   "Seed-Prover 1.5 (ByteDance)",
+   "Goedel-Architect",
+   "Aleph Prover (Logical Intelligence) #2",
+   "Goedel-Architect #2",
+   "Aleph Prover (Logical Intelligence) #3"
+  ],
+  "n_weak": 0,
+  "n_mid": 4,
+  "n_strong": 5,
+  "easy_score": 0,
+  "file_last_modified": "2025-07-03"
+ },
+ {
+  "id": "putnam_1969_b1",
+  "tier": "medium",
+  "year": 1969,
+  "problem": "B1",
+  "tags": [
+   "number_theory"
+  ],
+  "informal_statement": "Let $n$ be a positive integer such that $n+1$ is divisible by $24$. Prove that the sum of all the divisors of $n$ is divisible by $24$.",
+  "informal_solution": "None.",
+  "has_answer": false,
+  "file": "medium/putnam_1969_b1.lean",
+  "weak_solvers": [],
+  "mid_solvers": [
+   "Seed-Prover (ByteDance)",
+   "AxProverBase (Axiomatic AI)",
+   "Hilbert",
+   "Aleph Prover (Logical Intelligence)"
+  ],
+  "strong_solvers": [
+   "Seed-Prover 1.5 (ByteDance)",
+   "Goedel-Architect",
+   "Aleph Prover (Logical Intelligence) #2",
+   "Goedel-Architect #2",
+   "Aleph Prover (Logical Intelligence) #3"
+  ],
+  "n_weak": 0,
+  "n_mid": 4,
+  "n_strong": 5,
+  "easy_score": 0,
+  "file_last_modified": "2025-07-03"
+ },
+ {
+  "id": "putnam_1972_a1",
+  "tier": "medium",
+  "year": 1972,
+  "problem": "A1",
+  "tags": [
+   "algebra"
+  ],
+  "informal_statement": "Show that there are no four consecutive binomial coefficients ${n \\choose r}, {n \\choose (r+1)}, {n \\choose (r+2)}, {n \\choose (r+3)}$ where $n,r$ are positive integers and $r+3 \\leq n$, which are in arithmetic progression.",
+  "informal_solution": "None.",
+  "has_answer": false,
+  "file": "medium/putnam_1972_a1.lean",
+  "weak_solvers": [],
+  "mid_solvers": [
+   "Seed-Prover (ByteDance)",
+   "AxProverBase (Axiomatic AI)",
+   "Hilbert",
+   "Aleph Prover (Logical Intelligence)"
+  ],
+  "strong_solvers": [
+   "Seed-Prover 1.5 (ByteDance)",
+   "Goedel-Architect",
+   "Aleph Prover (Logical Intelligence) #2",
+   "Goedel-Architect #2",
+   "Aleph Prover (Logical Intelligence) #3"
+  ],
+  "n_weak": 0,
+  "n_mid": 4,
+  "n_strong": 5,
+  "easy_score": 0,
+  "file_last_modified": "2024-10-30"
+ },
+ {
+  "id": "putnam_1972_b2",
+  "tier": "medium",
+  "year": 1972,
+  "problem": "B2",
+  "tags": [
+   "analysis"
+  ],
+  "informal_statement": "Let $x : \\mathbb{R} \\to \\mathbb{R}$ be a twice differentiable function whose second derivative is nonstrictly decreasing. If $x(t) - x(0) = s$, $x'(0) = 0$, and $x'(t) = v$ for some $t > 0$, find the maximum possible value of $t$ in terms of $s$ and $v$.",
+  "informal_solution": "Show that the maximum possible time is $t = \\frac{2s}{v}$.",
+  "has_answer": true,
+  "file": "medium/putnam_1972_b2.lean",
+  "weak_solvers": [],
+  "mid_solvers": [
+   "Seed-Prover (ByteDance)",
+   "AxProverBase (Axiomatic AI)",
+   "Hilbert",
+   "Aleph Prover (Logical Intelligence)"
+  ],
+  "strong_solvers": [
+   "Seed-Prover 1.5 (ByteDance)",
+   "Goedel-Architect",
+   "Aleph Prover (Logical Intelligence) #2",
+   "Goedel-Architect #2",
+   "Aleph Prover (Logical Intelligence) #3"
+  ],
+  "n_weak": 0,
+  "n_mid": 4,
+  "n_strong": 5,
+  "easy_score": 0,
+  "file_last_modified": "2024-10-30"
+ },
+ {
+  "id": "putnam_1976_a4",
+  "tier": "medium",
+  "year": 1976,
+  "problem": "A4",
+  "tags": [
+   "algebra"
+  ],
+  "informal_statement": "Let $r$ be a real root of $P(x) = x^3 + ax^2 + bx - 1$, where $a$ and $b$ are integers and $P$ is irreducible over the rationals. Suppose that $r + 1$ is a root of $x^3 + cx^2 + dx + 1$, where $c$ and $d$ are also integers. Express another root $s$ of $P$ as a function of $r$ that does not depend on the values of $a$, $b$, $c$, or $d$.",
+  "informal_solution": "The possible answers are $s = -\\frac{1}{r + 1}$ and $s = -\\frac{r + 1}{r}$.",
+  "has_answer": true,
+  "file": "medium/putnam_1976_a4.lean",
+  "weak_solvers": [],
+  "mid_solvers": [
+   "Seed-Prover (ByteDance)",
+   "AxProverBase (Axiomatic AI)",
+   "Hilbert",
+   "Aleph Prover (Logical Intelligence)"
+  ],
+  "strong_solvers": [
+   "Seed-Prover 1.5 (ByteDance)",
+   "Goedel-Architect",
+   "Aleph Prover (Logical Intelligence) #2",
+   "Goedel-Architect #2",
+   "Aleph Prover (Logical Intelligence) #3"
+  ],
+  "n_weak": 0,
+  "n_mid": 4,
+  "n_strong": 5,
+  "easy_score": 0,
+  "file_last_modified": "2024-10-21"
+ },
+ {
+  "id": "putnam_1980_b4",
+  "tier": "medium",
+  "year": 1980,
+  "problem": "B4",
+  "tags": [
+   "set_theory",
+   "combinatorics"
+  ],
+  "informal_statement": "Let $X$ be a finite set with at least $10$ elements; for each $i \\in \\{0, 1, ..., 1065\\}$, let $A_i \\subseteq X$ satisfy $|A_i| > \\frac{1}{2}|X|$. Prove that there exist $10$ elements $x_1, x_2, \\dots, x_{10} \\in X$ such that each $A_i$ contains at least one of $x_1, x_2, \\dots, x_{10}$.",
+  "informal_solution": "None.",
+  "has_answer": false,
+  "file": "medium/putnam_1980_b4.lean",
+  "weak_solvers": [],
+  "mid_solvers": [
+   "Seed-Prover (ByteDance)",
+   "AxProverBase (Axiomatic AI)",
+   "Hilbert",
+   "Aleph Prover (Logical Intelligence)"
+  ],
+  "strong_solvers": [
+   "Seed-Prover 1.5 (ByteDance)",
+   "Goedel-Architect",
+   "Aleph Prover (Logical Intelligence) #2",
+   "Goedel-Architect #2",
+   "Aleph Prover (Logical Intelligence) #3"
+  ],
+  "n_weak": 0,
+  "n_mid": 4,
+  "n_strong": 5,
+  "easy_score": 0,
+  "file_last_modified": "2024-10-21"
+ },
+ {
+  "id": "putnam_1982_b5",
+  "tier": "medium",
+  "year": 1982,
+  "problem": "B5",
+  "tags": [
+   "analysis"
+  ],
+  "informal_statement": "For all $x > e^e$, let $S = u_0, u_1, \\dots$ be a recursively defined sequence with $u_0 = e$ and $u_{n+1} = \\log_{u_n} x$ for all $n \\ge 0$. Prove that $S_x$ converges to some real number $g(x)$ and that this function $g$ is continuous for $x > e^e$.",
+  "informal_solution": "None.",
+  "has_answer": false,
+  "file": "medium/putnam_1982_b5.lean",
+  "weak_solvers": [],
+  "mid_solvers": [
+   "Seed-Prover (ByteDance)",
+   "AxProverBase (Axiomatic AI)",
+   "Hilbert",
+   "Aleph Prover (Logical Intelligence)"
+  ],
+  "strong_solvers": [
+   "Seed-Prover 1.5 (ByteDance)",
+   "Goedel-Architect",
+   "Aleph Prover (Logical Intelligence) #2",
+   "Goedel-Architect #2",
+   "Aleph Prover (Logical Intelligence) #3"
+  ],
+  "n_weak": 0,
+  "n_mid": 4,
+  "n_strong": 5,
+  "easy_score": 0,
+  "file_last_modified": "2024-10-21"
+ },
+ {
+  "id": "putnam_1983_a4",
+  "tier": "medium",
+  "year": 1983,
+  "problem": "A4",
+  "tags": [
+   "algebra"
+  ],
+  "informal_statement": "Prove that for $m = 5 \\pmod 6$,\n\\[\n\\binom{m}{2} - \\binom{m}{5} + \\binom{m}{8} - \\binom{m}{11} + ... - \\binom{m}{m-6} + \\binom{m}{m-3} \\neq 0.\n\\]",
+  "informal_solution": "None.",
+  "has_answer": false,
+  "file": "medium/putnam_1983_a4.lean",
+  "weak_solvers": [],
+  "mid_solvers": [
+   "Seed-Prover (ByteDance)",
+   "AxProverBase (Axiomatic AI)",
+   "Hilbert",
+   "Aleph Prover (Logical Intelligence)"
+  ],
+  "strong_solvers": [
+   "Seed-Prover 1.5 (ByteDance)",
+   "Goedel-Architect",
+   "Aleph Prover (Logical Intelligence) #2",
+   "Goedel-Architect #2",
+   "Aleph Prover (Logical Intelligence) #3"
+  ],
+  "n_weak": 0,
+  "n_mid": 4,
+  "n_strong": 5,
+  "easy_score": 0,
+  "file_last_modified": "2025-07-03"
+ },
+ {
+  "id": "putnam_1985_b6",
+  "tier": "medium",
+  "year": 1985,
+  "problem": "B6",
+  "tags": [
+   "abstract_algebra",
+   "linear_algebra"
+  ],
+  "informal_statement": "Let $G$ be a finite set of real $n\\times n$ matrices $\\{M_i\\}$, $1 \\leq i \\leq r$, which form a group under matrix\nmultiplication. Suppose that $\\sum_{i=1}^r \\mathrm{tr}(M_i)=0$, where $\\mathrm{tr}(A)$ denotes the trace of the matrix $A$. Prove that $\\sum_{i=1}^r M_i$ is the $n \\times n$ zero matrix.",
+  "informal_solution": "None.",
+  "has_answer": false,
+  "file": "medium/putnam_1985_b6.lean",
+  "weak_solvers": [],
+  "mid_solvers": [
+   "Seed-Prover (ByteDance)",
+   "AxProverBase (Axiomatic AI)",
+   "Hilbert",
+   "Aleph Prover (Logical Intelligence)"
+  ],
+  "strong_solvers": [
+   "Seed-Prover 1.5 (ByteDance)",
+   "Goedel-Architect",
+   "Aleph Prover (Logical Intelligence) #2",
+   "Goedel-Architect #2",
+   "Aleph Prover (Logical Intelligence) #3"
+  ],
+  "n_weak": 0,
+  "n_mid": 4,
+  "n_strong": 5,
+  "easy_score": 0,
+  "file_last_modified": "2025-07-03"
+ },
+ {
+  "id": "putnam_1994_b1",
+  "tier": "medium",
+  "year": 1994,
+  "problem": "B1",
+  "tags": [
+   "algebra"
+  ],
+  "informal_statement": "Find all positive integers $n$ that are within $250$ of exactly $15$ perfect squares.",
+  "informal_solution": "Show that an integer $n$ is within $250$ of exactly $15$ perfect squares if and only if either $315 \\leq n \\leq 325$ or $332 \\leq n \\leq 350$.",
+  "has_answer": true,
+  "file": "medium/putnam_1994_b1.lean",
+  "weak_solvers": [],
+  "mid_solvers": [
+   "Seed-Prover (ByteDance)",
+   "AxProverBase (Axiomatic AI)",
+   "Hilbert",
+   "Aleph Prover (Logical Intelligence)"
+  ],
+  "strong_solvers": [
+   "Seed-Prover 1.5 (ByteDance)",
+   "Goedel-Architect",
+   "Aleph Prover (Logical Intelligence) #2",
+   "Goedel-Architect #2",
+   "Aleph Prover (Logical Intelligence) #3"
+  ],
+  "n_weak": 0,
+  "n_mid": 4,
+  "n_strong": 5,
+  "easy_score": 0,
+  "file_last_modified": "2024-10-30"
+ },
+ {
+  "id": "putnam_1995_b1",
+  "tier": "medium",
+  "year": 1995,
+  "problem": "B1",
+  "tags": [
+   "combinatorics"
+  ],
+  "informal_statement": "For a partition $\\pi$ of $\\{1, 2, 3, 4, 5, 6, 7, 8, 9\\}$, let $\\pi(x)$ be the number of elements in the part containing $x$. Prove that for any two partitions $\\pi$ and $\\pi'$, there are two distinct numbers $x$ and $y$ in $\\{1, 2, 3, 4, 5, 6, 7, 8, 9\\}$ such that $\\pi(x) = \\pi(y)$ and $\\pi'(x) = \\pi'(y)$. [A {\\em partition} of a set $S$ is a collection of disjoint subsets (parts) whose union is $S$.]",
+  "informal_solution": "None.",
+  "has_answer": false,
+  "file": "medium/putnam_1995_b1.lean",
+  "weak_solvers": [],
+  "mid_solvers": [
+   "Seed-Prover (ByteDance)",
+   "AxProverBase (Axiomatic AI)",
+   "Hilbert",
+   "Aleph Prover (Logical Intelligence)"
+  ],
+  "strong_solvers": [
+   "Seed-Prover 1.5 (ByteDance)",
+   "Goedel-Architect",
+   "Aleph Prover (Logical Intelligence) #2",
+   "Goedel-Architect #2",
+   "Aleph Prover (Logical Intelligence) #3"
+  ],
+  "n_weak": 0,
+  "n_mid": 4,
+  "n_strong": 5,
+  "easy_score": 0,
+  "file_last_modified": "2024-10-30"
+ },
+ {
+  "id": "putnam_1996_a5",
+  "tier": "medium",
+  "year": 1996,
+  "problem": "A5",
+  "tags": [
+   "number_theory"
+  ],
+  "informal_statement": "If $p$ is a prime number greater than 3 and $k = \\lfloor 2p/3 \\rfloor$, prove that the sum \\[\\binom p1 + \\binom p2 + \\cdots + \\binom pk \\] of binomial coefficients is divisible by $p^2$.",
+  "informal_solution": "None.",
+  "has_answer": false,
+  "file": "medium/putnam_1996_a5.lean",
+  "weak_solvers": [],
+  "mid_solvers": [
+   "Seed-Prover (ByteDance)",
+   "AxProverBase (Axiomatic AI)",
+   "Hilbert",
+   "Aleph Prover (Logical Intelligence)"
+  ],
+  "strong_solvers": [
+   "Seed-Prover 1.5 (ByteDance)",
+   "Goedel-Architect",
+   "Aleph Prover (Logical Intelligence) #2",
+   "Goedel-Architect #2",
+   "Aleph Prover (Logical Intelligence) #3"
+  ],
+  "n_weak": 0,
+  "n_mid": 4,
+  "n_strong": 5,
+  "easy_score": 0,
+  "file_last_modified": "2025-07-03"
+ },
+ {
+  "id": "putnam_1996_b2",
+  "tier": "medium",
+  "year": 1996,
+  "problem": "B2",
+  "tags": [
+   "analysis"
+  ],
+  "informal_statement": "Show that for every positive integer $n$, $(\\frac{2n-1}{e})^{\\frac{2n-1}{2}}<1 \\cdot 3 \\cdot 5 \\cdots (2n-1)<(\\frac{2n+1}{e})^{\\frac{2n+1}{2}}$.",
+  "informal_solution": "None.",
+  "has_answer": false,
+  "file": "medium/putnam_1996_b2.lean",
+  "weak_solvers": [],
+  "mid_solvers": [
+   "Seed-Prover (ByteDance)",
+   "AxProverBase (Axiomatic AI)",
+   "Hilbert",
+   "Aleph Prover (Logical Intelligence)"
+  ],
+  "strong_solvers": [
+   "Seed-Prover 1.5 (ByteDance)",
+   "Goedel-Architect",
+   "Aleph Prover (Logical Intelligence) #2",
+   "Goedel-Architect #2",
+   "Aleph Prover (Logical Intelligence) #3"
+  ],
+  "n_weak": 0,
+  "n_mid": 4,
+  "n_strong": 5,
+  "easy_score": 0,
+  "file_last_modified": "2025-07-03"
+ },
+ {
+  "id": "putnam_1998_b2",
+  "tier": "medium",
+  "year": 1998,
+  "problem": "B2",
+  "tags": [
+   "geometry",
+   "algebra"
+  ],
+  "informal_statement": "Given a point $(a,b)$ with $0<b<a$, determine the minimum perimeter of a triangle with one vertex at $(a,b)$, one on the $x$-axis, and one on the line $y=x$.  You may assume that a triangle of minimum perimeter exists.",
+  "informal_solution": "Show that the solution is $\\sqrt{2a^2 + 2b^2}.",
+  "has_answer": true,
+  "file": "medium/putnam_1998_b2.lean",
+  "weak_solvers": [],
+  "mid_solvers": [
+   "Seed-Prover (ByteDance)",
+   "AxProverBase (Axiomatic AI)",
+   "Hilbert",
+   "Aleph Prover (Logical Intelligence)"
+  ],
+  "strong_solvers": [
+   "Seed-Prover 1.5 (ByteDance)",
+   "Goedel-Architect",
+   "Aleph Prover (Logical Intelligence) #2",
+   "Goedel-Architect #2",
+   "Aleph Prover (Logical Intelligence) #3"
+  ],
+  "n_weak": 0,
+  "n_mid": 4,
+  "n_strong": 5,
+  "easy_score": 0,
+  "file_last_modified": "2025-08-28"
+ },
+ {
+  "id": "putnam_2003_b2",
+  "tier": "medium",
+  "year": 2003,
+  "problem": "B2",
+  "tags": [
+   "algebra"
+  ],
+  "informal_statement": "Let $n$ be a positive integer. Starting with the sequence $$1, \\frac{1}{2}, \\frac{1}{3}, \\dots, \\frac{1}{n},$$ form a new sequence of $n-1$ entries $$\\frac{3}{4}, \\frac{5}{12}, \\dots, \\frac{2n-1}{2n(n-1)}$$ by taking the averages of two consecutive entries in the first sequence. Repeat the averaging of neighbors on the second sequence to obtain a third sequence of $n-2$ entries, and continue until the final sequence produced consists of a single number $x_n$. Show that $x_n < 2/n$.",
+  "informal_solution": "None.",
+  "has_answer": false,
+  "file": "medium/putnam_2003_b2.lean",
+  "weak_solvers": [],
+  "mid_solvers": [
+   "Seed-Prover (ByteDance)",
+   "AxProverBase (Axiomatic AI)",
+   "Hilbert",
+   "Aleph Prover (Logical Intelligence)"
+  ],
+  "strong_solvers": [
+   "Seed-Prover 1.5 (ByteDance)",
+   "Goedel-Architect",
+   "Aleph Prover (Logical Intelligence) #2",
+   "Goedel-Architect #2",
+   "Aleph Prover (Logical Intelligence) #3"
+  ],
+  "n_weak": 0,
+  "n_mid": 4,
+  "n_strong": 5,
+  "easy_score": 0,
+  "file_last_modified": "2024-10-30"
+ },
+ {
+  "id": "putnam_2009_a3",
+  "tier": "medium",
+  "year": 2009,
+  "problem": "A3",
+  "tags": [
+   "linear_algebra",
+   "analysis"
+  ],
+  "informal_statement": "Let $d_n$ be the determinant of the $n \\times n$ matrix whose entries, from left to right and then from top to bottom, are $\\cos 1, \\cos 2, \\dots, \\cos n^2$. (For example,\\[ d_3 = \\left|\\begin{matrix} \\cos 1 & \\cos 2 & \\cos 3 \\\\ \\cos 4 & \\cos 5 & \\cos 6 \\\\  \\cos 7 & \\cos 8 & \\cos 9 \\end{matrix} \\right|. \\]The argument of $\\cos$ is always in radians, not degrees.) Evaluate $\\lim_{n\\to\\infty} d_n$.",
+  "informal_solution": "Show that the limit is 0.",
+  "has_answer": true,
+  "file": "medium/putnam_2009_a3.lean",
+  "weak_solvers": [],
+  "mid_solvers": [
+   "Seed-Prover (ByteDance)",
+   "AxProverBase (Axiomatic AI)",
+   "Hilbert",
+   "Aleph Prover (Logical Intelligence)"
+  ],
+  "strong_solvers": [
+   "Seed-Prover 1.5 (ByteDance)",
+   "Goedel-Architect",
+   "Aleph Prover (Logical Intelligence) #2",
+   "Goedel-Architect #2",
+   "Aleph Prover (Logical Intelligence) #3"
+  ],
+  "n_weak": 0,
+  "n_mid": 4,
+  "n_strong": 5,
+  "easy_score": 0,
+  "file_last_modified": "2024-10-21"
+ },
+ {
+  "id": "putnam_2009_b5",
+  "tier": "medium",
+  "year": 2009,
+  "problem": "B5",
+  "tags": [
+   "analysis"
+  ],
+  "informal_statement": "Let $f: (1, \\infty) \\to \\mathbb{R}$ be a differentiable function such that\n\\[\n f'(x) = \\frac{x^2 - f(x)^2}{x^2 (f(x)^2 + 1)}\n\\qquad \\mbox{for all $x>1$.}\n\\]\nProve that $\\lim_{x \\to \\infty} f(x) = \\infty$.",
+  "informal_solution": "None.",
+  "has_answer": false,
+  "file": "medium/putnam_2009_b5.lean",
+  "weak_solvers": [],
+  "mid_solvers": [
+   "Seed-Prover (ByteDance)",
+   "AxProverBase (Axiomatic AI)",
+   "Hilbert",
+   "Aleph Prover (Logical Intelligence)"
+  ],
+  "strong_solvers": [
+   "Seed-Prover 1.5 (ByteDance)",
+   "Goedel-Architect",
+   "Aleph Prover (Logical Intelligence) #2",
+   "Goedel-Architect #2",
+   "Aleph Prover (Logical Intelligence) #3"
+  ],
+  "n_weak": 0,
+  "n_mid": 4,
+  "n_strong": 5,
+  "easy_score": 0,
+  "file_last_modified": "2024-10-21"
+ },
+ {
+  "id": "putnam_2017_a1",
+  "tier": "medium",
+  "year": 2017,
+  "problem": "A1",
+  "tags": [
+   "number_theory"
+  ],
+  "informal_statement": "Let $S$ be the smallest set of positive integers such that (a) $2$ is in $S$, (b) $n$ is in $S$ whenever $n^2$ is in $S$, and (c) $(n+5)^2$ is in $S$ whenever $n$ is in $S$. Which positive integers are not in $S$?.",
+  "informal_solution": "Show that all solutions are in the set $\\{x \\in \\mathbb{Z}\\, |\\, x > 0 \\land (x = 1 \\lor 5 \\mid x)\\}",
+  "has_answer": true,
+  "file": "medium/putnam_2017_a1.lean",
+  "weak_solvers": [],
+  "mid_solvers": [
+   "Seed-Prover (ByteDance)",
+   "AxProverBase (Axiomatic AI)",
+   "Hilbert",
+   "Aleph Prover (Logical Intelligence)"
+  ],
+  "strong_solvers": [
+   "Seed-Prover 1.5 (ByteDance)",
+   "Goedel-Architect",
+   "Aleph Prover (Logical Intelligence) #2",
+   "Goedel-Architect #2",
+   "Aleph Prover (Logical Intelligence) #3"
+  ],
+  "n_weak": 0,
+  "n_mid": 4,
+  "n_strong": 5,
+  "easy_score": 0,
+  "file_last_modified": "2024-10-21"
+ },
+ {
+  "id": "putnam_2017_a2",
+  "tier": "medium",
+  "year": 2017,
+  "problem": "A2",
+  "tags": [
+   "algebra"
+  ],
+  "informal_statement": "Let $Q_0(x)=1$, $Q_1(x)=x$, and $Q_n(x)=\\frac{(Q_{n-1}(x))^2-1}{Q_{n-2}(x)}$ for all $n \\geq 2$. Show that, whenever $n$ is a positive integer, $Q_n(x)$ is equal to a polynomial with integer coefficients.",
+  "informal_solution": "None.",
+  "has_answer": false,
+  "file": "medium/putnam_2017_a2.lean",
+  "weak_solvers": [],
+  "mid_solvers": [
+   "Seed-Prover (ByteDance)",
+   "AxProverBase (Axiomatic AI)",
+   "Hilbert",
+   "Aleph Prover (Logical Intelligence)"
+  ],
+  "strong_solvers": [
+   "Seed-Prover 1.5 (ByteDance)",
+   "Goedel-Architect",
+   "Aleph Prover (Logical Intelligence) #2",
+   "Goedel-Architect #2",
+   "Aleph Prover (Logical Intelligence) #3"
+  ],
+  "n_weak": 0,
+  "n_mid": 4,
+  "n_strong": 5,
+  "easy_score": 0,
+  "file_last_modified": "2024-10-24"
+ },
+ {
+  "id": "putnam_2018_a5",
+  "tier": "medium",
+  "year": 2018,
+  "problem": "A5",
+  "tags": [
+   "analysis"
+  ],
+  "informal_statement": "Let $f: \\mathbb{R} \\to \\mathbb{R}$ be an infinitely differentiable function satisfying $f(0) = 0$, $f(1)= 1$, and $f(x) \\geq 0$ for all $x \\in \\mathbb{R}$. Show that there exist a positive integer $n$ and a real number $x$ such that $f^{(n)}(x) < 0$.",
+  "informal_solution": "None.",
+  "has_answer": false,
+  "file": "medium/putnam_2018_a5.lean",
+  "weak_solvers": [],
+  "mid_solvers": [
+   "Seed-Prover (ByteDance)",
+   "AxProverBase (Axiomatic AI)",
+   "Hilbert",
+   "Aleph Prover (Logical Intelligence)"
+  ],
+  "strong_solvers": [
+   "Seed-Prover 1.5 (ByteDance)",
+   "Goedel-Architect",
+   "Aleph Prover (Logical Intelligence) #2",
+   "Goedel-Architect #2",
+   "Aleph Prover (Logical Intelligence) #3"
+  ],
+  "n_weak": 0,
+  "n_mid": 4,
+  "n_strong": 5,
+  "easy_score": 0,
+  "file_last_modified": "2024-10-21"
+ },
+ {
+  "id": "putnam_1962_a2",
+  "tier": "hard",
+  "year": 1962,
+  "problem": "A2",
+  "tags": [
+   "analysis"
+  ],
+  "informal_statement": "Find every real-valued function $f$ whose domain is an interval $I$ (finite or infinite) having 0 as a left-hand endpoint, such that for every positive member $x$ of $I$ the average of $f$ over the closed interval $[0, x]$ is equal to the geometric mean of the numbers $f(0)$ and $f(x)$.",
+  "informal_solution": "Show that \\[ f(x) = \\frac{a}{(1 - cx)^2} \\begin{cases} \\text{for } 0 \\le x < \\frac{1}{c}, & \\text{if } c > 0\\\\ \\text{for } 0 \\le x < \\infty, & \\text{if } c \\le 0, \\end{cases} \\] where $a > 0$.",
+  "has_answer": true,
+  "file": "hard/putnam_1962_a2.lean",
+  "weak_solvers": [],
+  "mid_solvers": [],
+  "strong_solvers": [
+   "Goedel-Architect #2",
+   "Aleph Prover (Logical Intelligence) #3"
+  ],
+  "n_weak": 0,
+  "n_mid": 0,
+  "n_strong": 2,
+  "easy_score": 0,
+  "file_last_modified": "2026-01-06"
+ },
+ {
+  "id": "putnam_1963_a3",
+  "tier": "hard",
+  "year": 1963,
+  "problem": "A3",
+  "tags": [
+   "analysis"
+  ],
+  "informal_statement": "Find an integral formula (i.e., a function $z$ such that $y(x) = \\int_{1}^{x} z(t) dt$) for the solution of the differential equation $$\\delta (\\delta - 1) (\\delta - 2) \\cdots (\\delta - n + 1) y = f(x)$$ with the initial conditions $y(1) = y'(1) = \\cdots = y^{(n-1)}(1) = 0$, where $n \\in \\mathbb{N}$, $f$ is continuous for all $x \\ge 1$, and $\\delta$ denotes $x\\frac{d}{dx}$.",
+  "informal_solution": "Show that the solution is $$y(x) = \\int_{1}^{x} \\frac{(x - t)^{n - 1} f(t)}{(n - 1)!t^n} dt$$.",
+  "has_answer": true,
+  "file": "hard/putnam_1963_a3.lean",
+  "weak_solvers": [],
+  "mid_solvers": [],
+  "strong_solvers": [
+   "Aleph Prover (Logical Intelligence) #3"
+  ],
+  "n_weak": 0,
+  "n_mid": 0,
+  "n_strong": 1,
+  "easy_score": 0,
+  "file_last_modified": "2026-01-06"
+ },
+ {
+  "id": "putnam_1967_b1",
+  "tier": "hard",
+  "year": 1967,
+  "problem": "B1",
+  "tags": [
+   "geometry"
+  ],
+  "informal_statement": "Let $\\hexagon ABCDEF$ be a hexagon inscribed in a circle of radius $r$. If $AB = CD = EF = r$, prove that the midpoints of $\\overline{BC}$, $\\overline{DE}$, and $\\overline{FA}$ form the vertices of an equilateral triangle.",
+  "informal_solution": "None.",
+  "has_answer": false,
+  "file": "hard/putnam_1967_b1.lean",
+  "weak_solvers": [],
+  "mid_solvers": [],
+  "strong_solvers": [
+   "Aleph Prover (Logical Intelligence) #3"
+  ],
+  "n_weak": 0,
+  "n_mid": 0,
+  "n_strong": 1,
+  "easy_score": 0,
+  "file_last_modified": "2024-10-21"
+ },
+ {
+  "id": "putnam_1969_b4",
+  "tier": "hard",
+  "year": 1969,
+  "problem": "B4",
+  "tags": [
+   "geometry"
+  ],
+  "informal_statement": "$Γ$ is a plane curve of length 1. Show that we can find a closed rectangle of area 1/4 which covers $Γ$.",
+  "informal_solution": "None.",
+  "has_answer": false,
+  "file": "hard/putnam_1969_b4.lean",
+  "weak_solvers": [],
+  "mid_solvers": [],
+  "strong_solvers": [
+   "Aleph Prover (Logical Intelligence) #3"
+  ],
+  "n_weak": 0,
+  "n_mid": 0,
+  "n_strong": 1,
+  "easy_score": 0,
+  "file_last_modified": "2026-01-28"
+ },
+ {
+  "id": "putnam_1970_b6",
+  "tier": "hard",
+  "year": 1970,
+  "problem": "B6",
+  "tags": [
+   "geometry"
+  ],
+  "informal_statement": "Prove that if a quadrilateral with side lengths $a$, $b$, $c$, and $d$ and area $\\sqrt{abcd}$ can be circumscribed to a circle (i.e., a circle can be inscribed in it), then it must be cyclic (i.e., it can be inscribed in a circle).",
+  "informal_solution": "None.",
+  "has_answer": false,
+  "file": "hard/putnam_1970_b6.lean",
+  "weak_solvers": [],
+  "mid_solvers": [],
+  "strong_solvers": [
+   "Aleph Prover (Logical Intelligence) #3"
+  ],
+  "n_weak": 0,
+  "n_mid": 0,
+  "n_strong": 1,
+  "easy_score": 0,
+  "file_last_modified": "2024-10-21"
+ },
+ {
+  "id": "putnam_1974_b1",
+  "tier": "hard",
+  "year": 1974,
+  "problem": "B1",
+  "tags": [
+   "algebra",
+   "geometry"
+  ],
+  "informal_statement": "Prove that the optimal configuration of 5 (not necessarily distinct) points $p_1, \\dots, p_5$ on the unit circle which maximizes the sum of the ten distances \\[\\Sigma_{i < j}, d(p_i, p_j) \\] is the one which evenly spaces the points like a regular pentagon.",
+  "informal_solution": "None.",
+  "has_answer": true,
+  "file": "hard/putnam_1974_b1.lean",
+  "weak_solvers": [],
+  "mid_solvers": [],
+  "strong_solvers": [
+   "Aleph Prover (Logical Intelligence) #3"
+  ],
+  "n_weak": 0,
+  "n_mid": 0,
+  "n_strong": 1,
+  "easy_score": 0,
+  "file_last_modified": "2024-10-21"
+ },
+ {
+  "id": "putnam_1989_b6",
+  "tier": "hard",
+  "year": 1989,
+  "problem": "B6",
+  "tags": [
+   "probability",
+   "analysis",
+   "algebra"
+  ],
+  "informal_statement": "Let $(x_1,x_2,\\dots,x_n)$ be a point chosen at random from the $n$-dimensional region defined by $0<x_1<x_2<\\dots<x_n<1$. Let $f$ be a continuous function on $[0,1]$ with $f(1)=0$. Set $x_0=0$ and $x_{n+1}=1$. Show that the expected value of the Riemann sum $\\sum_{i=0}^n (x_{i+1}-x_i)f(x_{i+1})$ is $\\int_0^1 f(t)P(t)\\,dt$, where $P$ is a polynomial of degree $n$, independent of $f$, with $0 \\leq P(t) \\leq 1$ for $0 \\leq t \\leq 1$.",
+  "informal_solution": "None.",
+  "has_answer": false,
+  "file": "hard/putnam_1989_b6.lean",
+  "weak_solvers": [],
+  "mid_solvers": [],
+  "strong_solvers": [
+   "Aleph Prover (Logical Intelligence) #2",
+   "Aleph Prover (Logical Intelligence) #3"
+  ],
+  "n_weak": 0,
+  "n_mid": 0,
+  "n_strong": 2,
+  "easy_score": 0,
+  "file_last_modified": "2025-12-30"
+ },
+ {
+  "id": "putnam_1995_a6",
+  "tier": "hard",
+  "year": 1995,
+  "problem": "A6",
+  "tags": [
+   "algebra"
+  ],
+  "informal_statement": "Suppose that each of $n$ people writes down the numbers $1,2,3$ in random order in one column of a $3 \\times n$ matrix, with all orders equally likely and with the orders for different columns independent of each other. Let the row sums $a,b,c$ of the resulting matrix be rearranged (if necessary) so that $a \\leq b \\leq c$. Show that for some $n \\geq 1995$, it is at least four times as likely that both $b=a+1$ and $c=a+2$ as that $a=b=c$.",
+  "informal_solution": "None.",
+  "has_answer": false,
+  "file": "hard/putnam_1995_a6.lean",
+  "weak_solvers": [],
+  "mid_solvers": [],
+  "strong_solvers": [
+   "Goedel-Architect #2",
+   "Aleph Prover (Logical Intelligence) #3"
+  ],
+  "n_weak": 0,
+  "n_mid": 0,
+  "n_strong": 2,
+  "easy_score": 0,
+  "file_last_modified": "2024-10-30"
+ },
+ {
+  "id": "putnam_2000_b3",
+  "tier": "hard",
+  "year": 2000,
+  "problem": "B3",
+  "tags": [
+   "analysis"
+  ],
+  "informal_statement": "Let $f(t)=\\sum_{j=1}^N a_j \\sin(2\\pi jt)$, where each $a_j$ is real and $a_N$ is not equal to $0$. Let $N_k$ denote the number of zeroes (including multiplicities) of $\\frac{d^k f}{dt^k}$. Prove that\n\\[\nN_0\\leq N_1\\leq N_2\\leq \\cdots \\mbox{ and } \\lim_{k\\to\\infty} N_k = 2N.\n\\]",
+  "informal_solution": "None.",
+  "has_answer": false,
+  "file": "hard/putnam_2000_b3.lean",
+  "weak_solvers": [],
+  "mid_solvers": [],
+  "strong_solvers": [
+   "Aleph Prover (Logical Intelligence) #3"
+  ],
+  "n_weak": 0,
+  "n_mid": 0,
+  "n_strong": 1,
+  "easy_score": 0,
+  "file_last_modified": "2025-08-28"
+ },
+ {
+  "id": "putnam_2004_a5",
+  "tier": "hard",
+  "year": 2004,
+  "problem": "A5",
+  "tags": [
+   "combinatorics"
+  ],
+  "informal_statement": "An $m \\times n$ checkerboard is colored randomly: each square is independently assigned red or black with probability $1/2$. We say that two squares, $p$ and $q$, are in the same connected monochromatic region if there is a sequence of squares, all of the same color, starting at $p$ and ending at $q$, in which successive squares in the sequence share a common side. Show that the expected number of connected monochromatic regions is greater than $m n / 8$.",
+  "informal_solution": "None.",
+  "has_answer": false,
+  "file": "hard/putnam_2004_a5.lean",
+  "weak_solvers": [],
+  "mid_solvers": [],
+  "strong_solvers": [
+   "Aleph Prover (Logical Intelligence) #2",
+   "Aleph Prover (Logical Intelligence) #3"
+  ],
+  "n_weak": 0,
+  "n_mid": 0,
+  "n_strong": 2,
+  "easy_score": 0,
+  "file_last_modified": "2024-10-21"
+ },
+ {
+  "id": "putnam_2014_b6",
+  "tier": "hard",
+  "year": 2014,
+  "problem": "B6",
+  "tags": [
+   "analysis",
+   "number_theory"
+  ],
+  "informal_statement": "Let $f: [0,1] \\to \\mathbb{R}$ be a function for which there exists a constant $K>0$ such that $\\left| f(x) - f(y) \\right| \\leq K \\left| x - y \\right|$ for all $x,y \\in [0,1]$. Suppose also that for each rational number $r \\in [0,1]$, there exist integers $a$ and $b$ such that $f(r) = a + br$. Prove that there exist finitely many intervals $I_1, \\dots, I_n$ such that $f$ is a linear function on each $I_i$ and $[0,1] = \\bigcup_{i=1}^n I_i$.",
+  "informal_solution": "None.",
+  "has_answer": false,
+  "file": "hard/putnam_2014_b6.lean",
+  "weak_solvers": [],
+  "mid_solvers": [],
+  "strong_solvers": [
+   "Aleph Prover (Logical Intelligence) #2",
+   "Aleph Prover (Logical Intelligence) #3"
+  ],
+  "n_weak": 0,
+  "n_mid": 0,
+  "n_strong": 2,
+  "easy_score": 0,
+  "file_last_modified": "2024-10-21"
+ },
+ {
+  "id": "putnam_2015_b4",
+  "tier": "hard",
+  "year": 2015,
+  "problem": "B4",
+  "tags": [
+   "algebra"
+  ],
+  "informal_statement": "Let $T$ be the set of all triples $(a,b,c)$ of positive integers for which there exist triangles with side lengths $a,b,c$. Express\n\\[\n\\sum_{(a,b,c) \\in T} \\frac{2^a}{3^b 5^c}\n\\]\nas a rational number in lowest terms.",
+  "informal_solution": "The answer is $17/21$.",
+  "has_answer": true,
+  "file": "hard/putnam_2015_b4.lean",
+  "weak_solvers": [],
+  "mid_solvers": [],
+  "strong_solvers": [
+   "Goedel-Architect #2",
+   "Aleph Prover (Logical Intelligence) #3"
+  ],
+  "n_weak": 0,
+  "n_mid": 0,
+  "n_strong": 2,
+  "easy_score": 0,
+  "file_last_modified": "2024-10-22"
+ },
+ {
+  "id": "putnam_2017_b6",
+  "tier": "hard",
+  "year": 2017,
+  "problem": "B6",
+  "tags": [
+   "algebra",
+   "number_theory"
+  ],
+  "informal_statement": "Find the number of ordered $64$-tuples $(x_0,x_1,\\dots,x_{63})$ such that $x_0,x_1,\\dots,x_{63}$ are distinct elements of $\\{1,2,\\dots,2017\\}$ and\n\\[\nx_0 + x_1 + 2x_2 + 3x_3 + \\cdots + 63 x_{63}\n\\]\nis divisible by 2017.",
+  "informal_solution": "Prove that the answer is $\\frac{2016!}{1953!} - 63! \\cdot 2016$",
+  "has_answer": true,
+  "file": "hard/putnam_2017_b6.lean",
+  "weak_solvers": [],
+  "mid_solvers": [],
+  "strong_solvers": [
+   "Aleph Prover (Logical Intelligence) #2",
+   "Aleph Prover (Logical Intelligence) #3"
+  ],
+  "n_weak": 0,
+  "n_mid": 0,
+  "n_strong": 2,
+  "easy_score": 0,
+  "file_last_modified": "2024-10-30"
+ },
+ {
+  "id": "putnam_2019_a4",
+  "tier": "hard",
+  "year": 2019,
+  "problem": "A4",
+  "tags": [
+   "analysis"
+  ],
+  "informal_statement": "Let $f$ be a continuous real-valued function on $\\mathbb{R}^3$. Suppose that for every sphere $S$ of radius $1$, the integral of $f(x,y,z)$ over the surface of $S$ equals $0$. Must $f(x,y,z)$ be identically 0?",
+  "informal_solution": "Show that the answer is no.",
+  "has_answer": true,
+  "file": "hard/putnam_2019_a4.lean",
+  "weak_solvers": [],
+  "mid_solvers": [],
+  "strong_solvers": [],
+  "n_weak": 0,
+  "n_mid": 0,
+  "n_strong": 0,
+  "easy_score": 0,
+  "file_last_modified": "2024-10-21"
+ },
+ {
+  "id": "putnam_2021_a6",
+  "tier": "hard",
+  "year": 2021,
+  "problem": "A6",
+  "tags": [
+   "number_theory",
+   "algebra"
+  ],
+  "informal_statement": "Let $P(x)$ be a polynomial whose coefficients are all either $0$ or $1$. Suppose that $P(x)$ can be written as a product of two nonconstant polynomials with integer coefficients. Does it follow that $P(2)$ is a composite integer?",
+  "informal_solution": "Show that it does follow that $P(2)$ is a composite integer.",
+  "has_answer": true,
+  "file": "hard/putnam_2021_a6.lean",
+  "weak_solvers": [],
+  "mid_solvers": [],
+  "strong_solvers": [],
+  "n_weak": 0,
+  "n_mid": 0,
+  "n_strong": 0,
+  "easy_score": 0,
+  "file_last_modified": "2024-10-30"
+ },
+ {
+  "id": "putnam_2022_a5",
+  "tier": "hard",
+  "year": 2022,
+  "problem": "A5",
+  "tags": [
+   "combinatorics"
+  ],
+  "informal_statement": "Alice and Bob play a game on a board consisting of one row of 2022 consecutive squares. They take turns placing tiles that cover two adjacent squares, with Alice going first. By rule, a tile must not cover a square that is already covered by another tile. The game ends when no tile can be placed according to this rule. Alice's goal is to maximize the number of uncovered squares when the game ends; Bob's goal is to minimize it. What is the greatest number of uncovered squares that Alice can ensure at the end of the game, no matter how Bob plays?",
+  "informal_solution": "Show that the solution is 290.",
+  "has_answer": true,
+  "file": "hard/putnam_2022_a5.lean",
+  "weak_solvers": [],
+  "mid_solvers": [],
+  "strong_solvers": [
+   "Aleph Prover (Logical Intelligence) #3"
+  ],
+  "n_weak": 0,
+  "n_mid": 0,
+  "n_strong": 1,
+  "easy_score": 0,
+  "file_last_modified": "2024-09-24"
+ },
+ {
+  "id": "putnam_2022_b6",
+  "tier": "hard",
+  "year": 2022,
+  "problem": "B6",
+  "tags": [
+   "analysis"
+  ],
+  "informal_statement": "Find all continuous functions $f:\\mathbb{R}^+ \\to \\mathbb{R}^+$ such that $f(xf(y))+f(yf(x))=1+f(x+y)$ for all $x,y>0$.",
+  "informal_solution": "Show that the only such functions are the functions $f(x)=\\frac{1}{1+cx}$ for some $c \\geq 0$.",
+  "has_answer": true,
+  "file": "hard/putnam_2022_b6.lean",
+  "weak_solvers": [],
+  "mid_solvers": [],
+  "strong_solvers": [
+   "Aleph Prover (Logical Intelligence) #2",
+   "Aleph Prover (Logical Intelligence) #3"
+  ],
+  "n_weak": 0,
+  "n_mid": 0,
+  "n_strong": 2,
+  "easy_score": 0,
+  "file_last_modified": "2024-10-30"
+ },
+ {
+  "id": "putnam_2023_b5",
+  "tier": "hard",
+  "year": 2023,
+  "problem": "B5",
+  "tags": [
+   "number_theory"
+  ],
+  "informal_statement": "Determine which positive integers $n$ have the following property: For all integers $m$ that are relatively prime to $n$, there exists a permutation $\\pi:\\{1,2,\\dots,n\\} \\to \\{1,2,\\dots,n\\}$ such that $\\pi(\\pi(k)) \\equiv mk \\pmod{n}$ for all $k \\in \\{1,2,\\dots,n\\}$.",
+  "informal_solution": "Show that the desired property holds if and only if $n=1$ or $n \\equiv 2 \\pmod{4}$.",
+  "has_answer": true,
+  "file": "hard/putnam_2023_b5.lean",
+  "weak_solvers": [],
+  "mid_solvers": [],
+  "strong_solvers": [
+   "Aleph Prover (Logical Intelligence) #2",
+   "Aleph Prover (Logical Intelligence) #3"
+  ],
+  "n_weak": 0,
+  "n_mid": 0,
+  "n_strong": 2,
+  "easy_score": 0,
+  "file_last_modified": "2024-10-30"
+ },
+ {
+  "id": "putnam_2024_a3",
+  "tier": "hard",
+  "year": 2024,
+  "problem": "A3",
+  "tags": [
+   "combinatorics"
+  ],
+  "informal_statement": "Let $S$ be the set of bijections $$T : \\{1, 2, 3\\} \\times \\{1, 2, ..., 2024\\} \\to \\{1, 2, ..., 6072\\}$$\nsuch that $T(1, j) < T(2, j) < T(3, j)$ for all $j \\in \\{1, 2, ..., 2024\\}$ and\n$T(i, j) < T(i, j + 1)$ for all $i \\in \\{1, 2, 3\\}$ and $j \\in \\{1, 2, ..., 2023\\}$.\nDo there exist $a, c$ in $\\{1, 2, 3\\}$ and $b$ and $d$ in $\\{1, 2, ..., 2024\\}$ such that\nthe fraction of elements $T$ in $S$ for which $T(a, b) < T(c, d)$ is at least $1/3$ and at most $2/3$?",
+  "informal_solution": "Shoe that there do such exist $a,c$.",
+  "has_answer": true,
+  "file": "hard/putnam_2024_a3.lean",
+  "weak_solvers": [],
+  "mid_solvers": [],
+  "strong_solvers": [
+   "Goedel-Architect #2",
+   "Aleph Prover (Logical Intelligence) #3"
+  ],
+  "n_weak": 0,
+  "n_mid": 0,
+  "n_strong": 2,
+  "easy_score": 0,
+  "file_last_modified": "2025-03-13"
+ },
+ {
+  "id": "putnam_2024_b5",
+  "tier": "hard",
+  "year": 2024,
+  "problem": "B5",
+  "tags": [
+   "combinatorics",
+   "algebra"
+  ],
+  "informal_statement": "Let $k$ and $m$ be positive integers. For a positive integer $n$, let $f(n)$ be the number of integer sequences $x_1, ..., x_k, y_1, ..., y_m, z$ satisfying $1 \\leq x_1 \\leq ... \\leq x_k \\leq z \\leq n$\nand $1 \\leq y_1 \\leq ... \\leq y_m \\leq z \\leq n$. Show that $f(n)$ can be expressed as a polynomial in $n$ with nonnegative coefficients.",
+  "informal_solution": "None.",
+  "has_answer": false,
+  "file": "hard/putnam_2024_b5.lean",
+  "weak_solvers": [],
+  "mid_solvers": [],
+  "strong_solvers": [
+   "Aleph Prover (Logical Intelligence) #2",
+   "Aleph Prover (Logical Intelligence) #3"
+  ],
+  "n_weak": 0,
+  "n_mid": 0,
+  "n_strong": 2,
+  "easy_score": 0,
+  "file_last_modified": "2025-03-11"
+ }
+]

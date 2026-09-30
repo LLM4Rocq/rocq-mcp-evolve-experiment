@@ -1,0 +1,66 @@
+{
+ "config_id": "af_lean_lsp_mcp_prompted_sonnet_wallonly",
+ "description": "Ported from rocq-mcp-evolve config 'session_try_hints_auto_sonnet' (PORT_SPEC.md sections 4-5). A74/A76: the FROZEN interface (session_try_hints_auto_sugg + env v2) with only the model swapped -> claude-sonnet-5 | wall-only variant (2026-09-06, user decision): identical except the 30-turn cap is lifted to the 200 safety rail (A63/A100 wall-only convention, as frozen_wallonly is to frozen); the turn cap was measured to be a covert tool-call tax (A62b). | AF_TOOLS_SPEC.md (2026-09-07, user decision): the tool surface of the Rocq autoformalization arm 'af3_evolve' (rocq-mcp-evolve-private configs/af3_evolve.json) ported rocq->lean, dune_build->lake_build -- the files sidecar (write_file, read_file, list_dir, lake_build, verify) plus all nine prover tools (open, build, check, step, try, auto_close, state, rollback, verify; LEAN_ENABLE_TOOLS unset) against a per-problem Lake project workspace (\"workspace\": \"lake_putnam\") the model can create and manage files in. model/max_turns/attempt_timeout_s/system_prompt/task_prompt_template are kept BYTE-IDENTICAL to session_try_hints_auto_sonnet_wallonly (user instruction: keep the other configuration). Caveat: the system prompt still describes only the five frozen tools (kept verbatim); the other nine tools are documented to the model only by their own shipped MCP tool descriptions -- the Rocq af3 arms were prompt-free with the server README injected instead, an alternative protocol not used here. | prompted variant (2026-09-07, user request): same tool surface, workspace, budget and env as session_af_tools_sonnet_wallonly, but the system and task prompts describe ALL fourteen tools and the workspace, in the shape of the Rocq autoformalization prompts (af_tools2 system prompt, af3 task-prompt grading clause). {task_file} = the theorem's workspace-relative path. | TWO_ARMS_SPEC.md (2026-09-08, user request): mirrors the Rocq autoformalization arm 'af3_sota' -- the files sidecar PLUS the lean-lsp-mcp SOTA sibling (v0.30.0, pinned) in place of rocq-mcp, LEAN_PROJECT_PATH pointed at the attempt's own workspace ('{workspace}', substituted by run_eval.py). No submit sidecar, no project_task_copy/prefix_prepend -- the workspace IS the Lean project, so lean-lsp-mcp opens the task file directly and delivery is the workspace file (graded the same way as every other lake_putnam-workspace arm). Prompted (not prompt-free + {readme}-injected like af3_sota): the Prover-tools paragraph names the real lean-lsp-mcp tools (written from lean_lsp_mcp_readme_excerpt.md) and the workflow paragraph is rewritten for the LSP-diagnose/search/edit loop; everything else byte-identical to the base arm's system prompt.",
+ "server": {
+  "command": "/usr/bin/python3",
+  "args": [
+   "-S",
+   "{repo}/testing/harness/mcp_prewarm_proxy.py",
+   "uvx",
+   "lean-lsp-mcp@0.30.0"
+  ],
+  "env": {
+   "LEAN_PROJECT_PATH": "{workspace}"
+  }
+ },
+ "mcp_server_name": "leanlsp",
+ "allowed_tools": [
+  "mcp__leanlsp__lean_build",
+  "mcp__leanlsp__lean_file_outline",
+  "mcp__leanlsp__lean_diagnostic_messages",
+  "mcp__leanlsp__lean_code_actions",
+  "mcp__leanlsp__lean_goal",
+  "mcp__leanlsp__lean_term_goal",
+  "mcp__leanlsp__lean_hover_info",
+  "mcp__leanlsp__lean_completions",
+  "mcp__leanlsp__lean_declaration_file",
+  "mcp__leanlsp__lean_references",
+  "mcp__leanlsp__lean_local_search",
+  "mcp__leanlsp__lean_leansearch",
+  "mcp__leanlsp__lean_loogle",
+  "mcp__leanlsp__lean_leanfinder",
+  "mcp__leanlsp__lean_state_search",
+  "mcp__leanlsp__lean_hammer_premise",
+  "mcp__leanlsp__lean_multi_attempt",
+  "mcp__leanlsp__lean_run_code",
+  "mcp__leanlsp__lean_verify",
+  "mcp__leanlsp__lean_minimal_hypotheses",
+  "mcp__leanlsp__lean_profile_proof",
+  "mcp__leanlsp__lean_get_widgets",
+  "mcp__leanlsp__lean_get_widget_source",
+  "mcp__files__write_file",
+  "mcp__files__read_file",
+  "mcp__files__list_dir",
+  "mcp__files__lake_build",
+  "mcp__files__verify"
+ ],
+ "model": "claude-sonnet-5",
+ "max_turns": 200,
+ "attempt_timeout_s": 300,
+ "system_prompt": "You are an expert Lean 4 prover (Lean 4 with Mathlib; all of Mathlib is available — simp, omega, norm_num, linarith, nlinarith, positivity, ring, field_simp work everywhere). You must PROVE a Putnam theorem that is given as a file in your workspace: a Lake project already built against Mathlib, on which all your tools operate (paths are relative to its root).\n\nWorkspace tools (files): write_file{path, content} creates or overwrites a file (parent directories are created); read_file{path} reads one; list_dir{} lists the tree; lake_build{} runs `lake build` at the workspace root and returns ALL errors across all files; verify{} checks the workspace against the grader's rules (a forbidden-token scan of every .lean file plus a clean lake build) — call it before replying DONE and fix everything it reports.\n\nProver tools (leanlsp): You additionally have the lean-lsp-mcp toolset, a live Lean Language Server bound to your workspace. It does NOT edit files itself — use write_file for that; every file_path argument is relative to the workspace root, line and column are 1-indexed (columns count codepoints), and after you edit a file with write_file the LSP re-checks it automatically on the next call, no reload needed. lean_goal{file_path, line, column?} and lean_term_goal{file_path, line, column?} show the tactic/term goal at a position (omit column for goals_before/goals_after) — ONLY inside a `by` tactic block: the theorem's hole starts as a TERM-mode `:= sorry`, which has no tactic goal to query (lean_goal returns 'no_goal_at_position' there and lean_multi_attempt's tactic snippets fail with 'Unknown identifier'), so first rewrite it with write_file to `:= by` followed by an indented `sorry` line before using lean_goal or lean_multi_attempt; lean_diagnostic_messages{file_path} lists every compiler error/warning in a file and works on the raw term-mode file too (no `by` needed, no prior lake_build needed either); lean_hover_info{file_path, line, column} shows a symbol's type and docs; lean_completions{file_path, line, column} lists identifiers valid at a position; lean_multi_attempt{file_path, line, snippets} tests several tactic snippets against the goal at a line WITHOUT modifying the file (same `by`-block requirement as lean_goal) — screen candidates here before writing one; lean_run_code{code} compiles a self-contained snippet (with its own imports); lean_leansearch, lean_loogle, lean_local_search, lean_state_search and lean_hammer_premise search for lemmas (natural language, type pattern, local declarations, goal-directed, and premise-suggestion respectively); lean_verify{file_path, theorem_name} audits a theorem's axioms plus a forbidden-pattern source scan; lean_build{} runs `lake build` and restarts the LSP — SLOW, only needed after new imports, diagnostics work without it; lean_file_outline{file_path} lists a file's declarations; lean_declaration_file{file_path, symbol} shows where a symbol is defined.\n\nRecommended workflow: first rewrite the theorem's `:= sorry` to `:= by` with an indented `sorry` line via write_file, so lean_goal/lean_multi_attempt see a real tactic state; then use lean_goal and lean_diagnostic_messages to see the current goal and errors, lean_multi_attempt to screen candidate tactics before committing one with write_file, and the search tools (lean_leansearch, lean_loogle, lean_local_search, lean_state_search, lean_hammer_premise) to find lemmas; then lake_build and verify (files) before replying DONE. Scratch files for experiments are welcome (e.g. Putnam/Scratch.lean), but the delivered proof must be self-contained inside the target theorem: its imports, its statement and everything outside its proof must stay EXACTLY as given.\n\nStrict rules:\n- Never use sorry, admit, axiom, native_decide, set_option, run_tac, #eval, or unsafe in the delivered file — an external checker rejects them.\n- Reply with exactly DONE when the proof is written to the file and verify passes. If you conclude you cannot finish, reply with exactly GIVEUP.",
+ "task_prompt_template": "Prove the theorem below. It is the file `{task_file}` of the Lake project in your workspace (already built against Mathlib).\n\nGrading is machine-checked on your delivered file only: (1) `{task_file}` must compile with your proof written in place of `sorry`; (2) everything outside the theorem's proof — imports, definitions, the statement — must stay EXACTLY as provided, character for character; (3) the proof must be free of sorry, admit, axiom, native_decide, set_option, run_tac, #eval and unsafe, and must not introduce axioms. Other files you create in the workspace are not graded (use them as scratch space).\n\n```lean\n{prefix}```\n\nUse the tools; call verify{{}} before replying DONE. When the proof is complete and verified, reply DONE.",
+ "extra_servers": {
+  "files": {
+   "command": "/usr/bin/python3",
+   "args": [
+    "-S",
+    "{repo}/testing/harness/mcp_prewarm_proxy.py",
+    "--cache",
+    "{repo}/testing/harness/handshake_cache_files.json",
+    "{repo}/.lake/build/bin/lean-mcp-files"
+   ],
+   "env": {}
+  }
+ },
+ "workspace": "lake_putnam"
+}

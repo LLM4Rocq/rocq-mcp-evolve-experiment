@@ -1,0 +1,42 @@
+{
+ "config_id": "af_pf_session2_opus",
+ "description": "Ported from rocq-mcp-evolve config 'af_pf_session2_opus' (PORT_SPEC.md sections 4-5). A80 prompt-free held-out pair: audited frozen arm minus system prompt; wall-bound | A104: frontier-tier arm, config identical to the sonnet pf arm except the model",
+ "server": {
+  "command": "/usr/bin/python3",
+  "args": [
+   "-S",
+   "{repo}/testing/harness/mcp_prewarm_proxy.py",
+   "--cache",
+   "{repo}/testing/harness/handshake_cache_evolve5.json",
+   "{repo}/.lake/build/bin/lean-mcp-evolve"
+  ],
+  "env": {
+   "LEAN_ENABLE_TOOLS": "step,rollback,state,try,auto_close",
+   "LEAN_HINTS": "1",
+   "LEAN_SUGGEST": "1",
+   "LEAN_ENV_V2": "1",
+   "LEAN_AUTO2": "0",
+   "LEAN_AUTO_SEARCH": "0",
+   "LEAN_PRELOAD": "0",
+   "LEAN_IMPORT_ECHO": "0",
+   "LEAN_STEP_TIMEOUT": "30",
+   "LEAN_TRY_TIMEOUT": "15",
+   "LEAN_AUTO_TIMEOUT": "6",
+   "LEAN_OPEN_TIMEOUT": "600",
+   "LEAN_MAX_HEARTBEATS": "200000"
+  }
+ },
+ "mcp_server_name": "lean",
+ "allowed_tools": [
+  "mcp__lean__step",
+  "mcp__lean__rollback",
+  "mcp__lean__state",
+  "mcp__lean__try",
+  "mcp__lean__auto_close"
+ ],
+ "model": "claude-opus-4-8",
+ "max_turns": 100,
+ "attempt_timeout_s": 300,
+ "system_prompt": "",
+ "task_prompt_template": "Prove this theorem (already loaded in the session; its goal is open):\n\nRules, enforced by an external checker on the delivered file: the given prefix (imports, definitions, theorem statement) must stay EXACTLY as provided, character for character; never use sorry, admit, axiom, native_decide, set_option, run_tac, #eval, or extra import — submissions containing them are rejected. When you believe the proof is complete and verified, reply DONE.\n\n```lean\n{prefix}```"
+}

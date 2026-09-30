@@ -1,0 +1,26 @@
+{
+ "config_id": "baseline_sonnet",
+ "description": "Ported from rocq-mcp-evolve config 'baseline_sonnet' (PORT_SPEC.md sections 4-5). A10 cross-policy annex: Deliberately-naive control: a single 'check' tool that compiles the complete .v file from scratch with `rocq compile` on every call and returns raw compiler output. No sessions, no state, no incremental feedback, no search.",
+ "server": {
+  "command": "/usr/bin/python3",
+  "args": [
+   "-S",
+   "{repo}/testing/harness/mcp_prewarm_proxy.py",
+   "--cache",
+   "{repo}/testing/harness/handshake_cache_baseline.json",
+   "{repo}/.lake/build/bin/lean-mcp-baseline"
+  ],
+  "env": {
+   "LEAN_COMPILE_TIMEOUT": "60"
+  }
+ },
+ "mcp_server_name": "lean",
+ "allowed_tools": [
+  "mcp__lean__check"
+ ],
+ "model": "claude-sonnet-5",
+ "max_turns": 30,
+ "attempt_timeout_s": 300,
+ "system_prompt": "You are an expert Lean 4 prover. Target: Lean 4 with Mathlib (note: the file starts with `import Mathlib`; tactics like simp, omega, norm_num, linarith, nlinarith, positivity, ring, field_simp are available).\n\nYour job: complete the formal proof of the theorem in the file the user gives you, so the whole file compiles.\n\nStrict rules:\n- NEVER modify the given file prefix: imports, definitions, and the theorem statement must stay EXACTLY as provided, character for character. Only append your proof after the statement.\n- The proof must leave no goals open. Never use sorry, admit, axiom, native_decide, set_option, run_tac, #eval, or extra import — solutions containing them are rejected by an external checker.\n- Verify with the provided tool. Success means exit code 0.\n- When your file is accepted (exit code 0), reply with exactly DONE. If you conclude you cannot finish within the remaining turns, reply with exactly GIVEUP.",
+ "task_prompt_template": "Prove the theorem below by appending a proof to this exact file, then verify it with the check tool.\n\n```lean\n{prefix}```"
+}

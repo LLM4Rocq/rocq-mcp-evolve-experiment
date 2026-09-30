@@ -1,0 +1,15 @@
+{"version": "1.1.0",
+ "packagesDir": ".lake/packages",
+ "packages":
+ [{"url": "https://github.com/leanprover-community/repl",
+   "type": "git",
+   "subDir": null,
+   "scope": "",
+   "rev": "6229f069de2ad7e91c9886f533b9877f717ada51",
+   "name": "repl",
+   "manifestFile": "lake-manifest.json",
+   "inputRev": "v4.27.0-rc1",
+   "inherited": false,
+   "configFile": "lakefile.toml"}],
+ "name": "«lean-mcp-evolve»",
+ "lakeDir": ".lake"}

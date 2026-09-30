@@ -1,0 +1,22 @@
+_build/
+logs/
+*.vo
+*.vos
+*.vok
+*.glob
+*.aux
+.lia.cache
+.nia.cache
+*.log
+__pycache__/
+*.pyc
+scratch/
+data/generated/
+.venv/
+.nra.cache
+.csdp.cache
+.vscode/
+FINAL_UNLOCK
+# scratch output of harness/results_tables/*.py main() (ad-hoc JSON dumps); the generator never reads it
+docs/results_tables/
+.claude/
