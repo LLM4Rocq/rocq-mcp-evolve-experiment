@@ -44,8 +44,8 @@ The complete logs (every attempt of every run) ship as one zip attached to the r
 Python 3.10+ is the only requirement for this part.
 
 ```sh
-git clone --branch main git@github.com:LLM4Rocq/rocq-mcp-evolve-private.git && cd rocq-mcp-evolve-private
-gh release download artifact-2026-09-23 --repo LLM4Rocq/rocq-mcp-evolve-private --pattern 'logs_artifact-2026-09-23.zip' --dir /tmp/logs_release
+git clone --branch main git@github.com:LLM4Rocq/rocq-mcp-evolve-experiment.git && cd rocq-mcp-evolve-experiment
+gh release download artifact-2026-09-23 --repo LLM4Rocq/rocq-mcp-evolve-experiment --pattern 'logs_artifact-2026-09-23.zip' --dir /tmp/logs_release
 (cd /tmp/logs_release && shasum -a 256 -c "$OLDPWD/docs/logs_release.sha256")
 unzip -q /tmp/logs_release/logs_artifact-2026-09-23.zip -d .    # creates ./logs/
 python3 harness/report_tables_gen.py --check                       # prints IDENTICAL: the presented tables
@@ -133,11 +133,6 @@ lake exe gate <candidate.lean> --theorem <name>
 
 ## How to cite
 
-```bibtex
-@software{rocqmcpevolve2026,
-  author = {{LLM4Rocq}},
-  title  = {rocq-mcp-evolve: an {MCP} server for {Rocq}, evolved by measured design search},
-  year   = {2026},
-  url    = {https://github.com/LLM4Rocq/rocq-mcp-evolve}
-}
-```
+The paper corresponding to this experiment can be found at https://arxiv.org/abs/2609.39544.
+
+The final rocq-mcp-evolve server is available at https://github.com/LLM4Rocq/rocq-mcp-evolve.
