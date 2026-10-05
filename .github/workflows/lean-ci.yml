@@ -1,4 +1,4 @@
-name: CI
+name: Lean CI
 on:
   push:
     branches: [main]
@@ -13,16 +13,19 @@ jobs:
       - name: Install elan (Lean toolchain manager)
         run: |
           curl -sSfL https://github.com/leanprover/elan/releases/latest/download/elan-x86_64-unknown-linux-gnu.tar.gz | tar xz
-          # Match the toolchain pinned in this repo's lean-toolchain file
+          # Match the toolchain pinned in lean-experiment/lean-toolchain
           # (leanprover/lean4:v4.27.0-rc1); `lake build` will also honour it
           # directly via the lean-toolchain file, this just seeds elan.
           ./elan-init -y --default-toolchain leanprover/lean4:v4.27.0-rc1
           echo "$HOME/.elan/bin" >> "$GITHUB_PATH"
       - name: lake build
+        working-directory: lean-experiment
         run: lake build
       - name: Suite T (pure text-layer unit checks)
+        working-directory: lean-experiment
         run: lake exe tests T
       - name: Suite A (session core, core-only project, real server over MCP stdio)
+        working-directory: lean-experiment
         run: lake exe tests A
       # Suite M (Mathlib-backed, Tests/Mathlib.lean) needs a built project
       # depending on Mathlib (LEAN_MCP_TEST_MATHLIB_PROJECT) — building
