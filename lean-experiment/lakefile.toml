@@ -1,5 +1,5 @@
 name = "lean-mcp-evolve"
-defaultTargets = ["lean-mcp-evolve"]
+defaultTargets = ["lean-mcp-evolve", "gate"]
 
 [[require]]
 name = "repl"
